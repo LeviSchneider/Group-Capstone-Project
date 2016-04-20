@@ -72,8 +72,7 @@ public class ContentDbDaoImpl implements ContentDbDao{
                 content.getPostBody(),
                 content.getUserIdFK(),
                 content.getStatus(),
-                content.getPostType(),
-                content.getPostId());
+                content.getPostType());
     }
 
     @Override
@@ -96,7 +95,7 @@ public class ContentDbDaoImpl implements ContentDbDao{
         {
             return getAllContent();
         } else {
-            StringBuilder sQuery = new StringBuilder("select * from content where ");
+            StringBuilder sQuery = new StringBuilder("select * from blogPosts where ");
             int numParams = criteria.size();
             int paramPosition = 0;
             String[] paramVals = new String[numParams];
