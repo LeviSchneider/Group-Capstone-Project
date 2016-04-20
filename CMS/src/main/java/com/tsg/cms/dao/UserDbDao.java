@@ -70,7 +70,7 @@ public class UserDbDao {
         return jdbcTemplate.query(SQL_SELECT_ALL_USERS, new UserMapper());
     }
 
-    public User getUserId(int userId) {
+    public User getUserById(int userId) {
         try {
             return jdbcTemplate.queryForObject(SQL_SELECT_USER, new UserMapper(), userId);
         } catch (EmptyResultDataAccessException e) {
@@ -86,7 +86,7 @@ public class UserDbDao {
             int numParams = criteria.size();
             int paramPosition = 0;
             String[] paramVals = new String[numParams];
-            Set<SearchTerm> iter = criteria.keySet();
+            Set<SearchTerm> keySet = criteria.keySet();
             Iterator<SearchTerm> iter = keySet.iterator();
 
             while (iter.hasNext()) {
