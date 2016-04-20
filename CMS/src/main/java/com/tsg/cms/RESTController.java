@@ -5,8 +5,10 @@
  */
 package com.tsg.cms;
 
+import com.tsg.cms.dao.ContentDbDao;
 import com.tsg.cms.dto.Content;
 import java.util.List;
+import javax.inject.Inject;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +29,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 public class RESTController {
     
-//    private final CMSDao dao;
-//    
-//    @Inject
-//    public RESTController (CMSDao dao) {
-//        this.dao = dao;
-//    }
+    private final ContentDbDao dao;
+    
+    @Inject
+    public RESTController (ContentDbDao dao) {
+        this.dao = dao;
+    }
     
     //We'll need methods to
     //-add content
@@ -45,7 +47,7 @@ public class RESTController {
     @RequestMapping(value = "/content/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Content getContent(@PathVariable("id") int id) {
-        return dao.getContentById;
+        return dao.getContentById(id);
     }
     
     @RequestMapping(value = "/content", method = RequestMethod.POST)
@@ -53,7 +55,6 @@ public class RESTController {
     @ResponseBody
     public Content createContent(@RequestBody Content content) {
         return dao.addContent(content);
-        //id set in dao
     }
     
     @RequestMapping(value = "/content/{id}", method = RequestMethod.DELETE)
@@ -68,12 +69,12 @@ public class RESTController {
         content.setPostId(id);
         dao.updateContent(content);
     }
-        
-    @RequestMapping(value = "/pubcontent", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Content> getPublishedContent () {
-        return dao.getPublishedContent();
-    }
+//        
+//    @RequestMapping(value = "/pubcontent", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Content> getPublishedContent () {
+//        return dao.getPublishedContent();
+//    }
     
     @RequestMapping(value = "/allcontent", method = RequestMethod.GET)
     @ResponseBody
