@@ -9,14 +9,14 @@ $(document).ready(function () {
 
     $('#tiny-submit').click(function (event) {
         event.preventDefault();
-
+        alert(tinyMCE.activeEditor.getContent());
         $.ajax({
             type: 'POST',
             url: 'content',
             data: JSON.stringify({
                 dateSubmitted: '2016-12-28',
                 title: 'This is a title',
-                postBody: $('#htmlOutput').val(),
+                postBody: tinyMCE.activeEditor.getContent(),
                 status: 'draft',
                 postType: 'blogPost'
             }),
