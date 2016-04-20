@@ -17,7 +17,6 @@
 
         <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
 
-
     </head>
     <body>
 
@@ -69,8 +68,6 @@
                 </div>
 
             </div>
-
-
 
             <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

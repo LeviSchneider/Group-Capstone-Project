@@ -54,6 +54,7 @@ public class RESTController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Content createContent(@RequestBody Content content) {
+        content.setUserIdFK(999);
         return dao.addContent(content);
     }
     
