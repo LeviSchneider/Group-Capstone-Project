@@ -24,6 +24,9 @@
         <div class="container-fluid">
 
             <div class="row">
+                <%@ include file="header.jsp" %>
+            </div>
+            <div class="row">
 
                 <div class="col-md-1">
                     <div class="sidebar-nav-fixed affix">
@@ -37,7 +40,7 @@
                 </div>
                 <div class="col-md-10">
 
-                    <%@ include file="header.jsp" %>
+
 
                     <div class="row">
 
@@ -54,29 +57,30 @@
                     <div id="sidebar-nav-fixed pull-right affix">
 
                         <ul class="nav ">
+                            <br/>
 
                             <%@include file="tagCloudSidebar.jsp" %>
 
                         </ul>
 
                     </div> 
-                
+
+
+                </div>
 
             </div>
 
+
+
+            <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
+            <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+            <script src="${pageContext.request.contextPath}/js/${js_page}"></script>
+
+            <%@include file="scripts_js.jsp" %>
+            <%@include file="footer.jsp" %>
+
         </div>
-
-
-
-        <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/${js_page}"></script>
-
-        <%@include file="scripts_js.jsp" %>
-        <%@include file="footer.jsp" %>
-
-    </div>
-</body>
+    </body>
 </html>
 
