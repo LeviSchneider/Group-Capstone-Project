@@ -25,8 +25,8 @@ var samplePosts = [
         body: "super amazing content here dave",
         author: "dunno lol"
     }
-    
-    
+
+
 ]
 
 $(document).ready(function () {
@@ -34,16 +34,28 @@ $(document).ready(function () {
 
 })
 
-        function populateBlogPosts(data, status) {
-            var blogPanel = $('#blog-post-display');
 
-            $.each(data, function (index, post) {
-                blogPanel
-                        .append($('<div>')
-                                .addClass("panel panel-default")
-                                .append('<div>')
-                                .addClass("panel-body")
-                                .append(post.body));
-            });
-        }
+
+function populateBlogPosts(data, status) {
+    var blogPanel = $('#blog-post-display');
+
+
+    $.ajax({
+        type: 'GET',
+        url: 'allcontent'
+
+    }).success(function (data, status) {
+
+        $.each(data, function (index, post) {
+            blogPanel
+                    .append($('<div>')
+                            .addClass("panel panel-default")
+                            .append('<div>')
+                            .addClass("panel-body")
+                            .append(post.postBody));
+        });
+
+    });
+
+}
 

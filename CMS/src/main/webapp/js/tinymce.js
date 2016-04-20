@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     $('#tiny-submit').click(function (event) {
         event.preventDefault();
-        alert(tinyMCE.activeEditor.getContent());
+      
         $.ajax({
             type: 'POST',
             url: 'content',
@@ -26,7 +26,8 @@ $(document).ready(function () {
             },
             'dataType': 'json'
         }).success(function (data, status) {
-            $('#htmlOutput').val('');
+           window.location = 'blog';
+            
         });
     });
 });
