@@ -15,8 +15,8 @@
             tinymce.init({
                 selector: 'textarea',
                 plugins: "image imagetools contextmenu advlist link colorpicker paste table textcolor ",
-                // menubar: "insert",
-                //toolbar: "image styleselect fontsizeselect hr link preview",
+                menubar: "insert",
+                toolbar: "image styleselect fontsizeselect hr link preview",
                 contextmenu: "link image inserttable | cell row column deletetable",
                 inline: false
             });</script>
