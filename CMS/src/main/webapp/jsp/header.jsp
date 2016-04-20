@@ -1,7 +1,7 @@
 <!--<div style="background-color: gold">header<br/>header<br/>header<br/>header<br/></div>-->
 <div class="jumbotron">
     <center>
-        <h1>CHEESE MASTER SCHOOL</h1>
+        <h1 id="click-me">CHEESE MASTER SCHOOL</h1>
     </center>
     <!--  <p>...</p>-->
 </div>
