@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TagDbDaoImpl implements TagDbDao {
 
     private static final String SQL_ADD_TAG_POST_HASHTAG_BRIDGE
-            = "insert into hashTags (HashTagIdFK, postIdFK) values(?,?)";
+            = "insert into postHashTagBridge (HashTagIdFK, postIdFK) values(?,?)";
     private static final String SQL_ADD_HASHTAG
             = "insert into hashTags (hashTagName) values(?)";
     private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE
@@ -37,15 +37,15 @@ public class TagDbDaoImpl implements TagDbDao {
             = "update hashTags set hashTagName = ? where HashTagId = ?";
     private static final String SQL_SELECT_POST_HASHTAGS_BY_ID
             = "select hashTagName from hashTags "
-            + "inner join postHashTagBridge"
-            + "on hashTags.HashTagId = postHashTagBridge.HashTagIdFK"
+            + "inner join postHashTagBridge "
+            + "on hashTags.HashTagId = postHashTagBridge.HashTagIdFK "
             + "where postIdFK = ?";
     private static final String SQL_SELECT_NUMBER_OF_HASHTAGS
-            = "select hashTagName, count(postHashTagBridge.HashTagIdFK) as numberofhashtags from postHashTagBridge"
-            + "left join hashTags as ht"
-            + "on postHashTagBridge.HashTagIdFK = ht.HashTagId"
-            + "group by hashTagName"
-            + "group by numberOfHashTags desc"
+            = "select hashTagName, count(postHashTagBridge.HashTagIdFK) as numberofhashtags from postHashTagBridge "
+            + "left join hashTags as ht "
+            + "on postHashTagBridge.HashTagIdFK = ht.HashTagId "
+            + "group by hashTagName "
+            + "group by numberOfHashTags desc "
             + "limit ?";
     private static final String SQL_ALL_HASHTAGS
             = "select * from hashTags";
@@ -60,7 +60,7 @@ public class TagDbDaoImpl implements TagDbDao {
     public String addTag(String tag, int postId) {
         jdbcTemplate.update(SQL_ADD_HASHTAG,
                 tag);
-        int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{tag}, Integer.class);
+        int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new String[]{tag}, Integer.class);
         jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE,
                 hashTagId,
                 postId);
