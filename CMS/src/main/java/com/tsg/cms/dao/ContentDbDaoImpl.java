@@ -5,10 +5,12 @@
  */
 package com.tsg.cms.dao;
 
+import com.tsg.cms.dto.Category;
 import com.tsg.cms.dto.Content;
 import com.tsg.cms.dto.ContentState;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,8 @@ public class ContentDbDaoImpl implements ContentDbDao{
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public Content addContent(Content content) {
+        
+        
         jdbcTemplate.update(SQL_INSERT_CONTENT,
                 content.getDateSubmitted(),
                 content.getStartDate(),
@@ -133,7 +137,7 @@ public class ContentDbDaoImpl implements ContentDbDao{
             content.setUserIdFK(rs.getInt("userIdFK"));
             content.setStatus(rs.getString("status"));
             content.setPostType(rs.getString("postType"));
-            
+            content.setPostId(rs.getInt("postId"));
             return content;
         }
         
