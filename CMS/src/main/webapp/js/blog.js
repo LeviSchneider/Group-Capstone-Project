@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+
+
 var samplePosts = [
     post1 = {
         title: "stuff",
@@ -49,6 +51,15 @@ function initMenu() {
 }
 $(document).ready(function () {
     populateBlogPosts(samplePosts);
+    $(document).ready(function () {
+        $('[data-toggle=offcanvas]').click(function () {
+            $('.row-offcanvas-left').toggleClass('active');
+        });
+
+        $('[data-toggle=offcanvasright]').click(function () {
+            $('.row-offcanvas-right').toggleClass('active');
+        });
+    });
 
 });
 
@@ -56,8 +67,7 @@ $(document).ready(function () {
 
 function populateBlogPosts(data, status) {
     var blogPanel = $('#blog-post-display');
-
-
+    
     $.ajax({
         type: 'GET',
         url: 'allcontent'

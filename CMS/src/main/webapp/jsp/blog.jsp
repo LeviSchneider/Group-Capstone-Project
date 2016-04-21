@@ -10,113 +10,169 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
 
+<html>
     <head>
+        <title>Index Page</title>
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
-        <title>Simple Sidebar - Start Bootstrap Template</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/blog.css" rel="stylesheet">
-        
+        <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
+
+        <style>
+            html,
+            body {
+                overflow-x: hidden; /* Prevent scroll on narrow devices */
+            }
+
+            body {
+                padding-top: 70px;
+            }
+            footer {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            /*
+             * Off Canvas
+             * --------------------------------------------------
+             */
+            @media screen and (max-width: 767px) {
+                .row-offcanvas {
+                    position: relative;
+                    -webkit-transition: all .25s ease-out;
+                    -o-transition: all .25s ease-out;
+                    -moz-transition: all .25s ease-out;
+                    transition: all .25s ease-out;
+                }
+
+                .row-offcanvas-left
+                #sidebarLeft {
+                    left: -40%;
+                }
+
+                .row-offcanvas-left.active {
+                    left: 40%;
+                }
+
+                .row-offcanvas-right 
+                #sidebarRight {
+                    right: -40%;
+                }
+
+                .row-offcanvas-right.active {
+                    right: 40%;
+                }
+
+                .sidebar-offcanvas {
+                    position: absolute;
+                    top: 0;
+                    width: 40%;
+                    margin-left: 10px;
+                }
+            }
+        </style>
     </head>
-
     <body>
+        <nav class="navbar navbar-fixed-top navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
 
-        <div id="wrapper">
-            <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li class="sidebar-brand">
-                        <a href="#">
-                            Start Bootstrap
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#">Shortcuts</a>
-                    </li>
-                    <li>
-                        <a href="#">Overview</a>
-                    </li>
-                    <li>
-                        <a href="#">Events</a>
-                    </li>
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div id="wrapper">
-            <div id="page-content-wrapper">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <h1>Simple Sidebar</h1>
-                            <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                            <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-                        </div>
-                    </div>
+                    <button style="color: white;" type="button" class="navbar-toggle collapsed" data-toggle="offcanvasright">
+                        <span class="sr-only">Toggle right sidebar</span>
+                        <span>#</span>
+                    </button>
+
+                    <button style="color: white;" type="button" class="navbar-toggle collapsed" data-toggle="offcanvas">
+                        <span class="sr-only">Toggle left sidebar</span>
+                        <span>#</span>
+                    </button>
+
+
+
+                    <a class="navbar-brand" href="#">Palo Alto CMS</a>
                 </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Camembert</a></li>
+                        <li><a href="#about">Cheddar</a></li>
+                        <li><a href="#contact">Gruyere</a></li>
+                    </ul>
+                </div><!-- /.nav-collapse -->
+            </div><!-- /.container -->
+        </nav><!-- /.navbar -->
+
+        <div class="container">
+
+            <div class="row row-offcanvas row-offcanvas-left">
+                <div class="row-offcanvas row-offcanvas-right">
+                    <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarLeft" role="navigation">
+                        <div class="well sidebar-nav">
+                            <ul class="nav">
+                                <!-- left sidebar fragment will start here -->
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Blog</a></li>
+                                <li><a href="#">Articles</a></li>
+                                <li><a href="#">Content-1</a></li>
+                                <li><a href="#">Content-2</a></li>
+                                <li><a href="#">Content-3</a></li>
+                                <li><a href="#">Admin</a></li>
+                                <!-- left sidebar fragment should end here -->
+                            </ul>
+                        </div><!--/.well -->
+                    </div><!--/span-->
+
+
+
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="jumbotron">
+                            <h1>I heard you like cheese.</h1>
+                            <p>But check out the side-toggling navbars first. #dual-wielding</p>
+                        </div>
+                        <div class="row">
+
+                        </div><!--/row-->
+                    </div><!--/.col-xs-12.col-sm-9-->
+
+                    <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
+                        <div class="well sidebar-nav">
+                            <ul class="nav">
+                                <!-- right sidebar fragment will start here -->
+                                <li class="active"><a href="#">#business</a></li>
+                                <li><a href="#">#numbers</a></li>
+                                <li><a href="#">#money</a></li>
+                                <li><a href="#">#people</a></li>
+                                <!-- right sidebar fragment will start here -->
+                            </ul>
+                        </div><!--/.well -->
+                    </div><!--/span-->
+                </div><!--/row-->
             </div>
-            <div id="sidebar-wrapper-right">
-                <ul class="sidebar-nav">
-                    <li class="sidebar-brand">
-                        <a href="#">
-                            Tag menu
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#">Shortcuts</a>
-                    </li>
-                    <li>
-                        <a href="#">Overview</a>
-                    </li>
-                    <li>
-                        <a href="#">Events</a>
-                    </li>
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /#page-content-wrapper -->
 
-        </div>
-        <!-- /#wrapper -->
+            <hr>
 
-        <!-- jQuery -->
-        <script src="js/jquery-1.11.3.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-    </body>
+            <footer>
+                <p>&copy; 2015 Company, Inc.</p>
+            </footer>
+        </div><!--/.container-->
 
-</html>
-      
-<!-- <div class="well well-lg">
-    <div id="blog-post-display"> -->
+
+        <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        <!--         <script src="${pageContext.request.contextPath}/js/${js_page}"></script> -->
+        <script src="${pageContext.request.contextPath}/js/blog.js"></script>
+
+        <%@include file="scripts_js.jsp" %>
+        <%@include file="footer.jsp" %>
 
     </div>
-</div>
+</body>
+</html>
+
