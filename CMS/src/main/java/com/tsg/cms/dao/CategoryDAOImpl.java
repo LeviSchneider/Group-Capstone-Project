@@ -65,15 +65,11 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    public Category addCategory(Category category, int blogPostIdFK) {
+    public void addCategoryAndPostToBridge(Category category, int blogPostIdFK) throws DuplicateKeyException {
 
-        jdbcTemplate.update(SQL_INSERT_CATEGORY,
-                category.getCategoryName());
-        category.setCategoryId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         jdbcTemplate.update(SQL_INSERT_CATEGORY_INTO_BRIDGE,
                 category.getCategoryId(), blogPostIdFK);
 
-        return category;
     }
 
     @Override

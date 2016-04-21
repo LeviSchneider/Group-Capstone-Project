@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 21, 2016 at 11:02 AM
+-- Generation Time: Apr 21, 2016 at 04:13 PM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -30,9 +30,9 @@ USE `PaloAlto`;
 
 CREATE TABLE IF NOT EXISTS `blogPosts` (
   `postId` int(11) NOT NULL AUTO_INCREMENT,
-  `dateSubmitted` datetime NOT NULL,
-  `startDate` datetime DEFAULT NULL,
-  `endDate` datetime DEFAULT NULL,
+  `dateSubmitted` varchar(20) NOT NULL,
+  `startDate` varchar(20) DEFAULT NULL,
+  `endDate` varchar(20) DEFAULT NULL,
   `title` varchar(100) NOT NULL,
   `postBody` text NOT NULL,
   `userIdFK` int(11) NOT NULL,
@@ -75,8 +75,17 @@ INSERT INTO `blogPosts` (`postId`, `dateSubmitted`, `startDate`, `endDate`, `tit
 CREATE TABLE IF NOT EXISTS `categories` (
   `categoryId` int(11) NOT NULL AUTO_INCREMENT,
   `categoryName` varchar(50) NOT NULL,
-  PRIMARY KEY (`categoryId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`categoryId`),
+  UNIQUE KEY `categoryName` (`categoryName`),
+  KEY `categoryName_2` (`categoryName`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`categoryId`, `categoryName`) VALUES
+(4, 'Test1');
 
 -- --------------------------------------------------------
 

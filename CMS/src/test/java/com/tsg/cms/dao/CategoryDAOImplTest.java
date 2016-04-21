@@ -7,7 +7,7 @@ package com.tsg.cms.dao;
 
 import com.tsg.cms.dto.Category;
 import java.util.List;
-import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,7 +63,8 @@ public class CategoryDAOImplTest {
     @Test
     public void testAddCategory() {
         
-        C1 = Dao.addCategory(C1, P1);
+        C1 = Dao.addCategory(C1);
+        Dao.addCategoryAndPostToBridge(C1, P1);
         Category fromDb = Dao.getCategoryById(C1.getCategoryId());
         C1.setCategoryId(fromDb.getCategoryId());
         assertEquals(C1, fromDb);
@@ -77,7 +78,8 @@ public class CategoryDAOImplTest {
     @Test
     public void testRemoveCategory() {
         
-        Dao.addCategory(C2, P2);
+        C2 = Dao.addCategory(C2);
+        Dao.addCategoryAndPostToBridge(C2, P2);
         Category fromDb = Dao.getCategoryById(C2.getCategoryId());
         C2.setCategoryId(fromDb.getCategoryId());
         
@@ -93,7 +95,8 @@ public class CategoryDAOImplTest {
     @Test
     public void testUpdateCategory() {
         
-        C3 = Dao.addCategory(C3, P3);
+        C3 = Dao.addCategory(C3);
+        Dao.addCategoryAndPostToBridge(C3, P3);
         
         C3.setCategoryName("CategoryTest");
         Dao.updateCategory(C3);
@@ -110,12 +113,15 @@ public class CategoryDAOImplTest {
     @Test
     public void testGetAllCategories() {
         
-        Dao.addCategory(C1, P1);
-        Dao.addCategory(C2, P2);
-        Dao.addCategory(C3, P3);
+        C1 = Dao.addCategory(C1);
+        Dao.addCategoryAndPostToBridge(C1, P1);
+        C2 = Dao.addCategory(C2);
+        Dao.addCategoryAndPostToBridge(C2, P2);
+        C3 = Dao.addCategory(C3);
+        Dao.addCategoryAndPostToBridge(C3, P3);
         
         List<Category> cList = Dao.getAllCategories();
-        assertEquals(cList.size(), 3);
+        assertEquals(3, cList.size());
         
     }
 
@@ -126,9 +132,9 @@ public class CategoryDAOImplTest {
     @Test
     public void testSearchCategory() {
         
-        Dao.addCategory(C1, P1);
-        Dao.addCategory(C2, P2);
-        Dao.addCategory(C3, P3);
+        Dao.addCategoryAndPostToBridge(C1, P1);
+        Dao.addCategoryAndPostToBridge(C2, P2);
+        Dao.addCategoryAndPostToBridge(C3, P3);
         
         
         

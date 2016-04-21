@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -60,7 +61,7 @@ public class ContentDbDaoImplTest {
         categoryDAO = ctx2.getBean("CategoryDAO", CategoryDAO.class);
 
         JdbcTemplate cleaner2 = (JdbcTemplate) ctx2.getBean("jdbcTemplate");
-        cleaner.execute("delete from categories");
+        cleaner2.execute("delete from categories");
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = format.parse("12-25-2016 00:00:00");
@@ -127,12 +128,13 @@ public class ContentDbDaoImplTest {
     public void testAddContentDuplicateCategory() {
         try {
             C1 = Dao.addContent(C1);
-            categoryDAO.addCategory(cat1, C1.getPostId());
-            Content fromDb = Dao.getContentById(C1.getPostId());
-            assertEquals(C1, fromDb);
+            cat1 = categoryDAO.addCategory(cat1);
+            categoryDAO.addCategoryAndPostToBridge(cat1, C1.getPostId());
+
         } catch (DuplicateKeyException e) {
+            Boolean thrown = true;
             System.out.println("Duplicate Key");
-            fail();
+            Assert.assertTrue(thrown);
         }
 
     }
@@ -142,15 +144,33 @@ public class ContentDbDaoImplTest {
         try {
             Category Cat4 = new Category();
             Cat4.setCategoryName("Unique");
-            cList1.add(Cat4);
+
 
             C1 = Dao.addContent(C1);
-            Cat4 = categoryDAO.addCategory(Cat4, C1.getPostId());
-            Content fromDb = Dao.getContentById(C1.getPostId());
-            assertEquals(C1, fromDb);
+            Cat4 = categoryDAO.addCategory(Cat4);
+            categoryDAO.addCategoryAndPostToBridge(Cat4, C1.getPostId());
+      
         } catch (DuplicateKeyException e) {
             System.out.println("Duplicate Key");
             fail();
+        }
+
+    }
+
+    @Test
+    public void testUpdateContentDuplicateCategory() {
+        try {
+
+            C3 = Dao.addContent(C3);
+            categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());
+            C3.setTitle("M");
+            Dao.updateContent(C3);
+            categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());            
+
+        } catch (DuplicateKeyException e) {
+            Boolean thrown = true;
+            System.out.println("Duplicate Key");
+            Assert.assertTrue(thrown);
         }
 
     }
