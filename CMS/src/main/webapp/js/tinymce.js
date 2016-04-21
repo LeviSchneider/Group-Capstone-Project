@@ -6,6 +6,7 @@
 
 
 $(document).ready(function () {
+    loadTags();
 
     $('#tiny-submit').click(function (event) {
         event.preventDefault();
@@ -30,3 +31,25 @@ $(document).ready(function () {
         });
     });
 });
+
+function loadTags() {
+    clearTagsDiv();
+
+    var contentDiv = $('#contentDiv');
+
+    $.ajax({
+        type: 'GET',
+        url: '/tags'
+    }).success(function (data, status) {
+        $.each(data, function (index, content) {
+            var tag = content.tag;
+            var counter = 0;
+            var row = '<div style="col-md-offset-8 col-md-4">';
+            row += '<a href="${pageContext.request.contextPath}/blog>' + tag + '</a>';
+            if(counter === data.length)
+            {
+                row += '</div>';
+            }
+        });
+    });
+}

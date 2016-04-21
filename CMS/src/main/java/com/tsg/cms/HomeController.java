@@ -35,6 +35,11 @@ public class HomeController {
 
     }
     
+    @RequestMapping(value = "/blog", method = RequestMethod.GET)
+    public String displayBlogPage() {
+        return "blog";
+    }
+    
     @RequestMapping(value = "/tinymce", method=RequestMethod.GET)
     public String showEditor(Map<String, Object> model, HttpSession session) {
         //this attribute is used to set the content of the middle pane
