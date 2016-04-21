@@ -10,5 +10,5 @@ package com.tsg.cms.dao;
  * @author apprentice
  */
 public enum SearchTerm {
-    TITLE, END_DATE, START_DATE, DATE_SUBMITTED, POST_TYPE, STATUS
+    TITLE, ENDDATE, STARTDATE, DATESUBMITTED, POSTTYPE, STATUS
 }

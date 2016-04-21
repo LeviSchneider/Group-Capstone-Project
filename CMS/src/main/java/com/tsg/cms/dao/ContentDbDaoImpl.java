@@ -32,7 +32,7 @@ public class ContentDbDaoImpl implements ContentDbDao{
     private static final String SQL_UPDATE_CONTENT
             = "update blogPosts set dateSubmitted = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, status = ?, postType = ?";
     private static final String SQL_SELECT_ALL_CONTENT
-            = "select * from blogPosts";
+            = "select * from blogPosts ORDER BY postId DESC";
     private static final String SQL_SELECT_CONTENT
             = "select * from blogPosts where postId = ?";
     private JdbcTemplate jdbcTemplate;
@@ -72,8 +72,7 @@ public class ContentDbDaoImpl implements ContentDbDao{
                 content.getPostBody(),
                 content.getUserIdFK(),
                 content.getStatus(),
-                content.getPostType(),
-                content.getPostId());
+                content.getPostType());
     }
 
     @Override
@@ -96,7 +95,7 @@ public class ContentDbDaoImpl implements ContentDbDao{
         {
             return getAllContent();
         } else {
-            StringBuilder sQuery = new StringBuilder("select * from content where ");
+            StringBuilder sQuery = new StringBuilder("select * from blogPosts where ");
             int numParams = criteria.size();
             int paramPosition = 0;
             String[] paramVals = new String[numParams];

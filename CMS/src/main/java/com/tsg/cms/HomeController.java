@@ -34,13 +34,19 @@ public class HomeController {
         return "home";
 
     }
-    
+
     @RequestMapping(value = "/blog", method = RequestMethod.GET)
-    public String displayBlogPage() {
-        return "blog";
+    public String showBlog(Map<String, Object> model, HttpSession session) {
+        //this attribute is used to set the content of the middle pane
+        //it refers to the JSP file, without the JSP extension
+        session.setAttribute("page", "blog");
+        //this attribute is used to include any JavaScript pages associated with the above page
+        //this is so we don't have to include JS pages that we don't need
+        session.setAttribute("js_page", "blog.js");
+        return "home";
     }
-    
-    @RequestMapping(value = "/tinymce", method=RequestMethod.GET)
+
+    @RequestMapping(value = "/tinymce", method = RequestMethod.GET)
     public String showEditor(Map<String, Object> model, HttpSession session) {
         //this attribute is used to set the content of the middle pane
         //it refers to the JSP file, without the JSP extension
@@ -50,8 +56,8 @@ public class HomeController {
         session.setAttribute("js_page", "tinymce.js");
         return "home";
     }
-    
-    @RequestMapping(value="/render", method=RequestMethod.POST)
+
+    @RequestMapping(value = "/render", method = RequestMethod.POST)
     public String renderHtmlOutput(HttpServletRequest req, Model model, HttpSession session) {
         String htmlOutput = req.getParameter("htmlOutput");
         model.addAttribute("htmlOutput", htmlOutput);
