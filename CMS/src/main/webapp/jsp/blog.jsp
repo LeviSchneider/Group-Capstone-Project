@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : home
     Created on : Mar 28, 2016, 1:16:09 PM
@@ -9,6 +10,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html>
     <head>
         <title>Index Page</title>

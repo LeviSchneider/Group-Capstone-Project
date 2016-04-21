@@ -85,5 +85,11 @@ public class RESTController {
         //Certainly won't scale well.
         //Might want to 
     }
+    
+//    @RequestMapping(value = "/tags", method=RequestMethod.GET)
+//    public List<String> getAllTags()
+//    {
+//        return dao.getAllTags();
+//    }
         
 }
