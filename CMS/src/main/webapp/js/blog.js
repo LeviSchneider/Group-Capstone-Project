@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+
+
 var samplePosts = [
     post1 = {
         title: "stuff",
@@ -32,14 +34,23 @@ var samplePosts = [
 $(document).ready(function () {
     populateBlogPosts(samplePosts);
 
+    $(document).ready(function () {
+        $('[data-toggle=offcanvas]').click(function () {
+            $('.row-offcanvas-left').toggleClass('active');
+        });
+
+        $('[data-toggle=offcanvasright]').click(function () {
+            $('.row-offcanvas-right').toggleClass('active');
+        });
+    });
+
 })
 
 
 
 function populateBlogPosts(data, status) {
     var blogPanel = $('#blog-post-display');
-
-
+    
     $.ajax({
         type: 'GET',
         url: 'allcontent'
