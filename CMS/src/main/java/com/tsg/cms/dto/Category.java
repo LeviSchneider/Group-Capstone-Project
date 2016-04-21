@@ -48,7 +48,7 @@ public class Category {
         }
         return true;
     }
-    private List<Content> categoryPosts;
+    private List<BlogPost> categoryPosts;
 
     public int getCategoryId() {
         return categoryId;
@@ -66,11 +66,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public List<Content> getCategoryPosts() {
+    public List<BlogPost> getCategoryPosts() {
         return categoryPosts;
     }
 
-    public void setCategoryPosts(List<Content> categoryPosts) {
+    public void setCategoryPosts(List<BlogPost> categoryPosts) {
         this.categoryPosts = categoryPosts;
     }
     

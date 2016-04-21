@@ -5,8 +5,7 @@
  */
 package com.tsg.cms;
 
-import com.tsg.cms.dao.ContentDbDao;
-import com.tsg.cms.dto.Content;
+import com.tsg.cms.dto.BlogPost;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.http.HttpStatus;
@@ -17,70 +16,71 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import com.tsg.cms.dao.BlogPostDbDao;
 
 /**
  *
  * @author apprentice
  */
 
-//It may be more desirable to bifurcate content into
+//It may be more desirable to bifurcate blogPost into
 //"static" pages and blog posts.
 
 @Controller
 public class RESTController {
     
-    private final ContentDbDao dao;
+    private final BlogPostDbDao dao;
     
     @Inject
-    public RESTController (ContentDbDao dao) {
+    public RESTController (BlogPostDbDao dao) {
         this.dao = dao;
     }
     
     //We'll need methods to
-    //-add content
-    //-delete content
-    //-update a particular piece of content
-    //-get published content depending on whether it's a blog post or static page
-    //-get ALL content for editing purposes
+    //-add blogPost
+    //-delete blogPost
+    //-update a particular piece of blogPost
+    //-get published blogPost depending on whether it's a blog post or static page
+    //-get ALL blogPost for editing purposes
     //
     
-    @RequestMapping(value = "/content/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Content getContent(@PathVariable("id") int id) {
-        return dao.getContentById(id);
+    public BlogPost getBlogPost(@PathVariable("id") int id) {
+        return dao.getBlogPostById(id);
     }
     
-    @RequestMapping(value = "/content", method = RequestMethod.POST)
+    @RequestMapping(value = "/blogPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public Content createContent(@RequestBody Content content) {
-        content.setUserIdFK(999);
-        return dao.addContent(content);
+    public BlogPost createBlogPost(@RequestBody BlogPost blogPost) {
+        blogPost.setUserIdFK(999);
+        return dao.addBlogPost(blogPost);
     }
     
-    @RequestMapping(value = "/content/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteContent(@PathVariable("id") int id) {
-        dao.removeContent(id);
+    public void deleteBlogPost(@PathVariable("id") int id) {
+        dao.removeBlogPost(id);
     }
     
-    @RequestMapping(value = "/content/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateContent(@PathVariable("id") int id, @RequestBody Content content) {
-        content.setPostId(id);
-        dao.updateContent(content);
+    public void updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
+        blogPost.setPostId(id);
+        dao.updateBlogPost(blogPost);
     }
 //        
-//    @RequestMapping(value = "/pubcontent", method = RequestMethod.GET)
+//    @RequestMapping(value = "/pubblogPost", method = RequestMethod.GET)
 //    @ResponseBody
-//    public List<Content> getPublishedContent () {
-//        return dao.getPublishedContent();
+//    public List<BlogPost> getPublishedBlogPost () {
+//        return dao.getPublishedBlogPost();
 //    }
     
-    @RequestMapping(value = "/allcontent", method = RequestMethod.GET)
+    @RequestMapping(value = "/allblogPost", method = RequestMethod.GET)
     @ResponseBody
-    public List<Content> getAllContent () {
-        return dao.getAllContent();
+    public List<BlogPost> getAllBlogPost () {
+        return dao.getAllBlogPost();
         //Could be problematic.
         //Certainly won't scale well.
         //Might want to 

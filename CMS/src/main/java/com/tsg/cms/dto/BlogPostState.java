@@ -9,6 +9,6 @@ package com.tsg.cms.dto;
  *
  * @author apprentice
  */
-public enum ContentState {
+public enum BlogPostState {
     DRAFT, READY_FOR_APPROVAL, APPROVED, UNPUBLISHED, PUBLISHED
 }

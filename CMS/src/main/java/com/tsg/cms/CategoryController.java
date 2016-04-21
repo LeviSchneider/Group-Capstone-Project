@@ -9,8 +9,10 @@ import com.tsg.cms.dao.CategoryDAO;
 import com.tsg.cms.dto.Category;
 import java.util.List;
 import javax.inject.Inject;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,12 +40,22 @@ public class CategoryController {
         return dao.getCategoryById(id);
     }
 
-    @RequestMapping(value = "/category", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public Category createCategory(@RequestBody Category category) {
-        return dao.addCategory(category);
-    }
+//    @RequestMapping(value = "/category", method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public Object[category, error] createCategory(@RequestBody Category category) {
+//
+//        try {
+//            
+//            return dao.addCategory(category);
+//            
+//        } catch (DuplicateKeyException e) {
+//
+//            return category;
+//            
+//        }
+//
+//    }
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)

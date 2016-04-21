@@ -40,7 +40,7 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     
-    <bean id="ContentDbDao" class="com.tsg.cms.dao.ContentDbDaoImpl">
+    <bean id="BlogPostDbDao" class="com.tsg.cms.dao.BlogPostDbDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     

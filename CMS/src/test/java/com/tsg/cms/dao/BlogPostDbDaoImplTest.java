@@ -7,7 +7,7 @@
 package com.tsg.cms.dao;
 
 import com.tsg.cms.dto.Category;
-import com.tsg.cms.dto.Content;
+import com.tsg.cms.dto.BlogPost;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,13 +29,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * @author apprentice
  */
-public class ContentDbDaoImplTest {
+public class BlogPostDbDaoImplTest {
 
-    private ContentDbDao Dao;
+    private BlogPostDbDao Dao;
     private CategoryDAO categoryDAO;
-    private Content C1;
-    private Content C2;
-    private Content C3;
+    private BlogPost C1;
+    private BlogPost C2;
+    private BlogPost C3;
 
     private List<Category> cList1;
     private List<Category> cList2;
@@ -45,14 +45,14 @@ public class ContentDbDaoImplTest {
     private Category cat2;
     private Category cat3;
 
-    public ContentDbDaoImplTest() {
+    public BlogPostDbDaoImplTest() {
     }
 
     @Before
     public void setUp() throws ParseException {
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        Dao = ctx.getBean("ContentDbDao", ContentDbDao.class);
+        Dao = ctx.getBean("BlogPostDbDao", BlogPostDbDao.class);
 
         JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
         cleaner.execute("delete from blogPosts");
@@ -82,7 +82,7 @@ public class ContentDbDaoImplTest {
         cList1.add(cat1);
         cList1.add(cat2);
 
-        C1 = new Content();
+        C1 = new BlogPost();
 
         C1.setDateSubmitted(date);
         C1.setStartDate(date);
@@ -93,7 +93,7 @@ public class ContentDbDaoImplTest {
         C1.setStatus("Published");
         C1.setPostType("International");
 
-        C2 = new Content();
+        C2 = new BlogPost();
 
         C2.setDateSubmitted(date);
         C2.setStartDate(date);
@@ -104,7 +104,7 @@ public class ContentDbDaoImplTest {
         C2.setStatus("PendingForApproval");
         C2.setPostType("Local");
 
-        C3 = new Content();
+        C3 = new BlogPost();
 
         C3.setDateSubmitted(date);
         C3.setStartDate(date);
@@ -122,12 +122,12 @@ public class ContentDbDaoImplTest {
     }
 
     /**
-     * Test of addContent method, of class ContentDbDaoImpl.
+     * Test of addBlogPost method, of class BlogPostDbDaoImpl.
      */
     @Test
-    public void testAddContentDuplicateCategory() {
+    public void testAddBlogPostDuplicateCategory() {
         try {
-            C1 = Dao.addContent(C1);
+            C1 = Dao.addBlogPost(C1);
             cat1 = categoryDAO.addCategory(cat1);
             categoryDAO.addCategoryAndPostToBridge(cat1, C1.getPostId());
 
@@ -140,13 +140,13 @@ public class ContentDbDaoImplTest {
     }
 
     @Test
-    public void testAddContentUniqueCategory() {
+    public void testAddBlogPostUniqueCategory() {
         try {
             Category Cat4 = new Category();
             Cat4.setCategoryName("Unique");
 
 
-            C1 = Dao.addContent(C1);
+            C1 = Dao.addBlogPost(C1);
             Cat4 = categoryDAO.addCategory(Cat4);
             categoryDAO.addCategoryAndPostToBridge(Cat4, C1.getPostId());
       
@@ -158,13 +158,13 @@ public class ContentDbDaoImplTest {
     }
 
     @Test
-    public void testUpdateContentDuplicateCategory() {
+    public void testUpdateBlogPostDuplicateCategory() {
         try {
 
-            C3 = Dao.addContent(C3);
+            C3 = Dao.addBlogPost(C3);
             categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());
             C3.setTitle("M");
-            Dao.updateContent(C3);
+            Dao.updateBlogPost(C3);
             categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());            
 
         } catch (DuplicateKeyException e) {
@@ -176,78 +176,78 @@ public class ContentDbDaoImplTest {
     }
 
     /**
-     * Test of removeContent method, of class ContentDbDaoImpl.
+     * Test of removeBlogPost method, of class BlogPostDbDaoImpl.
      */
     @Test
-    public void testRemoveContent() {
-        Dao.addContent(C2);
-        Content fromDb = Dao.getContentById(C2.getPostId());
+    public void testRemoveBlogPost() {
+        Dao.addBlogPost(C2);
+        BlogPost fromDb = Dao.getBlogPostById(C2.getPostId());
         C2.setPostId(fromDb.getPostId());
-        Dao.removeContent(C2.getPostId());
-        fromDb = Dao.getContentById(C2.getPostId());
+        Dao.removeBlogPost(C2.getPostId());
+        fromDb = Dao.getBlogPostById(C2.getPostId());
         assertNull(fromDb);
     }
 
     /**
-     * Test of updateContent method, of class ContentDbDaoImpl.
+     * Test of updateBlogPost method, of class BlogPostDbDaoImpl.
      */
     @Test
-    public void testUpdateContent() {
-        C3 = Dao.addContent(C3);
+    public void testUpdateBlogPost() {
+        C3 = Dao.addBlogPost(C3);
 
         C3.setTitle("M");
-        Dao.updateContent(C3);
+        Dao.updateBlogPost(C3);
 
 //        C3.setPostId(0);
-        Content fromDb = Dao.getContentById(C3.getPostId());
+        BlogPost fromDb = Dao.getBlogPostById(C3.getPostId());
         C3.setPostId(fromDb.getPostId());
 
         assertEquals(C3, fromDb);
     }
 
     /**
-     * Test of getAllContent method, of class ContentDbDaoImpl.
+     * Test of getAllBlogPost method, of class BlogPostDbDaoImpl.
      */
     @Test
-    public void testGetAllContent() {
-        Dao.addContent(C1);
-        Dao.addContent(C2);
-        Dao.addContent(C3);
+    public void testGetAllBlogPost() {
+        Dao.addBlogPost(C1);
+        Dao.addBlogPost(C2);
+        Dao.addBlogPost(C3);
 
-        List<Content> cList = Dao.getAllContent();
+        List<BlogPost> cList = Dao.getAllBlogPost();
         assertEquals(cList.size(), 3);
 
     }
 
     /**
-     * Test of searchContent method, of class ContentDbDaoImpl.
+     * Test of searchBlogPost method, of class BlogPostDbDaoImpl.
      */
     @Test
-    public void testSearchContent() {
-        Dao.addContent(C1);
-        Dao.addContent(C2);
-        Dao.addContent(C3);
+    public void testSearchBlogPost() {
+        Dao.addBlogPost(C1);
+        Dao.addBlogPost(C2);
+        Dao.addBlogPost(C3);
 
         Map<SearchTerm, String> criteria = new HashMap<>();
         criteria.put(SearchTerm.TITLE, "News");
-        List<Content> cList = Dao.searchContent(criteria);
+        List<BlogPost> cList = Dao.searchBlogPost(criteria);
         assertEquals(2, cList.size());
 
         criteria.put(SearchTerm.POSTTYPE, "International");
-        cList = Dao.searchContent(criteria);
-        Content fromDb = cList.get(0);
+        cList = Dao.searchBlogPost(criteria);
+        BlogPost fromDb = cList.get(0);
         C1.setPostId(fromDb.getPostId());
         assertEquals(C1, fromDb);
         assertEquals(1, cList.size());
 
         criteria = new HashMap<>();
         criteria.put(SearchTerm.STATUS, "Draft");
-        cList = Dao.searchContent(criteria);
+        cList = Dao.searchBlogPost(criteria);
         assertEquals(1, cList.size());
 
         criteria = new HashMap<>();
         criteria.put(SearchTerm.STATUS, "Published");
-        cList = Dao.searchContent(criteria);
+        cList = Dao.searchBlogPost(criteria);
         assertEquals(C1, cList.get(0));
 
     }

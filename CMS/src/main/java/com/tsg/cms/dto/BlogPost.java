@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author apprentice
  */
-public class Content {
+public class BlogPost {
     //We will probably need a private String category;
     //and perhaps a private List<tags> tags; 
     private int postId;
@@ -50,7 +50,7 @@ public class Content {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Content other = (Content) obj;
+        final BlogPost other = (BlogPost) obj;
         if (this.postId != other.postId) {
             return false;
         }
