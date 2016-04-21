@@ -5,6 +5,7 @@
  */
 package com.tsg.cms.dto;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 /**
  *
@@ -26,15 +27,15 @@ public class Content {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + this.postId;
-        hash = 79 * hash + Objects.hashCode(this.dateSubmitted);
-        hash = 79 * hash + Objects.hashCode(this.startDate);
-        hash = 79 * hash + Objects.hashCode(this.endDate);
-        hash = 79 * hash + Objects.hashCode(this.title);
-        hash = 79 * hash + Objects.hashCode(this.postBody);
-        hash = 79 * hash + this.userIdFK;
-        hash = 79 * hash + Objects.hashCode(this.status);
-        hash = 79 * hash + Objects.hashCode(this.postType);
+        hash = 83 * hash + this.postId;
+        hash = 83 * hash + Objects.hashCode(this.dateSubmitted);
+        hash = 83 * hash + Objects.hashCode(this.startDate);
+        hash = 83 * hash + Objects.hashCode(this.endDate);
+        hash = 83 * hash + Objects.hashCode(this.title);
+        hash = 83 * hash + Objects.hashCode(this.postBody);
+        hash = 83 * hash + this.userIdFK;
+        hash = 83 * hash + Objects.hashCode(this.status);
+        hash = 83 * hash + Objects.hashCode(this.postType);
         return hash;
     }
 
@@ -151,7 +152,5 @@ public class Content {
     public void setPostType(String postType) {
         this.postType = postType;
     }
-
-   
 
 }

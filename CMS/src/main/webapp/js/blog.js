@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+
+
 var samplePosts = [
     post1 = {
         title: "stuff",
@@ -27,19 +29,45 @@ var samplePosts = [
     }
 
 
-]
+];
 
+function initMenu() {
+    $('#menu ul').hide();
+    $('#menu ul').children('.current').parent().show();
+    //$('#menu ul:first').show();
+    $('#menu li a').click(
+            function () {
+                var checkElement = $(this).next();
+                if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+                    return false;
+                }
+                if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+                    $('#menu ul:visible').slideUp('normal');
+                    checkElement.slideDown('normal');
+                    return false;
+                }
+            }
+    );
+}
 $(document).ready(function () {
     populateBlogPosts(samplePosts);
+    $(document).ready(function () {
+        $('[data-toggle=offcanvas]').click(function () {
+            $('.row-offcanvas-left').toggleClass('active');
+        });
 
-})
+        $('[data-toggle=offcanvasright]').click(function () {
+            $('.row-offcanvas-right').toggleClass('active');
+        });
+    });
+
+});
 
 
 
 function populateBlogPosts(data, status) {
     var blogPanel = $('#blog-post-display');
-
-
+    
     $.ajax({
         type: 'GET',
         url: 'allcontent'
@@ -58,4 +86,3 @@ function populateBlogPosts(data, status) {
     });
 
 }
-
