@@ -129,6 +129,7 @@ public class BlogPostDbDaoImplTest {
         try {
             C1 = Dao.addBlogPost(C1);
             cat1 = categoryDAO.addCategory(cat1);
+            cat1 = categoryDAO.addCategory(cat1);
             categoryDAO.addCategoryAndPostToBridge(cat1, C1.getPostId());
 
         } catch (DuplicateKeyException e) {
@@ -145,11 +146,10 @@ public class BlogPostDbDaoImplTest {
             Category Cat4 = new Category();
             Cat4.setCategoryName("Unique");
 
-
             C1 = Dao.addBlogPost(C1);
             Cat4 = categoryDAO.addCategory(Cat4);
             categoryDAO.addCategoryAndPostToBridge(Cat4, C1.getPostId());
-      
+
         } catch (DuplicateKeyException e) {
             System.out.println("Duplicate Key");
             fail();
@@ -165,11 +165,10 @@ public class BlogPostDbDaoImplTest {
             categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());
             C3.setTitle("M");
             Dao.updateBlogPost(C3);
-            categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());            
+            categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());
 
         } catch (DuplicateKeyException e) {
             Boolean thrown = true;
-            System.out.println("Duplicate Key");
             Assert.assertTrue(thrown);
         }
 

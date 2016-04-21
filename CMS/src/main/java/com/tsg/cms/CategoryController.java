@@ -7,6 +7,7 @@ package com.tsg.cms;
 
 import com.tsg.cms.dao.CategoryDAO;
 import com.tsg.cms.dto.Category;
+import com.tsg.cms.dto.CategoryContainer;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.dao.DuplicateKeyException;
@@ -40,22 +41,28 @@ public class CategoryController {
         return dao.getCategoryById(id);
     }
 
-//    @RequestMapping(value = "/category", method = RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public Object[category, error] createCategory(@RequestBody Category category) {
-//
-//        try {
-//            
-//            return dao.addCategory(category);
-//            
-//        } catch (DuplicateKeyException e) {
-//
-//            return category;
-//            
-//        }
-//
-//    }
+    @RequestMapping(value = "/category", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public CategoryContainer createCategory(@RequestBody Category category) {
+
+        CategoryContainer categoryContainer = new CategoryContainer();
+
+        try {
+
+            categoryContainer.setCategory(dao.addCategory(category));
+
+        } catch (DuplicateKeyException e) {
+
+            System.out.println("exception thrown");
+            categoryContainer.setCategory(category);
+            categoryContainer.setMessage("That category name already exists!");
+
+        }
+
+        return categoryContainer;
+
+    }
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -63,11 +70,26 @@ public class CategoryController {
         dao.removeCategory(id);
     }
 
-    @RequestMapping(value = "/category/{id}", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCategory(@PathVariable("id") int id, @RequestBody Category category) {
+    @RequestMapping(value = "/category/{id}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public CategoryContainer updateCategory(@PathVariable("id") int id, @RequestBody Category category) {
+
         category.setCategoryId(id);
-        dao.updateCategory(category);
+        CategoryContainer categoryContainer = new CategoryContainer();
+
+        try {
+
+            categoryContainer.setCategory(dao.addCategory(category));
+
+        } catch (DuplicateKeyException e) {
+
+            categoryContainer.setCategory(category);
+            categoryContainer.setMessage("That category name already exists!");
+
+        }
+
+        return categoryContainer;
     }
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
