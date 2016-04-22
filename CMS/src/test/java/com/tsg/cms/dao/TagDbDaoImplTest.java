@@ -6,14 +6,18 @@
 package com.tsg.cms.dao;
 
 import com.tsg.cms.dto.BlogPost;
-import com.tsg.cms.dto.Category;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import junit.framework.Assert;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -29,8 +33,7 @@ public class TagDbDaoImplTest {
 
     private BlogPostDbDao blogDao;
 
-    private CategoryDbDao categoryDao;
-
+//    private CategoryDbDao categoryDao;
     private String tag1 = "gruyere";
     private String tag2 = "kashkaval";
     private String tag3 = "sulguni";
@@ -41,12 +44,27 @@ public class TagDbDaoImplTest {
     private BlogPost blogPost2;
     private BlogPost blogPost3;
 
-    private List<Category> cList1;
-    private List<Category> cList2;
-    private List<Category> cList3;
-
+//    private List<Category> cList1;
+//    private List<Category> cList2;
+//    private List<Category> cList3;
     public TagDbDaoImplTest() {
 
+    }
+
+    @BeforeClass
+    public static void setUpClass() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+
+        JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        cleaner.execute("delete from postHashTagBridge");
+        cleaner.execute("delete from categoriesPostsBridge");
+        cleaner.execute("delete from blogPosts");
+        cleaner.execute("delete from hashTags");
+        cleaner.execute("delete from categories");
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
     }
 
     @Before
@@ -54,10 +72,8 @@ public class TagDbDaoImplTest {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
         dao = ctx.getBean("TagDbDao", TagDbDao.class);
         blogDao = ctx.getBean("BlogPostDbDao", BlogPostDbDao.class);
-        categoryDao = ctx.getBean("CategoryDbDao", CategoryDbDao.class);
 
         JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-        cleaner.execute("delete from categoriesPostsBridge");
         cleaner.execute("delete from postHashTagBridge");
         cleaner.execute("delete from hashTags");
         cleaner.execute("delete from blogPosts");
@@ -105,6 +121,12 @@ public class TagDbDaoImplTest {
 
     @After
     public void tearDown() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+        JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        //cleaner.execute("delete from categoriesPostsBridge");
+        cleaner.execute("delete from postHashTagBridge");
+        cleaner.execute("delete from hashTags");
+        cleaner.execute("delete from blogPosts");
     }
 
     // TODO add test methods here.
@@ -152,16 +174,98 @@ public class TagDbDaoImplTest {
 
     @Test
     public void testRemoveTag() {
-        dao.addTag(tag1, blogPost2.getPostId());
-        dao.addTag(tag2, blogPost2.getPostId());
-        dao.addTag(tag3, blogPost2.getPostId());
+        dao.addTag(tag1, blogPost1.getPostId());
+        dao.addTag(tag2, blogPost1.getPostId());
+        dao.addTag(tag3, blogPost1.getPostId());
 
-        List<String> blogPost2tags = dao.getPostTags(blogPost2.getPostId());
-        Assert.assertEquals(3, blogPost2tags.size());
+        List<String> blogPost1Tags = dao.getPostTags(blogPost1.getPostId());
+        Assert.assertEquals(3, blogPost1Tags.size());
 
         //gotta maintain consistency
         dao.removeTag(tag1);
 
+        blogPost1Tags = dao.getPostTags(blogPost1.getPostId());
+        Assert.assertEquals(2, blogPost1Tags.size());
+        Assert.assertTrue(blogPost1Tags.contains(tag3));
+        Assert.assertTrue(blogPost1Tags.contains(tag2));
+
+        dao.removeTag(tag2);
+        dao.removeTag(tag3);
+
+        blogPost1Tags = dao.getPostTags(blogPost1.getPostId());
+        Assert.assertEquals(0, blogPost1Tags.size());
+
+        dao.removeTag(tag1);
+
+    }
+
+    @Test
+    public void testUpdateTag() {
+        dao.addTag(tag1, blogPost1.getPostId());
+        dao.addTag(tag2, blogPost1.getPostId());
+        dao.addTag(tag3, blogPost1.getPostId());
+        dao.updateTag("new", tag1);
+        
+        List<String> blogPost1Tags = dao.getPostTags(blogPost1.getPostId());
+        Assert.assertTrue(blogPost1Tags.contains("new"));
+        Assert.assertFalse(blogPost1Tags.contains(tag1));
+        
+        //let's update a tag that doesn't exist
+        
+        //dao.updateTag("don't exist foo", "tag1000000");
+    }
+    
+    @Test
+    public void testGetPostTags()
+    {
+        List<String> testList = new ArrayList<>();
+        dao.addTag(tag1, blogPost1.getPostId());
+        testList.add(tag1);
+        dao.addTag(tag2, blogPost1.getPostId());
+        testList.add(tag2);
+        dao.addTag(tag3, blogPost1.getPostId());
+        testList.add(tag3);
+        List<String> newList = dao.getPostTags(blogPost1.getPostId());
+        
+        Assert.assertEquals(testList.size(), newList.size());
+        
+        Assert.assertTrue(newList.contains(tag1));
+        Assert.assertTrue(newList.contains(tag3));
+        Assert.assertTrue(newList.contains(tag2));
+        
+        newList.remove(tag2);
+        
+        Assert.assertEquals(2, newList.size());
+    }
+    
+    @Test
+    public void testGetNumberOfTags()
+    {
+        dao.addTag(tag1, blogPost1.getPostId());
+                
+        dao.addTag(tag1, blogPost2.getPostId());
+        dao.addTag(tag2, blogPost2.getPostId());
+        
+        dao.addTag(tag1, blogPost3.getPostId());
+        dao.addTag(tag2, blogPost3.getPostId());
+        dao.addTag(tag3, blogPost3.getPostId());
+        
+        Map<String, Integer> newMap = dao.getNumberOfTags(3);
+        Assert.assertEquals(3, (int)newMap.get(tag1));
+        Assert.assertEquals(2, (int)newMap.get(tag2));
+        Assert.assertEquals(1, (int)newMap.get(tag3));
+        
+        Map<String, Integer> newNewMap = dao.getNumberOfTags(2);
+        
+        Assert.assertEquals(2, newNewMap.keySet().size());
+        
+        Map<String, Integer> reallyNewMap = dao.getNumberOfTags(1);
+        
+        Assert.assertEquals(1, reallyNewMap.keySet().size());
+        
+        List<String> testList = dao.getAllTags();
+        
+        Assert.assertEquals(3, testList.size());
     }
 
 }
