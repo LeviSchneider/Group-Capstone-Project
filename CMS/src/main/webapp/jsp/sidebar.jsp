@@ -27,3 +27,6 @@
 <li>
         <a href="${pageContext.request.contextPath}/categoryAdmin">Category Admin</a>    
 </li>
+<li>
+        <a href="${pageContext.request.contextPath}/tinymce">TinyMCE</a>    
+</li>

@@ -1,1 +1,1 @@
-<div id="tagcloud" style="background-color: aqua">tagcloud<br/>tagcloud<br/>tagcloud<br/>tagcloud<br/>tagcloud<br/>tagcloud<br/>tagcloud<br/>tagcloud<br/>tagcloud<br/>tagcloud<br/>tagcloud<br/></div>
+<div id="tagcloud"> </div>

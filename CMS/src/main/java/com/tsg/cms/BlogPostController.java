@@ -27,12 +27,12 @@ import com.tsg.cms.dao.BlogPostDbDao;
 //"static" pages and blog posts.
 
 @Controller
-public class RESTController {
+public class BlogPostController {
     
     private final BlogPostDbDao dao;
     
     @Inject
-    public RESTController (BlogPostDbDao dao) {
+    public BlogPostController (BlogPostDbDao dao) {
         this.dao = dao;
     }
     

@@ -13,7 +13,7 @@ $(document).ready(function () {
       
         $.ajax({
             type: 'POST',
-            url: 'content',
+            url: 'blogPost',
             data: JSON.stringify({
                 dateSubmitted: '2016-12-28',
                 title: 'This is a title',
@@ -27,8 +27,20 @@ $(document).ready(function () {
             },
             'dataType': 'json'
         }).success(function (data, status) {
+           var tagArray = getHashTags();
+           $.ajax ({
+               type: 'POST',
+               url: 'tag',
+               data: JSON.stringify({
+                   tagList: tagArray
+               }),
+               headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            'dataType': 'json'
+           });
            window.location = 'blog';
-            
         });
     });
 });
@@ -40,17 +52,39 @@ function loadTags() {
 
     $.ajax({
         type: 'GET',
-        url: '/tags'
-    }).success(function (data, status) {
-        $.each(data, function (index, content) {
-            var tag = content.tag;
-            var counter = 0;
-            var row = '<div style="col-md-offset-8 col-md-4">';
-            row += '<a href="${pageContext.request.contextPath}/blog>' + tag + '</a>';
-            if(counter === data.length)
-            {
-                row += '</div>';
-            }
+        url: 'tags'
+//    }).success(function (data, status) {
+//        $.each(data.tagList, function (index, tag) {
+//            var tag = tag;
+//            var counter = 0;
+//            var row = '<div style="col-md-offset-8 col-md-4">';
+//            row += '<a href="${pageContext.request.contextPath}/blog>' + tag + '</a>';
+//            if(counter === data.length)
+//            {
+//                row += '</div>';
+//            }
+//        });
+//    });
+}).success(function (data, status) {
+
+        $.each(data.tagList, function (index, post) {
+               
+            contentDiv
+                    .append($('<div>')
+                            .addClass("panel panel-default")
+                            .append('<div>')
+                            .addClass("panel-body")
+                            .append(post));
         });
+
     });
+}
+
+function clearTagsDiv() {
+    $('#contentDiv').empty();
+}
+
+function getHashTags(){
+    var hashTagArray = $('csvHashTags').split(',');
+    return hashTagArray;
 }
