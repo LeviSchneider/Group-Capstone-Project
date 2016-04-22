@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
@@ -32,7 +33,7 @@ public class TagDbDaoImpl implements TagDbDao {
     private static final String SQL_DELETE_HASHTAG
             = "delete from hashTags where HashTagId = ?";
     private static final String SQL_SELECT_HASHTAG
-            = "select HashTagId from hashTags where hashTagName = ?";
+            = "select hashTagId from hashTags where hashTagName = ?";
     private static final String SQL_UPDATE_HASHTAG
             = "update hashTags set hashTagName = ? where HashTagId = ?";
     private static final String SQL_SELECT_POST_HASHTAGS_BY_ID
@@ -58,8 +59,12 @@ public class TagDbDaoImpl implements TagDbDao {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public String addTag(String tag, int postId) {
-        jdbcTemplate.update(SQL_ADD_HASHTAG,
-                tag);
+        try {
+        jdbcTemplate.update(SQL_ADD_HASHTAG, tag);
+        }
+        catch (DuplicateKeyException e) {
+            //ignore attempts to add same hashtag and just update bridge table
+        }
         int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new String[]{tag}, Integer.class);
         jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE,
                 hashTagId,

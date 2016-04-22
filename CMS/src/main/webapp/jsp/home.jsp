@@ -53,7 +53,7 @@
 
                 </div>
                 <div class="col-md-1">
-                    <div id="sidebar-nav-fixed pull-right affix">
+                    <div class="sidebar-nav-fixed pull-right affix">
 
                         <ul class="nav ">
                             <br/>

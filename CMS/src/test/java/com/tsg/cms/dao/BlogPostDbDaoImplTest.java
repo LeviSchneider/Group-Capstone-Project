@@ -32,7 +32,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class BlogPostDbDaoImplTest {
 
     private BlogPostDbDao Dao;
-    private CategoryDAO categoryDAO;
+    private CategoryDbDao categoryDao;
     private BlogPost C1;
     private BlogPost C2;
     private BlogPost C3;
@@ -58,7 +58,7 @@ public class BlogPostDbDaoImplTest {
         cleaner.execute("delete from blogPosts");
 
         ApplicationContext ctx2 = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        categoryDAO = ctx2.getBean("CategoryDAO", CategoryDAO.class);
+        categoryDao = ctx2.getBean("CategoryDbDao", CategoryDbDao.class);
 
         JdbcTemplate cleaner2 = (JdbcTemplate) ctx2.getBean("jdbcTemplate");
         cleaner2.execute("delete from categories");
@@ -69,15 +69,15 @@ public class BlogPostDbDaoImplTest {
         cList1 = new ArrayList<>();
         cat1 = new Category();
         cat1.setCategoryName("News");
-        cat1 = categoryDAO.addCategory(cat1);
+        cat1 = categoryDao.addCategory(cat1);
 
         cat2 = new Category();
         cat2.setCategoryName("Sales");
-        cat2 = categoryDAO.addCategory(cat2);
+        cat2 = categoryDao.addCategory(cat2);
 
         cat3 = new Category();
         cat3.setCategoryName("Cheese");
-        cat3 = categoryDAO.addCategory(cat3);
+        cat3 = categoryDao.addCategory(cat3);
 
         cList1.add(cat1);
         cList1.add(cat2);
@@ -128,9 +128,9 @@ public class BlogPostDbDaoImplTest {
     public void testAddBlogPostDuplicateCategory() {
         try {
             C1 = Dao.addBlogPost(C1);
-            cat1 = categoryDAO.addCategory(cat1);
-            cat1 = categoryDAO.addCategory(cat1);
-            categoryDAO.addCategoryAndPostToBridge(cat1, C1.getPostId());
+            cat1 = categoryDao.addCategory(cat1);
+            cat1 = categoryDao.addCategory(cat1);
+            categoryDao.addCategoryAndPostToBridge(cat1, C1.getPostId());
 
         } catch (DuplicateKeyException e) {
             Boolean thrown = true;
@@ -147,8 +147,8 @@ public class BlogPostDbDaoImplTest {
             Cat4.setCategoryName("Unique");
 
             C1 = Dao.addBlogPost(C1);
-            Cat4 = categoryDAO.addCategory(Cat4);
-            categoryDAO.addCategoryAndPostToBridge(Cat4, C1.getPostId());
+            Cat4 = categoryDao.addCategory(Cat4);
+            categoryDao.addCategoryAndPostToBridge(Cat4, C1.getPostId());
 
         } catch (DuplicateKeyException e) {
             System.out.println("Duplicate Key");
@@ -162,10 +162,10 @@ public class BlogPostDbDaoImplTest {
         try {
 
             C3 = Dao.addBlogPost(C3);
-            categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());
+            categoryDao.addCategoryAndPostToBridge(cat1, C3.getPostId());
             C3.setTitle("M");
             Dao.updateBlogPost(C3);
-            categoryDAO.addCategoryAndPostToBridge(cat1, C3.getPostId());
+            categoryDao.addCategoryAndPostToBridge(cat1, C3.getPostId());
 
         } catch (DuplicateKeyException e) {
             Boolean thrown = true;

@@ -20,22 +20,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * @author apprentice
  */
-public class CategoryDAOImplTest {
+public class CategoryDbDaoImplTest {
     
-    private CategoryDAO Dao;
+    private CategoryDbDao Dao;
     private Category C1;
     private Category C2;
     private Category C3;
     int P1, P2, P3;
     
-    public CategoryDAOImplTest() {
+    public CategoryDbDaoImplTest() {
     }
     
     @Before
     public void setUp() {
         
         ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        Dao = ctx.getBean("CategoryDAO", CategoryDAO.class);
+        Dao = ctx.getBean("CategoryDbDao", CategoryDbDao.class);
         
         JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
         cleaner.execute("delete from categories");
