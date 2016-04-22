@@ -25,5 +25,5 @@
     <a href="${pageContext.request.contextPath}/admin">Admin</a>
 </li>
 <li>
-    
+        <a href="${pageContext.request.contextPath}/categoryAdmin">Category Admin</a>    
 </li>
