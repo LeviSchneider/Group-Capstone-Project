@@ -67,7 +67,7 @@ $(document).ready(function () {
 
 function populateBlogPosts(data, status) {
     var blogPanel = $('#blog-post-display');
-    
+    var i = 0;
     $.ajax({
         type: 'GET',
         url: 'blogPosts'
@@ -75,14 +75,34 @@ function populateBlogPosts(data, status) {
     }).success(function (data, status) {
 
         $.each(data, function (index, post) {
+            
             blogPanel
                     .append($('<div>')
                             .addClass("panel panel-default")
                             .append('<div>')
                             .addClass("panel-body")
-                            .append(post.postBody));
+                            .append(post.postBody)
+                    .append($('<div>')
+                            .attr({'id': 'post-tags' + post.postId})
+                            ));
+
+            $.ajax({
+                type: 'GET',
+                url: 'postTags/' + post.postId
+
+            }).success(function (data, status) {
+                
+                var tagList = data.tagList;
+                
+                $.each(tagList, function (index, tag) {
+                   
+                    $('#post-tags' + post.postId)
+                            .append($('<span>')
+                                    .addClass("panel-body-blogtags")
+                                    .append(tag));
+                });
+            });
+
         });
-
     });
-
 }

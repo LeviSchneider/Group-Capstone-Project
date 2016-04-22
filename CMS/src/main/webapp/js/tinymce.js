@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     $('#tiny-submit').click(function (event) {
         event.preventDefault();
-      
+
         $.ajax({
             type: 'POST',
             url: 'blogPost',
@@ -27,20 +27,22 @@ $(document).ready(function () {
             },
             'dataType': 'json'
         }).success(function (data, status) {
-           var tagArray = getHashTags();
-           $.ajax ({
-               type: 'POST',
-               url: 'tag',
-               data: JSON.stringify({
-                   tagList: tagArray
-               }),
-               headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            'dataType': 'json'
-           });
-           window.location = 'blog';
+            var postId = data.postId;
+            var tagString = $('#csvHashTags').val();
+            
+            $.ajax({
+                type: 'POST',
+                url: 'tag/' + postId,
+                data:
+                        tagString
+                ,
+                headers: {
+                    'Accept': 'text/plain',
+                    'Content-Type': 'text/plainn'
+                },
+                'dataType': 'json'
+            });
+            window.location = 'blog';
         });
     });
 });
@@ -65,10 +67,10 @@ function loadTags() {
 //            }
 //        });
 //    });
-}).success(function (data, status) {
+    }).success(function (data, status) {
 
         $.each(data.tagList, function (index, post) {
-               
+
             contentDiv
                     .append($('<div>')
                             .addClass("panel panel-default")
@@ -84,7 +86,3 @@ function clearTagsDiv() {
     $('#contentDiv').empty();
 }
 
-function getHashTags(){
-    var hashTagArray = $('csvHashTags').split(',');
-    return hashTagArray;
-}

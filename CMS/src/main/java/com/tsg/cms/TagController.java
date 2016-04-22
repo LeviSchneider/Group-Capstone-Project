@@ -33,12 +33,17 @@ public class TagController {
         this.dao = dao;
     }
 
-    @RequestMapping(value = "/tag", method = RequestMethod.POST)
+    @RequestMapping(value = "/tag/{postId}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public TagContainer createTag(@Valid @RequestBody String tagName) {
+    public TagContainer createTag(@PathVariable("postId") int postId, @Valid @RequestBody String tagName) {
         TagContainer tagContainer = new TagContainer();
-        tagContainer.setTagName(tagName);
+
+        String[] tagArray = tagName.split(",");
+
+        for (String s : tagArray) {
+            tagContainer.setTagName(dao.addTag(s, postId));
+        }
 
         return tagContainer;
 
@@ -57,7 +62,7 @@ public class TagController {
 
         TagContainer tagContainer = new TagContainer();
 
-            tagContainer.setTagName(dao.updateTag(newTag, oldTagName));
+        tagContainer.setTagName(dao.updateTag(newTag, oldTagName));
 
         return tagContainer;
     }
@@ -70,20 +75,18 @@ public class TagController {
         tagContainer.setTagList(dao.getAllTags());
         return tagContainer;
     }
-    
+
     @RequestMapping(value = "/tags/{num}", method = RequestMethod.GET)
     @ResponseBody
-    public TagContainer getNumberOfTags(@PathVariable("num") int num)
-    {
+    public TagContainer getNumberOfTags(@PathVariable("num") int num) {
         TagContainer tagContainer = new TagContainer();
         tagContainer.setRankedTags(dao.getNumberOfTags(num));
         return tagContainer;
     }
-    
+
     @RequestMapping(value = "/postTags/{postId}", method = RequestMethod.GET)
     @ResponseBody
-    public TagContainer getPostTags(@PathVariable("postId") int postId)
-    {
+    public TagContainer getPostTags(@PathVariable("postId") int postId) {
         TagContainer tagContainer = new TagContainer();
 
         tagContainer.setTagList(dao.getPostTags(postId));
