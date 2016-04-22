@@ -5,7 +5,6 @@
  */
 package com.tsg.cms;
 
-import com.tsg.cms.dao.CategoryDAO;
 import com.tsg.cms.dto.Category;
 import com.tsg.cms.dto.CategoryContainer;
 import java.util.List;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import com.tsg.cms.dao.CategoryDbDao;
 
 /**
  *
@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 public class CategoryController {
 
-    private final CategoryDAO dao;
+    private final CategoryDbDao dao;
 
     @Inject
-    public CategoryController(CategoryDAO dao) {
+    public CategoryController(CategoryDbDao dao) {
         this.dao = dao;
     }
 

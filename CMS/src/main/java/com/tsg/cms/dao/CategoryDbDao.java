@@ -14,7 +14,7 @@ import org.springframework.dao.DuplicateKeyException;
  *
  * @author apprentice
  */
-public interface CategoryDAO {
+public interface CategoryDbDao {
     
     public Category addCategory(Category category) throws DuplicateKeyException;
     public void addCategoryAndPostToBridge(Category category, int blogPostIdFK) throws DuplicateKeyException;

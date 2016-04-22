@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author apprentice
  */
-public class CategoryDAOImpl implements CategoryDAO {
+public class CategoryDbDaoImpl implements CategoryDbDao {
 
     private static final String SQL_INSERT_CATEGORY
             = "insert into categories (categoryName) value(?)";
@@ -85,7 +85,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> getAllCategories() {
-        return jdbcTemplate.query(SQL_SELECT_ALL_CATEGORY, new CategoryDAOImpl.CategoryMapper());
+        return jdbcTemplate.query(SQL_SELECT_ALL_CATEGORY, new CategoryDbDaoImpl.CategoryMapper());
     }
 
     @Override

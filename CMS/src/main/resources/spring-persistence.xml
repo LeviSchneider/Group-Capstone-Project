@@ -36,7 +36,7 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="CategoryDAO" class="com.tsg.cms.dao.CategoryDAOImpl">
+    <bean id="CategoryDbDao" class="com.tsg.cms.dao.CategoryDbDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     
