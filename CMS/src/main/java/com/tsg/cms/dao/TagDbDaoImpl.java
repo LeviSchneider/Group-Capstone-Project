@@ -76,7 +76,7 @@ public class TagDbDaoImpl implements TagDbDao {
     public void removeTag(String tag) {
         int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{tag}, Integer.class);
         jdbcTemplate.update(SQL_DELETE_TAG_POST_HASHTAG_BRIDGE, hashTagId);
-        jdbcTemplate.update(SQL_DELETE_HASHTAG, tag);
+        jdbcTemplate.update(SQL_DELETE_HASHTAG, hashTagId);
     }
 
     @Override

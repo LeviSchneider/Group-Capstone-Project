@@ -48,7 +48,7 @@ public class CategoryDbDaoImplTest {
                 cleaner.execute("delete from categoriesPostsBridge");
         cleaner.execute("delete from categories");
         
-                cleaner.execute("delete from blogPosts");
+        cleaner.execute("delete from blogPosts");
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = format.parse("12-25-2016 00:00:00");
@@ -179,10 +179,10 @@ public class CategoryDbDaoImplTest {
     @Test
     public void testSearchCategory() {
         
-//        Dao.addCategoryAndPostToBridge(C1, blogPost1.getPostId());
-//        Dao.addCategoryAndPostToBridge(C2, blogPost2.getPostId());
-//        Dao.addCategoryAndPostToBridge(C3, blogPost3.getPostId());
-//        
+        Dao.addCategoryAndPostToBridge(C1, blogPost1.getPostId());
+        Dao.addCategoryAndPostToBridge(C2, blogPost2.getPostId());
+        Dao.addCategoryAndPostToBridge(C3, blogPost3.getPostId());
+        
         
         
     }

@@ -152,15 +152,15 @@ public class TagDbDaoImplTest {
 
     @Test
     public void testRemoveTag() {
-//        dao.addTag(tag1, 0);
-//        dao.addTag(tag2, 0);
-//        dao.addTag(tag3, 0);
-//
-//        List<String> post0tags = dao.getPostTags(0);
-//        Assert.assertEquals(3, post0tags.size());
-//
-//        //gotta maintain consistency
-//        dao.removeTag(tag1);
+        dao.addTag(tag1, blogPost2.getPostId());
+        dao.addTag(tag2, blogPost2.getPostId());
+        dao.addTag(tag3, blogPost2.getPostId());
+
+        List<String> blogPost2tags = dao.getPostTags(blogPost2.getPostId());
+        Assert.assertEquals(3, blogPost2tags.size());
+
+        //gotta maintain consistency
+        dao.removeTag(tag1);
 
     }
 
