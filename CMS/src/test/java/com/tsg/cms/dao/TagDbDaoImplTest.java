@@ -13,7 +13,9 @@ import java.util.Date;
 import java.util.List;
 import junit.framework.Assert;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -29,8 +31,7 @@ public class TagDbDaoImplTest {
 
     private BlogPostDbDao blogDao;
 
-    private CategoryDbDao categoryDao;
-
+//    private CategoryDbDao categoryDao;
     private String tag1 = "gruyere";
     private String tag2 = "kashkaval";
     private String tag3 = "sulguni";
@@ -41,12 +42,27 @@ public class TagDbDaoImplTest {
     private BlogPost blogPost2;
     private BlogPost blogPost3;
 
-    private List<Category> cList1;
-    private List<Category> cList2;
-    private List<Category> cList3;
-
+//    private List<Category> cList1;
+//    private List<Category> cList2;
+//    private List<Category> cList3;
     public TagDbDaoImplTest() {
 
+    }
+
+    @BeforeClass
+    public static void setUpClass() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+
+        JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        cleaner.execute("delete from postHashTagBridge");
+        cleaner.execute("delete from categoriesPostsBridge");
+        cleaner.execute("delete from blogPosts");
+        cleaner.execute("delete from hashTags");
+        cleaner.execute("delete from categories");
+    }
+
+    @AfterClass
+    public static void tearDownClass() {
     }
 
     @Before
@@ -54,10 +70,8 @@ public class TagDbDaoImplTest {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
         dao = ctx.getBean("TagDbDao", TagDbDao.class);
         blogDao = ctx.getBean("BlogPostDbDao", BlogPostDbDao.class);
-        categoryDao = ctx.getBean("CategoryDbDao", CategoryDbDao.class);
 
         JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-        cleaner.execute("delete from categoriesPostsBridge");
         cleaner.execute("delete from postHashTagBridge");
         cleaner.execute("delete from hashTags");
         cleaner.execute("delete from blogPosts");
@@ -105,6 +119,12 @@ public class TagDbDaoImplTest {
 
     @After
     public void tearDown() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+        JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        //cleaner.execute("delete from categoriesPostsBridge");
+        cleaner.execute("delete from postHashTagBridge");
+        cleaner.execute("delete from hashTags");
+        cleaner.execute("delete from blogPosts");
     }
 
     // TODO add test methods here.
@@ -152,15 +172,15 @@ public class TagDbDaoImplTest {
 
     @Test
     public void testRemoveTag() {
-//        dao.addTag(tag1, 0);
-//        dao.addTag(tag2, 0);
-//        dao.addTag(tag3, 0);
-//
-//        List<String> post0tags = dao.getPostTags(0);
-//        Assert.assertEquals(3, post0tags.size());
-//
-//        //gotta maintain consistency
-//        dao.removeTag(tag1);
+        dao.addTag(tag1, blogPost1.getPostId());
+        dao.addTag(tag2, blogPost1.getPostId());
+        dao.addTag(tag3, blogPost1.getPostId());
+
+        List<String> blogPost1Tags = dao.getPostTags(blogPost1.getPostId());
+        Assert.assertEquals(3, blogPost1Tags.size());
+
+        //gotta maintain consistency
+        dao.removeTag(tag1);
 
     }
 
