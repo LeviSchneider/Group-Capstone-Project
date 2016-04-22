@@ -15,7 +15,7 @@
             inline: false
     });</script>
 
-<form action="render" method="POST">
+<form >
     <textarea id="htmlOutput"><b>Post rich content here.</b></textarea>
-    <button id="tiny-submit"type="submit">Render this content</button>
+    <button id="tiny-submit" type="button">Render this content</button>
 </form>

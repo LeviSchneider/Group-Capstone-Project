@@ -70,7 +70,7 @@ function populateBlogPosts(data, status) {
     
     $.ajax({
         type: 'GET',
-        url: 'allcontent'
+        url: 'blogPosts'
 
     }).success(function (data, status) {
 

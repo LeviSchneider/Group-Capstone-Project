@@ -77,7 +77,7 @@ public class RESTController {
 //        return dao.getPublishedBlogPost();
 //    }
     
-    @RequestMapping(value = "/allblogPost", method = RequestMethod.GET)
+    @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
     @ResponseBody
     public List<BlogPost> getAllBlogPost () {
         return dao.getAllBlogPost();

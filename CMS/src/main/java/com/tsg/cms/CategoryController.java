@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import com.tsg.cms.dao.CategoryDbDao;
+import javax.validation.Valid;
 
 /**
  *
@@ -44,21 +45,11 @@ public class CategoryController {
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public CategoryContainer createCategory(@RequestBody Category category) {
+    public CategoryContainer createCategory(@Valid @RequestBody Category category) {
 
         CategoryContainer categoryContainer = new CategoryContainer();
 
-        try {
-
-            categoryContainer.setCategory(dao.addCategory(category));
-
-        } catch (DuplicateKeyException e) {
-
-            System.out.println("exception thrown");
-            categoryContainer.setCategory(category);
-            categoryContainer.setMessage("That category name already exists!");
-
-        }
+        categoryContainer.setCategory(dao.addCategory(category));
 
         return categoryContainer;
 

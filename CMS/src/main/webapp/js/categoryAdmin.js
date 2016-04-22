@@ -26,9 +26,15 @@ function addCategoryButton() {
     }).success(function (data, status) {
         $('#add-category').val('');
         loadCategories();
-    });
-}
+    }).error(function (data, status) {
+        $.each(data.responseJSON.fieldErrors, function (index, validationError) {
 
+            alert(validationError.message);
+
+        });
+    });
+
+}
 
 function loadCategories(data, status) {
     var categoryPanel = $('#contentRows');

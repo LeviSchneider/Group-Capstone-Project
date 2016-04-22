@@ -7,6 +7,8 @@ package com.tsg.cms.dto;
 
 import java.util.List;
 import java.util.Objects;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -14,6 +16,8 @@ import java.util.Objects;
  */
 public class Category {
     private int categoryId;
+    @NotEmpty(message="You must supply a value for Category Name")
+    @Length(max=50, message="Category Name must be no more then 50 characters in length.")
     private String categoryName;
 
     @Override
