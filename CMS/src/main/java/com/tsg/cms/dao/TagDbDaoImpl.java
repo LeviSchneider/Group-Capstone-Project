@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
@@ -42,14 +43,14 @@ public class TagDbDaoImpl implements TagDbDao {
             + "on hashTags.HashTagId = postHashTagBridge.HashTagIdFK "
             + "where postIdFK = ?";
     private static final String SQL_SELECT_NUMBER_OF_HASHTAGS
-            = "select hashTagName, count(postHashTagBridge.HashTagIdFK) as numberofhashtags from postHashTagBridge "
+            = "select hashTagName, count(postHashTagBridge.HashTagIdFK) as numberOfHashTags from postHashTagBridge "
             + "left join hashTags as ht "
             + "on postHashTagBridge.HashTagIdFK = ht.HashTagId "
             + "group by hashTagName "
-            + "group by numberOfHashTags desc "
+            + "order by numberOfHashTags desc "
             + "limit ?";
     private static final String SQL_ALL_HASHTAGS
-            = "select * from hashTags";
+            = "select hashTagName from hashTags";
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -74,14 +75,19 @@ public class TagDbDaoImpl implements TagDbDao {
 
     @Override
     public void removeTag(String tag) {
+        try{
         int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{tag}, Integer.class);
         jdbcTemplate.update(SQL_DELETE_TAG_POST_HASHTAG_BRIDGE, hashTagId);
-        jdbcTemplate.update(SQL_DELETE_HASHTAG, tag);
+        jdbcTemplate.update(SQL_DELETE_HASHTAG, hashTagId);
+        }catch(EmptyResultDataAccessException e){
+            
+        }
     }
 
     @Override
-    public void updateTag(String tag) {
-        jdbcTemplate.update(SQL_UPDATE_HASHTAG, tag);
+    public void updateTag(String newTag, String oldTag) {
+        int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{oldTag}, Integer.class);
+        jdbcTemplate.update(SQL_UPDATE_HASHTAG, newTag, hashTagId);
     }
 
     @Override

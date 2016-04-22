@@ -194,11 +194,9 @@ public class CategoryDbDaoImplTest {
      */
     @Test
     public void testSearchCategory() {
-
 //        Dao.addCategoryAndPostToBridge(C1, blogPost1.getPostId());
 //        Dao.addCategoryAndPostToBridge(C2, blogPost2.getPostId());
 //        Dao.addCategoryAndPostToBridge(C3, blogPost3.getPostId());
-//        
     }
 
 }
