@@ -61,24 +61,15 @@ public class CategoryController {
         dao.removeCategory(id);
     }
 
-    @RequestMapping(value = "/category/{id}", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/category/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public CategoryContainer updateCategory(@PathVariable("id") int id, @RequestBody Category category) {
+    public CategoryContainer updateCategory(@PathVariable("id") int id, @Valid @RequestBody Category category) {
 
         category.setCategoryId(id);
         CategoryContainer categoryContainer = new CategoryContainer();
 
-        try {
-
-            categoryContainer.setCategory(dao.addCategory(category));
-
-        } catch (DuplicateKeyException e) {
-
-            categoryContainer.setCategory(category);
-            categoryContainer.setMessage("That category name already exists!");
-
-        }
+        categoryContainer.setCategory(dao.updateCategory(category));
 
         return categoryContainer;
     }

@@ -34,7 +34,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     private static final String SQL_DELETE_CATEGORY_FROM_BRIDGE
             = "delete from categoriesPostsBridge where categoriesPostsBridgeId=?";
     private static final String SQL_UPDATE_CATEGORY
-            = "update categories set categoryName = ?";
+            = "update categories set categoryName = ? where categoryId = ?";
     private static final String SQL_UPDATE_CATEGORY_IN_BRIDGE
             = "update categoriesPostsBridge set categoryIdFK = ?, blogPostIdFK = ? ";
     private static final String SQL_SELECT_ALL_CATEGORY
@@ -78,9 +78,10 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     }
 
     @Override
-    public void updateCategory(Category category) {
+    public Category updateCategory(Category category) {
         jdbcTemplate.update(SQL_UPDATE_CATEGORY,
-                category.getCategoryName());
+                category.getCategoryName(), category.getCategoryId());
+        return category;
     }
 
     @Override
