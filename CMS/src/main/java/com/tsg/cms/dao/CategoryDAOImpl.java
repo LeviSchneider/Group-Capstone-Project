@@ -132,7 +132,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         public Category mapRow(ResultSet rs, int i) throws SQLException {
             Category category = new Category();
             category.setCategoryName(rs.getString("categoryName"));
-
+            category.setCategoryId(rs.getInt("categoryId"));
             return category;
         }
     }
