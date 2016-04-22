@@ -40,6 +40,10 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     
+    <bean id="TagDbDao" class="com.tsg.cms.dao.TagDbDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    
     <bean id="BlogPostDbDao" class="com.tsg.cms.dao.BlogPostDbDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>

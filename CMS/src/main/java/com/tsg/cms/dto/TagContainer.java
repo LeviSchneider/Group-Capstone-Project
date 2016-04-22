@@ -5,21 +5,42 @@
  */
 package com.tsg.cms.dto;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author apprentice
  */
 public class TagContainer {
     
-    private Tag tag;
+    private String tagName;
     private String message;
+    private Map<String, Integer> rankedTags;
+    private List<String> tagList;
 
-    public Tag getTag() {
-        return tag;
+    public List<String> getTagList() {
+        return tagList;
     }
 
-    public void setTag(Tag tag) {
-        this.tag = tag;
+    public void setTagList(List<String> tagList) {
+        this.tagList = tagList;
+    }
+
+    public Map<String, Integer> getRankedTags() {
+        return rankedTags;
+    }
+
+    public void setRankedTags(Map<String, Integer> rankedTags) {
+        this.rankedTags = rankedTags;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tag) {
+        this.tagName = tag;
     }
 
     public String getMessage() {

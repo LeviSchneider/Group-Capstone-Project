@@ -15,6 +15,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,9 +86,10 @@ public class TagDbDaoImpl implements TagDbDao {
     }
 
     @Override
-    public void updateTag(String newTag, String oldTag) {
+    public String updateTag(String newTag, String oldTag) {
         int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{oldTag}, Integer.class);
         jdbcTemplate.update(SQL_UPDATE_HASHTAG, newTag, hashTagId);
+        return newTag;
     }
 
     @Override
@@ -97,10 +99,10 @@ public class TagDbDaoImpl implements TagDbDao {
 
     @Override
     public Map<String, Integer> getNumberOfTags(int num) {
-        return jdbcTemplate.query(SQL_SELECT_NUMBER_OF_HASHTAGS, new ResultSetExtractor<Map>() {
+        return jdbcTemplate.query(SQL_SELECT_NUMBER_OF_HASHTAGS, new ResultSetExtractor<Map<String, Integer>>() {
             @Override
             public Map extractData(ResultSet rs) throws SQLException, DataAccessException {
-                Map<String, Integer> mapRet = new HashMap<String, Integer>();
+                Map<String, Integer> mapRet = new HashMap<>();
                 while (rs.next()) {
                     mapRet.put(rs.getString("hashTagName"), rs.getInt("numberofhashtags"));
                 }
@@ -115,8 +117,8 @@ public class TagDbDaoImpl implements TagDbDao {
         return jdbcTemplate.query(SQL_ALL_HASHTAGS, new SingleColumnRowMapper<String>());
     }
 
-// Not sure if will be necessary but kept just in case
-//    private static final class TagMapper implements RowMapper {
+
+//    private static final class TagMapper implements RowMapper<Map<String, Integer>> {
 //
 //        @Override
 //        public Map<String, Integer> mapRow(ResultSet rs, int i) throws SQLException {
