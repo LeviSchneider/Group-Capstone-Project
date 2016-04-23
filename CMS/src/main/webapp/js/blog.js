@@ -111,7 +111,7 @@ function populateBlogPosts(data, status) {
                 $('#post' + blogPostContainer.blogPost.postId)
                         .append($('<span>')
                                 .addClass('panel-body-blogtags')
-                                .append("#" + tag + " "));
+                                .append(tag + " "));
             });
             $.each(categoryList, function (index, category) {
 
