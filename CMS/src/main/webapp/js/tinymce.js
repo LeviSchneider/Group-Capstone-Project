@@ -7,6 +7,7 @@
 
 $(document).ready(function () {
     loadTags();
+    loadCategories();
 
     $('#tiny-submit').click(function (event) {
         event.preventDefault();
@@ -72,5 +73,24 @@ function loadTags() {
 
 function clearTagsDiv() {
     $('#contentDiv').empty();
+}
+
+function loadCategories() {
+    var contentDiv = $('#categories');
+
+    $.ajax({
+        type: 'GET',
+        url: 'categories'
+    }).success(function (data, status) {
+
+        $.each(data, function (index, category) {
+
+            contentDiv
+                    .append($('<option>')
+                    .attr({'value': category.categoryName })
+                    .text(category.categoryName));
+        });
+
+    });
 }
 

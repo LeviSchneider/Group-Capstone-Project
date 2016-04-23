@@ -18,9 +18,8 @@
 <div id="contentDiv"></div>
 <form>
     <input type="text" id='csvHashTags'/>
-    <select name="categories">
-        
-        
+    <select id="categories" name="categories">
+        <option value="none">Choose a Category</option>
     </select>
     <textarea id="htmlOutput"><b>Post rich content here.</b></textarea>
     <button id="tiny-submit" type="button">Render this content</button>
