@@ -143,14 +143,7 @@
 
                     <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
                         <div class="well sidebar-nav">
-                            <ul class="nav">
-                                <!-- right sidebar fragment will start here -->
-                                <li class="active"><a href="#">#business</a></li>
-                                <li><a href="#">#numbers</a></li>
-                                <li><a href="#">#money</a></li>
-                                <li><a href="#">#people</a></li>
-                                <!-- right sidebar fragment will start here -->
-                            </ul>
+                            <div id="tagcloud"></div>
                         </div><!--/.well -->
                     </div><!--/span-->
                 </div><!--/row-->
@@ -168,7 +161,6 @@
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
         <!--         <script src="${pageContext.request.contextPath}/js/${js_page}"></script> -->
-        <script src="${pageContext.request.contextPath}/js/blog.js"></script>
 
         <%@include file="scripts_js.jsp" %>
         <%@include file="footer.jsp" %>

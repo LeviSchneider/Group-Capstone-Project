@@ -31,6 +31,23 @@ var samplePosts = [
 
 ];
 
+function readMap() {
+    $.ajax({
+        type: 'GET',
+        url: 'tag/3',
+    }).success(function (data, tagMap) {
+        var tagRanking = [];
+        for (var key in tag.rankedTags)
+        {
+            tagRanking.push(tag.rankedTags[key] + " :" + key);
+        }
+        $.each(tagRanking, function (index, tag) {
+            $.append()
+        })
+    });
+}
+
+
 function initMenu() {
     $('#menu ul').hide();
     $('#menu ul').children('.current').parent().show();
@@ -51,6 +68,7 @@ function initMenu() {
 }
 $(document).ready(function () {
     populateBlogPosts(samplePosts);
+    loadTags();
     $(document).ready(function () {
         $('[data-toggle=offcanvas]').click(function () {
             $('.row-offcanvas-left').toggleClass('active');
@@ -63,11 +81,8 @@ $(document).ready(function () {
 
 });
 
-
-
 function populateBlogPosts(data, status) {
     var blogPanel = $('#blog-post-display');
-    var i = 0;
     $.ajax({
         type: 'GET',
         url: 'blogPosts'
@@ -75,34 +90,70 @@ function populateBlogPosts(data, status) {
     }).success(function (data, status) {
 
         $.each(data, function (index, post) {
-            
+
             blogPanel
                     .append($('<div>')
                             .addClass("panel panel-default")
                             .append('<div>')
                             .addClass("panel-body")
                             .append(post.postBody)
-                    .append($('<div>')
-                            .attr({'id': 'post-tags' + post.postId})
-                            ));
+                            .append($('<div>')
+                                    .attr({'id': 'post-tags' + post.postId})
+                                    ));
 
             $.ajax({
                 type: 'GET',
                 url: 'postTags/' + post.postId
 
             }).success(function (data, status) {
-                
+
                 var tagList = data.tagList;
-                
+
                 $.each(tagList, function (index, tag) {
-                   
+
                     $('#post-tags' + post.postId)
                             .append($('<span>')
                                     .addClass("panel-body-blogtags")
                                     .append(tag));
-                });
+                }); //duplicates blog posts
             });
 
+        });
+    });
+}
+
+function loadTags() {
+    var tagCloud = $('#tagcloud');
+    var tagString = "";
+    $.ajax({
+        type: 'GET',
+        url: 'tags/5'
+    }).success(function(data, status) {
+        $.each(data, function (index, tagMap) {
+            
+            for(var key in tagMap){
+                if(tagMap[key] <= 3){
+                    tagString += "<a>";
+                    tagString += " #" + key;
+                    tagString += "</a>";
+                } else if(tagMap[key] <= 7){
+                    tagString += "<a style='font-size:150%'>";
+                    tagString += " #" + key;
+                    tagString += "</a>";
+                } else {
+                    tagString += "<a style='font-size:200%'>";
+                    tagString += " #" + key;
+                    tagString += "</a>";
+                }
+            }
+            
+            tagCloud.append($('<div>')
+                            .addClass("panel panel-default")
+                            .append('<div>')
+                            .addClass("panel-body")
+                            .append(tagString)
+                            .append($('<div>')));
+            
         });
     });
 }

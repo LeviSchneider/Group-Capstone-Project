@@ -55,18 +55,6 @@ function loadTags() {
     $.ajax({
         type: 'GET',
         url: 'tags'
-//    }).success(function (data, status) {
-//        $.each(data.tagList, function (index, tag) {
-//            var tag = tag;
-//            var counter = 0;
-//            var row = '<div style="col-md-offset-8 col-md-4">';
-//            row += '<a href="${pageContext.request.contextPath}/blog>' + tag + '</a>';
-//            if(counter === data.length)
-//            {
-//                row += '</div>';
-//            }
-//        });
-//    });
     }).success(function (data, status) {
 
         $.each(data.tagList, function (index, post) {
