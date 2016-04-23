@@ -16,11 +16,9 @@
     </head>
     <body>
         ${htmlOutput}
-        
         <hr>
         <h1>All pages</h1>
         <div id="pages">
-            
         </div>
     </body>
 </html>

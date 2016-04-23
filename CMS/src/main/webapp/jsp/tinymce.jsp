@@ -15,7 +15,7 @@
         inline: false
     });</script>
 
-<div id="contentDiv"></div>
+
 <form>
     <input type="text" id="csvHashTags" placeholder="Add a hashtag..."/>
     <select id="categories" name="categories">
@@ -30,3 +30,5 @@
     <textarea id="htmlOutput"></textarea>
     <button id="tiny-submit" type="button">Submit</button>
 </form>
+<div id="contentDiv"></div>
+

@@ -15,7 +15,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,17 +115,5 @@ public class TagDbDaoImpl implements TagDbDao {
     public List<String> getAllTags() {
         return jdbcTemplate.query(SQL_ALL_HASHTAGS, new SingleColumnRowMapper<String>());
     }
-
-
-//    private static final class TagMapper implements RowMapper<Map<String, Integer>> {
-//
-//        @Override
-//        public Map<String, Integer> mapRow(ResultSet rs, int i) throws SQLException {
-//            Map<String, Integer> tagMap = new HashMap<>();
-//            tagMap.put(rs.getString("hashTagName"), rs.getInt("numberofhashtags"));
-//            return tagMap;
-//        }
-//
-//    }
 
 }
