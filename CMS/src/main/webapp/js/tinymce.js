@@ -6,7 +6,7 @@
 
 
 $(document).ready(function () {
-    loadTags();
+   // loadTags();
     loadCategories();
 
     $('#tiny-submit').click(function (event) {
@@ -17,6 +17,8 @@ $(document).ready(function () {
             url: 'blogPost',
             data: JSON.stringify({
                 dateSubmitted: '2016-12-28',
+                startDate: $('#start-date').val(),
+                endDate: $('#end-date').val(),
                 title: 'This is a title',
                 postBody: tinyMCE.activeEditor.getContent(),
                 status: 'draft',
