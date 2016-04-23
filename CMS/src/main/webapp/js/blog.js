@@ -63,11 +63,8 @@ $(document).ready(function () {
 
 });
 
-
-
 function populateBlogPosts(data, status) {
     var blogPanel = $('#blog-post-display');
-    var i = 0;
     $.ajax({
         type: 'GET',
         url: 'blogPosts'
@@ -100,7 +97,7 @@ function populateBlogPosts(data, status) {
                             .append($('<span>')
                                     .addClass("panel-body-blogtags")
                                     .append(tag));
-                });
+                }); //duplicates blog posts
             });
 
         });
