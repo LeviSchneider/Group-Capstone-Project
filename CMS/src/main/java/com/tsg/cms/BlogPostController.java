@@ -23,6 +23,7 @@ import com.tsg.cms.dto.BlogPostContainer;
 import com.tsg.cms.dto.CategoryContainer;
 import com.tsg.cms.dto.TagContainer;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  *

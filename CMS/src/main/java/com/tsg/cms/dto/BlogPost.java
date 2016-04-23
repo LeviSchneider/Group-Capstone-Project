@@ -23,6 +23,9 @@ public class BlogPost {
     private int userIdFK;
     private String status;
     private String postType; // <<<---- I am uncertain what the postType is for.
+    private String titleNumber;
+    //titleNumber concatenates the title, and if the title isn't unique, the 
+    //ordinal number of the title, starting with 1.
 
     @Override
     public int hashCode() {
@@ -153,4 +156,12 @@ public class BlogPost {
         this.postType = postType;
     }
 
+    public String getTitleNumber() {
+        return titleNumber;
+    }
+
+    public void setTitleNumber(String titleNumber) {
+        this.titleNumber = titleNumber;
+    }
+    
 }

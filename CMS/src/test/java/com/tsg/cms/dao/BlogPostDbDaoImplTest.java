@@ -35,9 +35,12 @@ public class BlogPostDbDaoImplTest {
 
     private BlogPostDbDao dao;
     private CategoryDbDao categoryDao;
-    private BlogPost C1;
-    private BlogPost C2;
-    private BlogPost C3;
+    private BlogPost c1;
+    private BlogPost c2;
+    private BlogPost c3;
+    private BlogPost c4;
+    private BlogPost c5;
+    private BlogPost c6;
 
     private List<Category> cList1;
     private List<Category> cList2;
@@ -97,38 +100,71 @@ public class BlogPostDbDaoImplTest {
         cList1.add(cat1);
         cList1.add(cat2);
 
-        C1 = new BlogPost();
+        c1 = new BlogPost();
 
-        C1.setDateSubmitted(date);
-        C1.setStartDate(date);
-        C1.setEndDate(date);
-        C1.setTitle("News");
-        C1.setPostBody("Q");
-        C1.setUserIdFK(11);
-        C1.setStatus("Published");
-        C1.setPostType("International");
+        c1.setDateSubmitted(date);
+        c1.setStartDate(date);
+        c1.setEndDate(date);
+        c1.setTitle("News");
+        c1.setPostBody("Q");
+        c1.setUserIdFK(11);
+        c1.setStatus("Published");
+        c1.setPostType("International");
 
-        C2 = new BlogPost();
+        c2 = new BlogPost();
 
-        C2.setDateSubmitted(date);
-        C2.setStartDate(date);
-        C2.setEndDate(date);
-        C2.setTitle("Ads");
-        C2.setPostBody("B");
-        C2.setUserIdFK(22);
-        C2.setStatus("PendingForApproval");
-        C2.setPostType("Local");
+        c2.setDateSubmitted(date);
+        c2.setStartDate(date);
+        c2.setEndDate(date);
+        c2.setTitle("Ads");
+        c2.setPostBody("B");
+        c2.setUserIdFK(22);
+        c2.setStatus("PendingForApproval");
+        c2.setPostType("Local");
 
-        C3 = new BlogPost();
+        c3 = new BlogPost();
 
-        C3.setDateSubmitted(date);
-        C3.setStartDate(date);
-        C3.setEndDate(date);
-        C3.setTitle("News");
-        C3.setPostBody("F");
-        C3.setUserIdFK(33);
-        C3.setStatus("Draft");
-        C3.setPostType("Local");
+        c3.setDateSubmitted(date);
+        c3.setStartDate(date);
+        c3.setEndDate(date);
+        c3.setTitle("News");
+        c3.setPostBody("F");
+        c3.setUserIdFK(33);
+        c3.setStatus("Draft");
+        c3.setPostType("Local");
+
+        c4 = new BlogPost();
+
+        c4.setDateSubmitted(date);
+        c4.setStartDate(date);
+        c4.setEndDate(date);
+        c4.setTitle("Sale!");
+        c4.setPostBody("This is the first post with the same title.");
+        c4.setUserIdFK(33);
+        c4.setStatus("Draft");
+        c4.setPostType("Local");
+
+        c5 = new BlogPost();
+
+        c5.setDateSubmitted(date);
+        c5.setStartDate(date);
+        c5.setEndDate(date);
+        c5.setTitle("Sale!");
+        c5.setPostBody("This is the second post with the same title.");
+        c5.setUserIdFK(33);
+        c5.setStatus("Draft");
+        c5.setPostType("Local");
+
+        c6 = new BlogPost();
+
+        c6.setDateSubmitted(date);
+        c6.setStartDate(date);
+        c6.setEndDate(date);
+        c6.setTitle("Sale!");
+        c6.setPostBody("This is the third post with the same title.");
+        c6.setUserIdFK(33);
+        c6.setStatus("Draft");
+        c6.setPostType("Local");
 
     }
 
@@ -142,10 +178,10 @@ public class BlogPostDbDaoImplTest {
     @Test
     public void testAddBlogPostDuplicateCategory() {
         try {
-            C1 = dao.addBlogPost(C1);
+            c1 = dao.addBlogPost(c1);
             cat1 = categoryDao.addCategory(cat1);
             cat1 = categoryDao.addCategory(cat1);
-            categoryDao.addCategoryAndPostToBridge(cat1, C1.getPostId());
+            categoryDao.addCategoryAndPostToBridge(cat1, c1.getPostId());
 
         } catch (DuplicateKeyException e) {
             Boolean thrown = true;
@@ -161,9 +197,9 @@ public class BlogPostDbDaoImplTest {
             Category Cat4 = new Category();
             Cat4.setCategoryName("Unique");
 
-            C1 = dao.addBlogPost(C1);
+            c1 = dao.addBlogPost(c1);
             Cat4 = categoryDao.addCategory(Cat4);
-            categoryDao.addCategoryAndPostToBridge(Cat4, C1.getPostId());
+            categoryDao.addCategoryAndPostToBridge(Cat4, c1.getPostId());
 
         } catch (DuplicateKeyException e) {
             System.out.println("Duplicate Key");
@@ -176,11 +212,11 @@ public class BlogPostDbDaoImplTest {
     public void testUpdateBlogPostDuplicateCategory() {
         try {
 
-            C3 = dao.addBlogPost(C3);
-            categoryDao.addCategoryAndPostToBridge(cat1, C3.getPostId());
-            C3.setTitle("M");
-            dao.updateBlogPost(C3);
-            categoryDao.addCategoryAndPostToBridge(cat1, C3.getPostId());
+            c3 = dao.addBlogPost(c3);
+            categoryDao.addCategoryAndPostToBridge(cat1, c3.getPostId());
+            c3.setTitle("M");
+            dao.updateBlogPost(c3);
+            categoryDao.addCategoryAndPostToBridge(cat1, c3.getPostId());
 
         } catch (DuplicateKeyException e) {
             Boolean thrown = true;
@@ -194,11 +230,11 @@ public class BlogPostDbDaoImplTest {
      */
     @Test
     public void testRemoveBlogPost() {
-        dao.addBlogPost(C2);
-        BlogPost fromDb = dao.getBlogPostById(C2.getPostId());
-        C2.setPostId(fromDb.getPostId());
-        dao.removeBlogPost(C2.getPostId());
-        fromDb = dao.getBlogPostById(C2.getPostId());
+        dao.addBlogPost(c2);
+        BlogPost fromDb = dao.getBlogPostById(c2.getPostId());
+        c2.setPostId(fromDb.getPostId());
+        dao.removeBlogPost(c2.getPostId());
+        fromDb = dao.getBlogPostById(c2.getPostId());
         assertNull(fromDb);
     }
 
@@ -207,16 +243,16 @@ public class BlogPostDbDaoImplTest {
      */
     @Test
     public void testUpdateBlogPost() {
-        C3 = dao.addBlogPost(C3);
+        c3 = dao.addBlogPost(c3);
 
-        C3.setTitle("M");
-        dao.updateBlogPost(C3);
+        c3.setTitle("M");
+        dao.updateBlogPost(c3);
 
 //        C3.setPostId(0);
-        BlogPost fromDb = dao.getBlogPostById(C3.getPostId());
-        C3.setPostId(fromDb.getPostId());
+        BlogPost fromDb = dao.getBlogPostById(c3.getPostId());
+        c3.setPostId(fromDb.getPostId());
 
-        assertEquals(C3, fromDb);
+        assertEquals(c3, fromDb);
     }
 
     /**
@@ -224,9 +260,9 @@ public class BlogPostDbDaoImplTest {
      */
     @Test
     public void testGetAllBlogPost() {
-        dao.addBlogPost(C1);
-        dao.addBlogPost(C2);
-        dao.addBlogPost(C3);
+        dao.addBlogPost(c1);
+        dao.addBlogPost(c2);
+        dao.addBlogPost(c3);
 
         List<BlogPost> cList = dao.getAllBlogPost();
         assertEquals(cList.size(), 3);
@@ -238,9 +274,9 @@ public class BlogPostDbDaoImplTest {
      */
     @Test
     public void testSearchBlogPost() {
-        dao.addBlogPost(C1);
-        dao.addBlogPost(C2);
-        dao.addBlogPost(C3);
+        dao.addBlogPost(c1);
+        dao.addBlogPost(c2);
+        dao.addBlogPost(c3);
 
         Map<SearchTerm, String> criteria = new HashMap<>();
         criteria.put(SearchTerm.TITLE, "News");
@@ -250,8 +286,8 @@ public class BlogPostDbDaoImplTest {
         criteria.put(SearchTerm.POSTTYPE, "International");
         cList = dao.searchBlogPost(criteria);
         BlogPost fromDb = cList.get(0);
-        C1.setPostId(fromDb.getPostId());
-        assertEquals(C1, fromDb);
+        c1.setPostId(fromDb.getPostId());
+        assertEquals(c1, fromDb);
         assertEquals(1, cList.size());
 
         criteria = new HashMap<>();
@@ -262,8 +298,34 @@ public class BlogPostDbDaoImplTest {
         criteria = new HashMap<>();
         criteria.put(SearchTerm.STATUS, "Published");
         cList = dao.searchBlogPost(criteria);
-        assertEquals(C1, cList.get(0));
+        assertEquals(c1, cList.get(0));
 
+    }
+
+    @Test
+    public void testTitleNumber() {
+
+        c4.setTitle(c6.getTitle());
+        c5.setTitle(c6.getTitle());
+        //failsafe in case objects get changed in setup
+
+        Assert.assertEquals(c4.getTitle(), c5.getTitle());
+        Assert.assertEquals(c5.getTitle(), c6.getTitle());
+        //titles are indeed the same
+
+        dao.addBlogPost(c4);
+        dao.addBlogPost(c5);
+        dao.addBlogPost(c6);
+
+        List<BlogPost> sameTitle = dao.getBlogPostByTitle(c4.getTitle());
+        Assert.assertEquals(3, sameTitle.size());
+        
+
+        Assert.assertEquals(c4, dao.getBlogPostByTitleNumber(c4.getTitleNumber()));
+        Assert.assertEquals(c5, dao.getBlogPostByTitleNumber(c5.getTitleNumber()));
+        Assert.assertEquals(c6, dao.getBlogPostByTitleNumber(c6.getTitleNumber()));
+
+        Assert.assertNotSame(c5, dao.getBlogPostByTitleNumber(c6.getTitleNumber()));
     }
 
 }
