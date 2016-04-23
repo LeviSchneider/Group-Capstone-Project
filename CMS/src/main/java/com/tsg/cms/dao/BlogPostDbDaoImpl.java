@@ -5,12 +5,9 @@
  */
 package com.tsg.cms.dao;
 
-import com.tsg.cms.dto.Category;
 import com.tsg.cms.dto.BlogPost;
-import com.tsg.cms.dto.BlogPostState;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
     private static final String SQL_INSERT_BLOGPOST
-            = "insert into blogPosts (dateSubmitted, startDate, endDate, title, postBody, userIdFK, status, postType, titleNumber) value(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            = "insert into blogPosts (dateSubmitted, startDate, endDate, title, postBody, userIdFK, status, postType, titleNumber) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE_BLOGPOST
             = "delete from blogPosts where postId = ?";
     private static final String SQL_UPDATE_BLOGPOST
