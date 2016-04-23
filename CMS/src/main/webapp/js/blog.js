@@ -89,37 +89,29 @@ function populateBlogPosts(data, status) {
 
     }).success(function (data, status) {
 
-        $.each(data, function (index, post) {
+        $.each(data, function (index, blogPostContainer) {
 
+            var tagList = blogPostContainer.tagContainer.tagList;
+            //var categoryList = blogPostContainer.categoryContainer.categoryList;
             blogPanel
                     .append($('<div>')
                             .addClass("panel panel-default")
                             .append('<div>')
                             .addClass("panel-body")
-                            .append(post.postBody)
+                            .append(blogPostContainer.blogPost.postBody)
                             .append($('<div>')
-                                    .attr({'id': 'post-tags' + post.postId})
+                                    .attr({'id': 'post-tags' + blogPostContainer.blogPost.postId})
                                     ));
+            $.each(tagList, function (index, tag) {
 
-            $.ajax({
-                type: 'GET',
-                url: 'postTags/' + post.postId
-
-            }).success(function (data, status) {
-
-                var tagList = data.tagList;
-
-                $.each(tagList, function (index, tag) {
-
-                    $('#post-tags' + post.postId)
-                            .append($('<span>')
-                                    .addClass("panel-body-blogtags")
-                                    .append(tag));
-                }); //duplicates blog posts
+                $('#post-tags' + blogPostContainer.blogPost.postId)
+                        .append($('<span>')
+                                .addClass("panel-body-blogtags")
+                                .append(tag));
             });
-
         });
     });
+
 }
 
 function loadTags() {
@@ -128,15 +120,15 @@ function loadTags() {
     $.ajax({
         type: 'GET',
         url: 'tags/5'
-    }).success(function(data, status) {
+    }).success(function (data, status) {
         $.each(data, function (index, tagMap) {
-            
-            for(var key in tagMap){
-                if(tagMap[key] <= 3){
+
+            for (var key in tagMap) {
+                if (tagMap[key] <= 3) {
                     tagString += "<a>";
                     tagString += " #" + key;
                     tagString += "</a>";
-                } else if(tagMap[key] <= 7){
+                } else if (tagMap[key] <= 7) {
                     tagString += "<a style='font-size:150%'>";
                     tagString += " #" + key;
                     tagString += "</a>";
@@ -146,14 +138,13 @@ function loadTags() {
                     tagString += "</a>";
                 }
             }
-            
+
             tagCloud.append($('<div>')
-                            .addClass("panel panel-default")
-                            .append('<div>')
-                            .addClass("panel-body")
-                            .append(tagString)
-                            .append($('<div>')));
-            
+                    .addClass("panel panel-default")
+                    .append('<div>')
+                    .addClass("panel-body")
+                    .append(tagString)
+                    .append($('<div>')));
         });
     });
 }

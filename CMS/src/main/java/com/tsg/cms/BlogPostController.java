@@ -17,25 +17,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import com.tsg.cms.dao.BlogPostDbDao;
+import com.tsg.cms.dao.TagDbDao;
+import com.tsg.cms.dto.BlogPostContainer;
+import com.tsg.cms.dto.TagContainer;
+import java.util.ArrayList;
 
 /**
  *
  * @author apprentice
  */
-
 //It may be more desirable to bifurcate blogPost into
 //"static" pages and blog posts.
-
 @Controller
 public class BlogPostController {
-    
+
     private final BlogPostDbDao dao;
-    
+    private final TagDbDao tagDao;
+
     @Inject
-    public BlogPostController (BlogPostDbDao dao) {
+    public BlogPostController(BlogPostDbDao dao, TagDbDao tagDao) {
         this.dao = dao;
+        this.tagDao = tagDao;
     }
-    
+
     //We'll need methods to
     //-add blogPost
     //-delete blogPost
@@ -43,13 +47,17 @@ public class BlogPostController {
     //-get published blogPost depending on whether it's a blog post or static page
     //-get ALL blogPost for editing purposes
     //
-    
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public BlogPost getBlogPost(@PathVariable("id") int id) {
-        return dao.getBlogPostById(id);
+    public BlogPostContainer getBlogPost(@PathVariable("id") int id) {
+        BlogPostContainer container = new BlogPostContainer();
+        container.setBlogPost(dao.getBlogPostById(id));
+        TagContainer tagContainer = new TagContainer();
+
+        tagContainer.setTagList(tagDao.getPostTags(id));
+        return container;
     }
-    
+
     @RequestMapping(value = "/blogPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -57,13 +65,13 @@ public class BlogPostController {
         blogPost.setUserIdFK(999);
         return dao.addBlogPost(blogPost);
     }
-    
+
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBlogPost(@PathVariable("id") int id) {
         dao.removeBlogPost(id);
     }
-    
+
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
@@ -76,20 +84,30 @@ public class BlogPostController {
 //    public List<BlogPost> getPublishedBlogPost () {
 //        return dao.getPublishedBlogPost();
 //    }
-    
+
     @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
     @ResponseBody
-    public List<BlogPost> getAllBlogPost () {
-        return dao.getAllBlogPost();
-        //Could be problematic.
-        //Certainly won't scale well.
-        //Might want to 
+    public List<BlogPostContainer> getAllBlogPost() {
+        
+        List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
+        List<BlogPost> blogPosts = dao.getAllBlogPost();
+        for (BlogPost blogPost : blogPosts) {
+            TagContainer tagContainer = new TagContainer();
+
+            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+            BlogPostContainer blogPostContainer = new BlogPostContainer();
+            
+            blogPostContainer.setBlogPost(blogPost);
+            blogPostContainer.setTagContainer(tagContainer);
+            blogPostContainerList.add(blogPostContainer);
+        }
+        return blogPostContainerList;
+        
     }
-    
+
 //    @RequestMapping(value = "/tags", method=RequestMethod.GET)
 //    public List<String> getAllTags()
 //    {
 //        return dao.getAllTags();
 //    }
-        
 }
