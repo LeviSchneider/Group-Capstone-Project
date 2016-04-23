@@ -22,12 +22,13 @@
         <option value="none">Choose Existing Category</option>
     </select>
 
-            <input id="add-category" type="text" placeholder="Add a NEW category...">
+    <input id="add-category" type="text" placeholder="Add a NEW category...">
 
-        <button onclick="addCategoryButton()" class="btn btn-primary">Add</button>
+    <button onclick="addCategoryButton()" class="btn btn-primary">Add</button>
 
-    <textarea id="htmlOutput"><b>Post rich content here.</b></textarea>
-    <button id="tiny-submit" type="button">Render this content</button>
+    Start Date: <input type="date" id="start-date" /> End Date: <input type="date" id="end-date"/>
+    <textarea id="htmlOutput"></textarea>
+    <button id="tiny-submit" type="button">Submit</button>
 </form>
 <div id="contentDiv"></div>
 
