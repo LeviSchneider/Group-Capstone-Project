@@ -5,6 +5,8 @@
  */
 package com.tsg.cms.dto;
 
+import java.util.List;
+
 /**
  *
  * @author apprentice
@@ -12,7 +14,9 @@ package com.tsg.cms.dto;
 public class CategoryContainer {
 
     private Category category;
+    private String categoryName;
     private String message;
+    private List<Category> categoryList;
 
     public Category getCategory() {
         return category;
@@ -20,6 +24,14 @@ public class CategoryContainer {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+    
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getMessage() {
@@ -29,6 +41,13 @@ public class CategoryContainer {
     public void setMessage(String message) {
         this.message = message;
     }
-    
-    
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
+    }
+
 }

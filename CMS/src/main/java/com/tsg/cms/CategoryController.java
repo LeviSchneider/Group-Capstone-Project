@@ -5,6 +5,7 @@
  */
 package com.tsg.cms;
 
+import com.tsg.cms.dao.BlogPostDbDao;
 import com.tsg.cms.dto.Category;
 import com.tsg.cms.dto.CategoryContainer;
 import java.util.List;
@@ -30,10 +31,12 @@ import javax.validation.Valid;
 public class CategoryController {
 
     private final CategoryDbDao dao;
+  
 
     @Inject
     public CategoryController(CategoryDbDao dao) {
         this.dao = dao;
+        
     }
 
     @RequestMapping(value = "/category/{id}", method = RequestMethod.GET)
@@ -79,4 +82,17 @@ public class CategoryController {
     public List<Category> getAllCategories() {
         return dao.getAllCategories();
     }
+    
+    @RequestMapping(value = "/category/{postId}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public CategoryContainer putCategoryPost(@PathVariable("postId") int postId, @RequestBody Category category) {
+
+        CategoryContainer categoryContainer = new CategoryContainer();
+
+        dao.addCategoryAndPostToBridge(category, postId);
+
+        return categoryContainer;
+
+    } 
 }
