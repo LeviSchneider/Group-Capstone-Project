@@ -18,6 +18,7 @@ public interface CategoryDbDao {
     
     public Category addCategory(Category category) throws DuplicateKeyException;
     public void addCategoryAndPostToBridge(Category category, int blogPostIdFK) throws DuplicateKeyException;
+    public List<Category> getPostCategories(int postId);
     public void removeCategory(int categoryId);
     public Category updateCategory(Category category);
     public List<Category> getAllCategories();

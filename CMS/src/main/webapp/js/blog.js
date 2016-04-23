@@ -42,8 +42,8 @@ function readMap() {
             tagRanking.push(tag.rankedTags[key] + " :" + key);
         }
         $.each(tagRanking, function (index, tag) {
-            $.append()
-        })
+            $.append();
+        });
     });
 }
 
@@ -117,34 +117,37 @@ function populateBlogPosts(data, status) {
 function loadTags() {
     var tagCloud = $('#tagcloud');
     var tagString = "";
+    var counter = 0;
     $.ajax({
         type: 'GET',
-        url: 'tags/5'
+        url: 'tags/10'
     }).success(function (data, status) {
         $.each(data, function (index, tagMap) {
-
-            for (var key in tagMap) {
-                if (tagMap[key] <= 3) {
-                    tagString += "<a>";
-                    tagString += " #" + key;
-                    tagString += "</a>";
-                } else if (tagMap[key] <= 7) {
-                    tagString += "<a style='font-size:150%'>";
-                    tagString += " #" + key;
-                    tagString += "</a>";
-                } else {
-                    tagString += "<a style='font-size:200%'>";
-                    tagString += " #" + key;
-                    tagString += "</a>";
+            if (counter === 2)
+            {
+                for (var key in tagMap) {
+                    if (tagMap[key] <= 3) {
+                        tagString += "<a>";
+                        tagString += " #" + key;
+                        tagString += "</a>";
+                    } else if (tagMap[key] <= 7) {
+                        tagString += "<a style='font-size:150%'>";
+                        tagString += " #" + key;
+                        tagString += "</a>";
+                    } else {
+                        tagString += "<a style='font-size:200%'>";
+                        tagString += " #" + key;
+                        tagString += "</a>";
+                    }
                 }
-            }
 
-            tagCloud.append($('<div>')
-                    .addClass("panel panel-default")
-                    .append('<div>')
-                    .addClass("panel-body")
-                    .append(tagString)
-                    .append($('<div>')));
+                tagCloud.addClass("panel panel-default")
+                        .append('<div>')
+                        .addClass("panel-body")
+                        .append(tagString)
+                        .append($('<div>'));
+            }
+            counter++;
         });
     });
 }

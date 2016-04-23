@@ -7,6 +7,7 @@
 
 $(document).ready(function () {
     loadTags();
+    loadCategories();
 
     $('#tiny-submit').click(function (event) {
         event.preventDefault();
@@ -29,7 +30,8 @@ $(document).ready(function () {
         }).success(function (data, status) {
             var postId = data.postId;
             var tagString = $('#csvHashTags').val();
-            
+            var category = $('#categories').val();
+
             $.ajax({
                 type: 'POST',
                 url: 'tag/' + postId,
@@ -38,7 +40,21 @@ $(document).ready(function () {
                 ,
                 headers: {
                     'Accept': 'text/plain',
-                    'Content-Type': 'text/plainn'
+                    'Content-Type': 'text/plain'
+
+                },
+                'dataType': 'json'
+            });
+            $.ajax({
+                type: 'POST',
+                url: 'category/' + postId,
+                data: JSON.stringify({
+                    categoryId: category
+
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 'dataType': 'json'
             });
@@ -72,5 +88,24 @@ function loadTags() {
 
 function clearTagsDiv() {
     $('#contentDiv').empty();
+}
+
+function loadCategories() {
+    var contentDiv = $('#categories');
+
+    $.ajax({
+        type: 'GET',
+        url: 'categories'
+    }).success(function (data, status) {
+
+        $.each(data, function (index, category) {
+
+            contentDiv
+                    .append($('<option>')
+                            .attr({'value': category.categoryId})
+                            .text(category.categoryName));
+        });
+
+    });
 }
 

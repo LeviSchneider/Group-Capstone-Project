@@ -160,8 +160,6 @@
         <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-         <!--   <script src="${pageContext.request.contextPath}/js/${js_page}"></script> -->
-      <!--  <script src="${pageContext.request.contextPath}/js/blog.js"></script> -->
 
         <%@include file="scripts_js.jsp" %>
         <%@include file="footer.jsp" %>
