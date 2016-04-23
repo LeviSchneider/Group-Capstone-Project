@@ -92,7 +92,8 @@ function populateBlogPosts(data, status) {
         $.each(data, function (index, blogPostContainer) {
 
             var tagList = blogPostContainer.tagContainer.tagList;
-            //var categoryList = blogPostContainer.categoryContainer.categoryList;
+            var categoryList = blogPostContainer.categoryContainer.categoryList;
+            
             blogPanel
                     .append($('<div>')
                             .addClass("panel panel-default")
@@ -100,14 +101,21 @@ function populateBlogPosts(data, status) {
                             .addClass("panel-body")
                             .append(blogPostContainer.blogPost.postBody)
                             .append($('<div>')
-                                    .attr({'id': 'post-tags' + blogPostContainer.blogPost.postId})
+                                    .attr({'id': 'post' + blogPostContainer.blogPost.postId})
                                     ));
             $.each(tagList, function (index, tag) {
 
-                $('#post-tags' + blogPostContainer.blogPost.postId)
+                $('#post' + blogPostContainer.blogPost.postId)
                         .append($('<span>')
                                 .addClass("panel-body-blogtags")
                                 .append(tag));
+            });
+            $.each(categoryList, function (index, category) {
+
+                $('#post' + blogPostContainer.blogPost.postId)
+                        .append($('<span>')
+                                .addClass("panel-body-blogcategories")
+                                .append(category.categoryName));
             });
         });
     });

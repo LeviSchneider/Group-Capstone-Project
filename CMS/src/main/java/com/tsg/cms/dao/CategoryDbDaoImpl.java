@@ -40,7 +40,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     private static final String SQL_SELECT_ALL_CATEGORY
             = "select * from categories ORDER BY categoryId DESC";
     private static final String SQL_SELECT_ALL_CATEGORIES_BY_POST_FROM_BRIDGE
-            = "select categoryName from categories inner join categoriesPostsBridge on categories.categoryId = categoriesPostsBridge.categoryIdFK where blogPostIdFK = ?";
+            = "select categoryName, categoryId from categories as c inner join categoriesPostsBridge on c.categoryId = categoriesPostsBridge.categoryIdFK where blogPostIdFK = ?";
     private static final String SQL_SELECT_ALL_POSTS_BY_CATEGORY_FROM_BRIDGE
             = "select * from categoriesPostsBridge ORDER BY categoriesPostsBridgeId DESC where categoryIdFK = ?";
     private static final String SQL_SELECT_CATEGORY
@@ -74,7 +74,9 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     
     @Override
     public List<Category> getPostCategories(int postId) {
-        return jdbcTemplate.query(SQL_SELECT_ALL_CATEGORIES_BY_POST_FROM_BRIDGE, new CategoryMapper(), postId);
+        List<Category> list = jdbcTemplate.query(SQL_SELECT_ALL_CATEGORIES_BY_POST_FROM_BRIDGE, new CategoryMapper(), postId);
+        
+        return list;
     }
     
     @Override
