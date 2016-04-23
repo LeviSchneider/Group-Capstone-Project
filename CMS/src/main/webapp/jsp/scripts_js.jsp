@@ -16,6 +16,12 @@
 
     $(document).ready(function () {
         loadTags();
+
+        $('[data-toggle=offcanvas]').click(function () {
+            $('.row-offcanvas').toggleClass('active');
+        });
+
+
         $('#click-me').click(function () {
 
             [].forEach.call($("*"), function (a) {
@@ -23,7 +29,7 @@
             });
         });
     });
-    
+
     function loadTags() {
         var tagCloud = $('#tagcloud');
         var tagString = "";

@@ -32,15 +32,8 @@
                     <div class="col-xs-12 col-sm-8">
 
                         <%@ include file="header.jsp" %>
+                        <jsp:include page="${page}.jsp"/>
 
-                        <div class="row">
-
-                            <div class="jumbotron">
-                                <h1>I heard you like cheese.</h1>
-                                <p>But check out the side-toggling navbars first. #dual-wielding</p>
-                            </div>   
-
-                        </div>
 
                     </div>
 
@@ -58,15 +51,10 @@
 
             </div>
 
-            <div class="col-md-12">
-
-                <div class="col-md-12">     
-
-                    <jsp:include page="${page}.jsp"/>
-
-                </div>
-
+            <div class="row">
+                <%@include file="footer.jsp" %>
             </div>
+
 
         </div>
 
@@ -77,7 +65,7 @@
         <script src="${pageContext.request.contextPath}/js/${js_page}"></script>
 
         <%@include file="scripts_js.jsp" %>
-        <%@include file="footer.jsp" %>
+
 
 
 
