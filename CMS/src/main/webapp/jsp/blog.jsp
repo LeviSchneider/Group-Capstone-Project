@@ -110,50 +110,30 @@
 
         <div class="container">
 
-            <div class="row row-offcanvas row-offcanvas-left">
-                <div class="row-offcanvas row-offcanvas-right">
-                    <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarLeft" role="navigation">
-                        <div class="well sidebar-nav">
-                            <ul class="nav">
-                                <!-- left sidebar fragment will start here -->
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">Blog</a></li>
-                                <li><a href="#">Articles</a></li>
-                                <li><a href="#">Content-1</a></li>
-                                <li><a href="#">Content-2</a></li>
-                                <li><a href="#">Content-3</a></li>
-                                <li><a href="#">Admin</a></li>
-                                <!-- left sidebar fragment should end here -->
-                            </ul>
-                        </div><!--/.well -->
-                    </div><!--/span-->
-
-
-
-                    <div class="col-xs-12 col-sm-8">
-                        <div class="jumbotron">
-                            <h1>I heard you like cheese.</h1>
-                            <p>But check out the side-toggling navbars first. #dual-wielding</p>
-                        </div>
-                        <div class="row">
-
-                            <div id="blog-post-display"></div>
-                        </div><!--/row-->
-                    </div><!--/.col-xs-12.col-sm-9-->
-
-                    <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
-                        <div class="well sidebar-nav">
-                            <div id="tagcloud"></div>
-                        </div><!--/.well -->
-                    </div><!--/span-->
-                </div><!--/row-->
-            </div>
+            
 
             <hr>
+            
+            <div class="container-fluid">
+                <div class="col-md-1">
+                <div class="sidebar-nav-fixed pull-right affix">
 
+                    <ul class="nav ">
+                        <br/>
+
+                        <%@include file="tagCloudSidebar.jsp" %>
+
+                    </ul>
+
+                </div> 
+
+
+            </div>
+            </div>
             <footer>
                 <p>&copy; 2015 Company, Inc.</p>
             </footer>
+            
         </div><!--/.container-->
 
 
@@ -161,8 +141,9 @@
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
-        <%@include file="scripts_js.jsp" %>
+
         <%@include file="footer.jsp" %>
+        <%@include file="scripts_js.jsp" %>
 
     </div>
 </body>

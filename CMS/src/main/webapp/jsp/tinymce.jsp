@@ -15,7 +15,7 @@
         inline: false
     });</script>
 
-<div id="contentDiv"></div>
+
 <form>
     <input type="text" id='csvHashTags'/>
     <select id="categories" name="categories">
@@ -24,3 +24,5 @@
     <textarea id="htmlOutput"><b>Post rich content here.</b></textarea>
     <button id="tiny-submit" type="button">Render this content</button>
 </form>
+<div id="contentDiv"></div>
+

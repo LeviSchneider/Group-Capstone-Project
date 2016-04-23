@@ -27,10 +27,10 @@ public class HomeController {
 
         //this attribute is used to set the content of the middle pane
         //it refers to the JSP file, without the JSP extension
-        session.setAttribute("page", "tempLandingPage");
+        session.setAttribute("page", "blog");
         //this attribute is used to include any JavaScript pages associated with the above page
         //this is so we don't have to include JS pages that we don't need
-        session.setAttribute("js_page", "tempLandingPage.js");
+        session.setAttribute("js_page", "blog.js");
         return "home";
 
     }
@@ -43,6 +43,7 @@ public class HomeController {
         //this attribute is used to include any JavaScript pages associated with the above page
         //this is so we don't have to include JS pages that we don't need
         session.setAttribute("js_page", "blog.js");
+        
         return "home";
     }
 
@@ -51,6 +52,7 @@ public class HomeController {
         //this attribute is used to set the content of the middle pane
         //it refers to the JSP file, without the JSP extension
         session.setAttribute("page", "tinymce");
+        
         //this attribute is used to include any JavaScript pages associated with the above page
         //this is so we don't have to include JS pages that we don't need
         session.setAttribute("js_page", "tinymce.js");
