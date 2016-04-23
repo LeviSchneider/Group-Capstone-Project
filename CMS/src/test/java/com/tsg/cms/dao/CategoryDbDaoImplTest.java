@@ -79,7 +79,7 @@ public class CategoryDbDaoImplTest {
         blogPost1.setUserIdFK(11);
         blogPost1.setStatus("Published");
         blogPost1.setPostType("International");
-
+        blogPost1.setTitleNumber("zzz");
         blogPost2 = new BlogPost();
 
         blogPost2.setDateSubmitted(date);
@@ -90,7 +90,8 @@ public class CategoryDbDaoImplTest {
         blogPost2.setUserIdFK(22);
         blogPost2.setStatus("PendingForApproval");
         blogPost2.setPostType("Local");
-
+        blogPost2.setTitleNumber("zzz");
+        
         blogPost3 = new BlogPost();
 
         blogPost3.setDateSubmitted(date);
@@ -101,7 +102,8 @@ public class CategoryDbDaoImplTest {
         blogPost3.setUserIdFK(33);
         blogPost3.setStatus("Draft");
         blogPost3.setPostType("Local");
-
+        blogPost3.setTitleNumber("zzz");
+        
         blogDao.addBlogPost(blogPost1);
         blogDao.addBlogPost(blogPost2);
         blogDao.addBlogPost(blogPost3);

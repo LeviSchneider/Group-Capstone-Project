@@ -33,7 +33,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     private static final String SQL_DELETE_BLOGPOST
             = "delete from blogPosts where postId = ?";
     private static final String SQL_UPDATE_BLOGPOST
-            = "update blogPosts set dateSubmitted = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, status = ?, postType = ?, titleNumber = ?";
+            = "update blogPosts set dateSubmitted = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, status = ?, postType = ?, titleNumber = ? where postId = ?";
     private static final String SQL_SELECT_ALL_BLOGPOST
             = "select * from blogPosts ORDER BY postId DESC";
     private static final String SQL_SELECT_BLOGPOST
@@ -51,19 +51,20 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public BlogPost addBlogPost(BlogPost blogPost) {
-        
+
         setTitleNumber(blogPost);
 
         jdbcTemplate.update(SQL_INSERT_BLOGPOST,
-                blogPost.getDateSubmitted(),
-                blogPost.getStartDate(),
-                blogPost.getEndDate(),
-                blogPost.getTitle(),
-                blogPost.getPostBody(),
-                blogPost.getUserIdFK(),
-                blogPost.getStatus(),
-                blogPost.getPostType(),
-                blogPost.getTitleNumber());
+                            blogPost.getDateSubmitted(),
+                            blogPost.getStartDate(),
+                            blogPost.getEndDate(),
+                            blogPost.getTitle(),
+                            blogPost.getPostBody(),
+                            blogPost.getUserIdFK(),
+                            blogPost.getStatus(),
+                            blogPost.getPostType(),
+                            blogPost.getTitleNumber());
+
         blogPost.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         return blogPost;
     }
@@ -78,15 +79,17 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     public void updateBlogPost(BlogPost blogPost) {
         setTitleNumber(blogPost);
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
-                blogPost.getDateSubmitted(),
-                blogPost.getStartDate(),
-                blogPost.getEndDate(),
-                blogPost.getTitle(),
-                blogPost.getPostBody(),
-                blogPost.getUserIdFK(),
-                blogPost.getStatus(),
-                blogPost.getPostType(),
-                blogPost.getTitleNumber());
+                            blogPost.getDateSubmitted(),
+                            blogPost.getStartDate(),
+                            blogPost.getEndDate(),
+                            blogPost.getTitle(),
+                            blogPost.getPostBody(),
+                            blogPost.getUserIdFK(),
+                            blogPost.getStatus(),
+                            blogPost.getPostType(),
+                            blogPost.getTitleNumber(),
+                            blogPost.getPostId()
+        );
     }
 
     @Override
@@ -170,11 +173,10 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             }
         }
     }
-    
+
     //search for all posts with same title; if none exist, set titleNumber to title.
     //if the title already exists, extract titlenumbers from result.
     //loop through title numbers and find the lowest.
-
     private static final class BlogPostMapper implements RowMapper<BlogPost> {
 
         @Override
