@@ -30,7 +30,8 @@ $(document).ready(function () {
         }).success(function (data, status) {
             var postId = data.postId;
             var tagString = $('#csvHashTags').val();
-            
+            var category = $('#categories').val();
+
             $.ajax({
                 type: 'POST',
                 url: 'tag/' + postId,
@@ -39,7 +40,21 @@ $(document).ready(function () {
                 ,
                 headers: {
                     'Accept': 'text/plain',
-                    'Content-Type': 'text/plainn'
+                    'Content-Type': 'text/plain'
+
+                },
+                'dataType': 'json'
+            });
+            $.ajax({
+                type: 'POST',
+                url: 'category/' + postId,
+                data: JSON.stringify({
+                    categoryId: category
+
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 'dataType': 'json'
             });
@@ -87,10 +102,44 @@ function loadCategories() {
 
             contentDiv
                     .append($('<option>')
-                    .attr({'value': category.categoryName })
-                    .text(category.categoryName));
+                            .attr({'value': category.categoryId})
+                            .text(category.categoryName));
         });
 
     });
 }
 
+function addCategoryButton() {
+    event.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: 'category',
+        data: JSON.stringify({
+            categoryName: $('#add-category').val()
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        'dataType': 'json'
+    }).success(function (data, status) {
+        $('#add-category').val('');
+        var contentDiv = $('#categories');
+        var categoryIdForDropDown;
+
+        contentDiv
+                .append($('<option>')
+                        .attr({'value': data.category.categoryId})
+                        .text(data.category.categoryName));
+        categoryIdForDropDown = data.category.categoryId;
+
+        $('#categories').effect("highlight");
+        $('#categories').val(categoryIdForDropDown);
+
+    }).error(function (data, status) {
+        $.each(data.responseJSON.fieldErrors, function (index, validationError) {
+
+            alert(validationError.message);
+        });
+    });
+}

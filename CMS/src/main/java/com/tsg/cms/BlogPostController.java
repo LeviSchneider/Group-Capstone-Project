@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import com.tsg.cms.dao.BlogPostDbDao;
+import com.tsg.cms.dao.CategoryDbDao;
 import com.tsg.cms.dao.TagDbDao;
 import com.tsg.cms.dto.BlogPostContainer;
+import com.tsg.cms.dto.CategoryContainer;
 import com.tsg.cms.dto.TagContainer;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -33,11 +36,13 @@ public class BlogPostController {
 
     private final BlogPostDbDao dao;
     private final TagDbDao tagDao;
+    private final CategoryDbDao categoryDao;
 
     @Inject
-    public BlogPostController(BlogPostDbDao dao, TagDbDao tagDao) {
+    public BlogPostController(BlogPostDbDao dao, TagDbDao tagDao, CategoryDbDao categoryDao) {
         this.dao = dao;
         this.tagDao = tagDao;
+        this.categoryDao = categoryDao;
     }
 
     //We'll need methods to
@@ -50,11 +55,19 @@ public class BlogPostController {
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.GET)
     @ResponseBody
     public BlogPostContainer getBlogPost(@PathVariable("id") int id) {
+        
         BlogPostContainer container = new BlogPostContainer();
         container.setBlogPost(dao.getBlogPostById(id));
-        TagContainer tagContainer = new TagContainer();
 
+        TagContainer tagContainer = new TagContainer();
         tagContainer.setTagList(tagDao.getPostTags(id));
+
+        CategoryContainer categoryContainer = new CategoryContainer();
+        categoryContainer.setCategoryList(categoryDao.getPostCategories(id));
+
+        container.setTagContainer(tagContainer);
+        container.setCategoryContainer(categoryContainer);
+        
         return container;
     }
 
@@ -88,21 +101,28 @@ public class BlogPostController {
     @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
     @ResponseBody
     public List<BlogPostContainer> getAllBlogPost() {
-        
+
         List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
         List<BlogPost> blogPosts = dao.getAllBlogPost();
-        for (BlogPost blogPost : blogPosts) {
-            TagContainer tagContainer = new TagContainer();
 
-            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+        for (BlogPost blogPost : blogPosts) {
+
             BlogPostContainer blogPostContainer = new BlogPostContainer();
-            
-            blogPostContainer.setBlogPost(blogPost);
+
+            TagContainer tagContainer = new TagContainer();
+            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
             blogPostContainer.setTagContainer(tagContainer);
+      
+            CategoryContainer categoryContainer = new CategoryContainer();
+            categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
+            blogPostContainer.setCategoryContainer(categoryContainer);
+                        
+            blogPostContainer.setBlogPost(blogPost);
+
             blogPostContainerList.add(blogPostContainer);
         }
         return blogPostContainerList;
-        
+
     }
 
 //    @RequestMapping(value = "/tags", method=RequestMethod.GET)
