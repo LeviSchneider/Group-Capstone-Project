@@ -109,3 +109,37 @@ function loadCategories() {
     });
 }
 
+function addCategoryButton() {
+    event.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: 'category',
+        data: JSON.stringify({
+            categoryName: $('#add-category').val()
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        'dataType': 'json'
+    }).success(function (data, status) {
+        $('#add-category').val('');
+        var contentDiv = $('#categories');
+        var categoryIdForDropDown;
+
+        contentDiv
+                .append($('<option>')
+                        .attr({'value': data.category.categoryId})
+                        .text(data.category.categoryName));
+        categoryIdForDropDown = data.category.categoryId;
+
+        $('#categories').effect("highlight");
+        $('#categories').val(categoryIdForDropDown);
+
+    }).error(function (data, status) {
+        $.each(data.responseJSON.fieldErrors, function (index, validationError) {
+
+            alert(validationError.message);
+        });
+    });
+}

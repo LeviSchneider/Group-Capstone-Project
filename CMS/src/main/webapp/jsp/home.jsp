@@ -71,6 +71,7 @@
 
             <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+            <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
             <script src="${pageContext.request.contextPath}/js/${js_page}"></script>
 

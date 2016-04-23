@@ -93,29 +93,33 @@ function populateBlogPosts(data, status) {
 
             var tagList = blogPostContainer.tagContainer.tagList;
             var categoryList = blogPostContainer.categoryContainer.categoryList;
-            
+
             blogPanel
                     .append($('<div>')
                             .addClass("panel panel-default")
-                            .append('<div>')
-                            .addClass("panel-body")
-                            .append(blogPostContainer.blogPost.postBody)
                             .append($('<div>')
+                                    .addClass('panel-heading')
+                                    .append(blogPostContainer.blogPost.title + " by: Mayor McCheese (" + blogPostContainer.blogPost.dateSubmitted +")"))
+                            .append($('<div>')
+                                    .addClass('panel-body')
+                                    .append(blogPostContainer.blogPost.postBody))
+                            .append($('<div>')
+                                    .addClass('panel-footer')
                                     .attr({'id': 'post' + blogPostContainer.blogPost.postId})
                                     ));
             $.each(tagList, function (index, tag) {
 
                 $('#post' + blogPostContainer.blogPost.postId)
                         .append($('<span>')
-                                .addClass("panel-body-blogtags")
-                                .append(tag));
+                                .addClass('panel-body-blogtags')
+                                .append("#" + tag + " "));
             });
             $.each(categoryList, function (index, category) {
 
                 $('#post' + blogPostContainer.blogPost.postId)
                         .append($('<span>')
-                                .addClass("panel-body-blogcategories")
-                                .append(category.categoryName));
+                                .addClass('panel-body-blogcategories')
+                                .append("(In category: " + category.categoryName + ")"));
             });
         });
     });

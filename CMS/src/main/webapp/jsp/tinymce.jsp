@@ -17,10 +17,15 @@
 
 <div id="contentDiv"></div>
 <form>
-    <input type="text" id='csvHashTags'/>
+    <input type="text" id="csvHashTags" placeholder="Add a hashtag..."/>
     <select id="categories" name="categories">
-        <option value="none">Choose a Category</option>
+        <option value="none">Choose Existing Category</option>
     </select>
+
+            <input id="add-category" type="text" placeholder="Add a NEW category...">
+
+        <button onclick="addCategoryButton()" class="btn btn-primary">Add</button>
+
     <textarea id="htmlOutput"><b>Post rich content here.</b></textarea>
     <button id="tiny-submit" type="button">Render this content</button>
 </form>
