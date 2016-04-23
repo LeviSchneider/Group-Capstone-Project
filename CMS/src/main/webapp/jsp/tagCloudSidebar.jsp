@@ -1,1 +1,1 @@
-<div id="tagcloud"> </div>
+<div id="tagcloud"></div>

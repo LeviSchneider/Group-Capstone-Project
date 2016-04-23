@@ -6,7 +6,6 @@
 
 
 $(document).ready(function () {
-   // loadTags();
     loadCategories();
 
     $('#tiny-submit').click(function (event) {
@@ -65,32 +64,6 @@ $(document).ready(function () {
     });
 });
 
-function loadTags() {
-    clearTagsDiv();
-
-    var contentDiv = $('#contentDiv');
-
-    $.ajax({
-        type: 'GET',
-        url: 'tags'
-    }).success(function (data, status) {
-
-        $.each(data.tagList, function (index, post) {
-
-            contentDiv
-                    .append($('<div>')
-                            .addClass("panel panel-default")
-                            .append('<div>')
-                            .addClass("panel-body")
-                            .append(post));
-        });
-
-    });
-}
-
-function clearTagsDiv() {
-    $('#contentDiv').empty();
-}
 
 function loadCategories() {
     var contentDiv = $('#categories');

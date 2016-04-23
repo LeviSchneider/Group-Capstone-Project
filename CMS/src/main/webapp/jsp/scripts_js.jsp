@@ -15,7 +15,7 @@
 <script>
 
     $(document).ready(function () {
-
+        loadTags();
         $('#click-me').click(function () {
 
             [].forEach.call($("*"), function (a) {
@@ -23,6 +23,42 @@
             });
         });
     });
+    
+    function loadTags() {
+        var tagCloud = $('#tagcloud');
+        var tagString = "";
+        var counter = 0;
+        $.ajax({
+            type: 'GET',
+            url: 'tags/10'
+        }).success(function (data, status) {
+            $.each(data, function (index, tagMap) {
+                if (counter === 2)
+                {
+                    for (var key in tagMap) {
+                        if (tagMap[key] <= 3) {
+                            tagString += "<a>";
+                            tagString += " #" + key;
+                            tagString += "</a>";
+                        } else if (tagMap[key] <= 7) {
+                            tagString += "<a style='font-size:150%'>";
+                            tagString += " #" + key;
+                            tagString += "</a>";
+                        } else {
+                            tagString += "<a style='font-size:200%'>";
+                            tagString += " #" + key;
+                            tagString += "</a>";
+                        }
+                    }
 
-
+                    tagCloud.addClass("panel panel-default")
+                            .append('<div>')
+                            .addClass("panel-body")
+                            .append(tagString)
+                            .append($('<div>'));
+                }
+                counter++;
+            });
+        });
+    }
 </script>
