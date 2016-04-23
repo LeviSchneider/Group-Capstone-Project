@@ -21,6 +21,7 @@ import com.tsg.cms.dao.TagDbDao;
 import com.tsg.cms.dto.BlogPostContainer;
 import com.tsg.cms.dto.TagContainer;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  *
