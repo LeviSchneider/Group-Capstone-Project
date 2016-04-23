@@ -5,7 +5,6 @@
  */
 package com.tsg.cms;
 
-import java.util.List;
 import javax.inject.Inject;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
