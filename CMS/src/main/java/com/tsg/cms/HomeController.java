@@ -86,8 +86,6 @@ public class HomeController {
 
     @RequestMapping(value = "/categoryAdmin", method = RequestMethod.GET)
     public String showCategoryAdmin(HttpServletRequest req, Model model, HttpSession session) {
-        String htmlOutput = req.getParameter("htmlOutput");
-        model.addAttribute("htmlOutput", htmlOutput);
         //this attribute is used to set the content of the middle pane
         //it refers to the JSP file, without the JSP extension
         session.setAttribute("page", "categoryAdmin");
