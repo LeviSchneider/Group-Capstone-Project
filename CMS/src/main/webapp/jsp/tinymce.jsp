@@ -13,7 +13,11 @@
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image| youtube",
         contextmenu: "link image inserttable | cell row column deletetable",
         inline: false
-    });</script>
+    });
+
+    var editBlogPostId = ${editBlogPostId};
+
+</script>
 
 
 <form>

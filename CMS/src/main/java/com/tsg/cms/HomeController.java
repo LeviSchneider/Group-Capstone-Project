@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -59,18 +61,7 @@ public class HomeController {
         return "home";
     }
 
-    @RequestMapping(value = "/tinymce", method = RequestMethod.GET)
-    public String showEditor(Map<String, Object> model, HttpSession session) {
-        //this attribute is used to set the content of the middle pane
-        //it refers to the JSP file, without the JSP extension
-        session.setAttribute("page", "tinymce");
-        
-        //this attribute is used to include any JavaScript pages associated with the above page
-        //this is so we don't have to include JS pages that we don't need
-        session.setAttribute("js_page", "tinymce.js");
-        return "home";
-    }
-
+    
     @RequestMapping(value = "/render", method = RequestMethod.POST)
     public String renderHtmlOutput(HttpServletRequest req, Model model, HttpSession session) {
         String htmlOutput = req.getParameter("htmlOutput");
@@ -111,4 +102,6 @@ public class HomeController {
         //session.setAttribute("js_page", "tempLandingPage.js");
         return "home";
     }
+    
+
 }

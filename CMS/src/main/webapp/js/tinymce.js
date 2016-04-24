@@ -26,12 +26,12 @@ $(document).ready(function () {
         // autosave does not redirect
         //However if you try to publish a saved post, it doesn't update
         //so we need to have the Update functionality working first
-        
+
         //window.location = 'blog';
     });
 
     //autosaves every 1 minute
-   //setInterval(createPost, 60000);
+    //setInterval(createPost, 60000);
 
 });
 
@@ -114,7 +114,7 @@ function updatePost() {
         },
         'dataType': 'json'
     }).success(function (data, status) {
-        
+
         var category = $('#categories').val();
         if (category !== "none") {
             $.ajax({
@@ -140,7 +140,7 @@ function loadCategories() {
     var contentDiv = $('#categories');
     $.ajax({
         type: 'GET',
-        url: 'categories'
+        url: '/CMS/categories'
     }).success(function (data, status) {
 
         $.each(data, function (index, category) {

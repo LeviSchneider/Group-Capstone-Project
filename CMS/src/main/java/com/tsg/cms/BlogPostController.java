@@ -23,8 +23,12 @@ import com.tsg.cms.dto.BlogPostContainer;
 import com.tsg.cms.dto.CategoryContainer;
 import com.tsg.cms.dto.TagContainer;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -49,13 +53,6 @@ public class BlogPostController {
 
     }
 
-    //We'll need methods to
-    //-add blogPost
-    //-delete blogPost
-    //-update a particular piece of blogPost
-    //-get published blogPost depending on whether it's a blog post or static page
-    //-get ALL blogPost for editing purposes
-    //
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.GET)
     @ResponseBody
     public BlogPostContainer getBlogPost(@PathVariable("id") int id) {
@@ -147,9 +144,24 @@ public class BlogPostController {
 
     }
 
-//    @RequestMapping(value = "/tags", method=RequestMethod.GET)
-//    public List<String> getAllTags()
-//    {
-//        return dao.getAllTags();
-//    }
+    @RequestMapping(value = "/tinymce", method = RequestMethod.GET)
+    public String showEditor(Map<String, Object> model, HttpSession session) {
+      
+        session.setAttribute("page", "tinymce");
+
+        session.setAttribute("js_page", "tinymce.js");
+        return "home";
+    }
+
+    @RequestMapping(value = "/tinymce/{id}", method = RequestMethod.GET)
+    public String showPopulatedEditor(@PathVariable("id") int id, Map<String, Object> model, HttpSession session) {
+        
+        //model.put("blogPost", dao.getBlogPostById(id));
+        session.setAttribute("page", "tinymce");
+
+        session.setAttribute("js_page", "tinymce.js");
+        model.put("editBlogPostId", id);
+        return "home";
+    }
+
 }
