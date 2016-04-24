@@ -20,7 +20,7 @@ $(document).ready(function () {
 
         event.preventDefault();
         $('#post-status').val("Published");
-        createPost();
+        updatePost();
         //this only redirects on a Publish.
         // hitting Save does not redirect 
         // autosave does not redirect
@@ -55,6 +55,7 @@ function createPost() {
         'dataType': 'json'
     }).success(function (data, status) {
         var postId = data.postId;
+        $('#tiny-blogpost-id').val(postId);
         //var tagString = $('#csvHashTags').val();
         var category = $('#categories').val();
 //            if (tagString !== "") {
@@ -73,6 +74,47 @@ function createPost() {
 //                });
 //            }
 
+        if (category !== "none") {
+            $.ajax({
+                type: 'POST',
+                url: 'category/' + postId,
+                data: JSON.stringify({
+                    categoryId: category
+
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                'dataType': 'json'
+            });
+        }
+
+
+    });
+}
+function updatePost() {
+    var postId = $('#tiny-blogpost-id').val();
+    $.ajax({
+        type: 'PUT',
+        url: 'blogPost/' + postId,
+        data: JSON.stringify({
+            dateSubmitted: '2016-12-28',
+            startDate: $('#start-date').val(),
+            endDate: $('#end-date').val(),
+            title: $('#post-title').val(),
+            postBody: tinyMCE.activeEditor.getContent(),
+            status: $('#post-status').val(),
+            postType: 'blogPost'
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        'dataType': 'json'
+    }).success(function (data, status) {
+        
+        var category = $('#categories').val();
         if (category !== "none") {
             $.ajax({
                 type: 'POST',

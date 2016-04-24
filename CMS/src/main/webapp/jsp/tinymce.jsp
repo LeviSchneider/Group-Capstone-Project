@@ -36,7 +36,8 @@
         <option value="unpublished">Unpublished</option>
         <option value="published">Published</option>
     </select>
-    <button id="tiny-save" type="button">Save</button>    
+    <button id="tiny-save" type="button">Save</button>
+    <input type="hidden" id="tiny-blogpost-id"/>
     <button id="tiny-publish" type="button">Publish</button>
 </form>
 <div id="contentDiv"></div>
