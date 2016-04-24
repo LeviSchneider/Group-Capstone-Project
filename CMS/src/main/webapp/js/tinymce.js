@@ -8,44 +8,72 @@
 $(document).ready(function () {
     loadCategories();
 
-    $('#tiny-submit').click(function (event) {
+    $('#tiny-save').click(function (event) {
+
         event.preventDefault();
+        $('#post-status').val();
+        createPost();
 
-        $.ajax({
-            type: 'POST',
-            url: 'blogPost',
-            data: JSON.stringify({
-                dateSubmitted: '2016-12-28',
-                startDate: $('#start-date').val(),
-                endDate: $('#end-date').val(),
-                title: 'This is a title',
-                postBody: tinyMCE.activeEditor.getContent(),
-                status: 'draft',
-                postType: 'blogPost'
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            'dataType': 'json'
-        }).success(function (data, status) {
-            var postId = data.postId;
-            var tagString = $('#csvHashTags').val();
-            var category = $('#categories').val();
+    });
 
-            $.ajax({
-                type: 'POST',
-                url: 'tag/' + postId,
-                data:
-                        tagString
-                ,
-                headers: {
-                    'Accept': 'text/plain',
-                    'Content-Type': 'text/plain'
+    $('#tiny-publish').click(function (event) {
 
-                },
-                'dataType': 'json'
-            });
+        event.preventDefault();
+        $('#post-status').val("Published");
+        createPost();
+        //this only redirects on a Publish.
+        // hitting Save does not redirect 
+        // autosave does not redirect
+        //However if you try to publish a saved post, it doesn't update
+        //so we need to have the Update functionality working first
+        
+        window.location = 'blog';
+    });
+
+    //autosaves every 1 minute
+    setInterval(createPost, 60000);
+
+});
+
+function createPost() {
+    $.ajax({
+        type: 'POST',
+        url: 'blogPost',
+        data: JSON.stringify({
+            dateSubmitted: '2016-12-28',
+            startDate: $('#start-date').val(),
+            endDate: $('#end-date').val(),
+            title: $('#post-title').val(),
+            postBody: tinyMCE.activeEditor.getContent(),
+            status: $('#post-status').val(),
+            postType: 'blogPost'
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        'dataType': 'json'
+    }).success(function (data, status) {
+        var postId = data.postId;
+        //var tagString = $('#csvHashTags').val();
+        var category = $('#categories').val();
+//            if (tagString !== "") {
+//                $.ajax({
+//                    type: 'POST',
+//                    url: 'tag/' + postId,
+//                    data:
+//                            tagString
+//                    ,
+//                    headers: {
+//                        'Accept': 'text/plain',
+//                        'Content-Type': 'text/plain'
+//
+//                    },
+//                    'dataType': 'json'
+//                });
+//            }
+
+        if (category !== "none") {
             $.ajax({
                 type: 'POST',
                 url: 'category/' + postId,
@@ -59,15 +87,14 @@ $(document).ready(function () {
                 },
                 'dataType': 'json'
             });
-            window.location = 'blog';
-        });
-    });
-});
+        }
 
+
+    });
+}
 
 function loadCategories() {
     var contentDiv = $('#categories');
-
     $.ajax({
         type: 'GET',
         url: 'categories'
@@ -100,16 +127,13 @@ function addCategoryButton() {
         $('#add-category').val('');
         var contentDiv = $('#categories');
         var categoryIdForDropDown;
-
         contentDiv
                 .append($('<option>')
                         .attr({'value': data.category.categoryId})
                         .text(data.category.categoryName));
         categoryIdForDropDown = data.category.categoryId;
-
         $('#categories').effect("highlight");
         $('#categories').val(categoryIdForDropDown);
-
     }).error(function (data, status) {
         $.each(data.responseJSON.fieldErrors, function (index, validationError) {
 

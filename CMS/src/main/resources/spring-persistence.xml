@@ -48,4 +48,5 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     
+    <bean id="HashTagMatcher" class="com.tsg.cms.HashTagMatcher"/>    
 </beans>

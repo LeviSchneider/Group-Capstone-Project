@@ -67,6 +67,7 @@ public class TagDbDaoImpl implements TagDbDao {
             //ignore attempts to add same hashtag and just update bridge table
         }
         int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new String[]{tag}, Integer.class);
+       
         jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE,
                 hashTagId,
                 postId);

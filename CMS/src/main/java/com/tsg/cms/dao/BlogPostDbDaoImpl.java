@@ -25,20 +25,36 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
+    private static final String SQL_SELECT_BLOGPOST_PREFIX
+            = "select *, `postStatusName` as status from blogPosts JOIN postStatusBlogPostBridge "
+            + "on postStatusBlogPostBridge.blogPostIdFK = blogPosts.PostId "
+            + "JOIN postStatus "
+            + "on postStatusBlogPostBridge.postStatusIdFK = postStatus.postStatusId";
+    private static final String SQL_SUFFIX 
+            = " ORDER by postId DESC"; 
     private static final String SQL_INSERT_BLOGPOST
-            = "insert into blogPosts (dateSubmitted, startDate, endDate, title, postBody, userIdFK, status, postType, titleNumber) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            = "insert into blogPosts (dateSubmitted, startDate, endDate, title, postBody, userIdFK, postType, titleNumber) value(?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE_BLOGPOST
             = "delete from blogPosts where postId = ?";
     private static final String SQL_UPDATE_BLOGPOST
-            = "update blogPosts set dateSubmitted = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, status = ?, postType = ?, titleNumber = ? where postId = ?";
+            = "update blogPosts set dateSubmitted = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, postType = ?, titleNumber = ? where postId = ?";
     private static final String SQL_SELECT_ALL_BLOGPOST
-            = "select * from blogPosts ORDER BY postId DESC";
+            = SQL_SELECT_BLOGPOST_PREFIX + SQL_SUFFIX;
     private static final String SQL_SELECT_BLOGPOST
-            = "select * from blogPosts where postId = ?";
+            = SQL_SELECT_BLOGPOST_PREFIX + " where postId = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLENUMBER
-            = "select * from blogPosts where titleNumber = ?";
+            = SQL_SELECT_BLOGPOST_PREFIX + " where titleNumber = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLE
-            = "select * from blogPosts where title = ?";
+            = SQL_SELECT_BLOGPOST_PREFIX + " where title = ?";
+    private static final String SQL_SELECT_BLOGPOST_STATUS
+            = "SELECT postStatusName as status FROM `postStatus` inner join postStatusBlogPostBridge on postStatusBlogPostBridge.postStatusIdFK = postStatus.postStatusId where blogPostIdFK = ?";
+    private static final String SQL_INSERT_BLOGPOST_STATUS_INTO_BRIDGE
+            = "INSERT INTO `postStatusBlogPostBridge`(`postStatusIdFK`, `blogPostIdFK`) VALUES (?, ?)";
+    private static final String SQL_UPDATE_BLOGPOST_STATUS_INTO_BRIDGE
+            = "update `postStatusBlogPostBridge` set `postStatusIdFK` = ? WHERE `blogPostIdFK` = ? ";
+    private static final String SQL_SELECT_STATUS
+            = "SELECT postStatusId from postStatus where postStatusName = ?";
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -58,11 +74,13 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
                             blogPost.getTitle(),
                             blogPost.getPostBody(),
                             blogPost.getUserIdFK(),
-                            blogPost.getStatus(),
                             blogPost.getPostType(),
                             blogPost.getTitleNumber());
 
         blogPost.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
+        int postStatusId = jdbcTemplate.queryForObject(SQL_SELECT_STATUS, new String[]{blogPost.getStatus()}, Integer.class);
+
+        jdbcTemplate.update(SQL_INSERT_BLOGPOST_STATUS_INTO_BRIDGE, postStatusId, blogPost.getPostId());
         return blogPost;
     }
 
@@ -82,11 +100,13 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
                             blogPost.getTitle(),
                             blogPost.getPostBody(),
                             blogPost.getUserIdFK(),
-                            blogPost.getStatus(),
                             blogPost.getPostType(),
                             blogPost.getTitleNumber(),
                             blogPost.getPostId()
         );
+        int postStatusId = jdbcTemplate.queryForObject(SQL_SELECT_STATUS, new String[]{blogPost.getStatus()}, Integer.class);
+
+        jdbcTemplate.update(SQL_UPDATE_BLOGPOST_STATUS_INTO_BRIDGE, postStatusId, blogPost.getPostId());
     }
 
     @Override
@@ -171,6 +191,15 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         }
     }
 
+    @Override
+    public String getBlogPostStatus(int postId) {
+        try {
+            return jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_STATUS, String.class, postId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     //search for all posts with same title; if none exist, set titleNumber to title.
     //if the title already exists, extract titlenumbers from result.
     //loop through title numbers and find the lowest.
@@ -185,10 +214,10 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             blogPost.setTitle(rs.getString("title"));
             blogPost.setPostBody(rs.getString("postBody"));
             blogPost.setUserIdFK(rs.getInt("userIdFK"));
-            blogPost.setStatus(rs.getString("status"));
             blogPost.setPostType(rs.getString("postType"));
             blogPost.setPostId(rs.getInt("postId"));
-            blogPost.setTitleNumber("titleNumber");
+            blogPost.setTitleNumber(rs.getString("titleNumber"));
+            blogPost.setStatus(rs.getString("status"));
             return blogPost;
         }
 

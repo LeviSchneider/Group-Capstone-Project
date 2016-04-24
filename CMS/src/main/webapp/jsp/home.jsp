@@ -20,35 +20,41 @@
     </head>
     <body>
 
+
         <div class="container-fluid">
+
             <div class="row row-offcanvas row-offcanvas-left">
+
                 <div class="row-offcanvas row-offcanvas-right">
 
                     <%@include file="sidebar.jsp" %>
 
                     <div class="col-xs-12 col-sm-8">
-                        <div class="jumbotron">
-                            <h1>I heard you like cheese.</h1>
-                            <p>But check out the side-toggling navbars first. #dual-wielding</p>
-                        </div>
 
-                        <div class="row">
-                            <div id="blog-post-display"></div>
-                        </div>
+                        <%@ include file="header.jsp" %>
+                        <jsp:include page="${page}.jsp"/>
+
                     </div>
 
                     <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
+
                         <div class="well sidebar-nav">
+
                             <%@include file="tagCloudSidebar.jsp" %>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
-            <div class="col-md-12">
-                <div class="col-md-12">        
-                    <jsp:include page="${page}.jsp"/>
-                </div>
+
+            <div class="row">
+                <%@include file="footer.jsp" %>
             </div>
+
+
         </div>
 
         <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
@@ -58,9 +64,11 @@
         <script src="${pageContext.request.contextPath}/js/${js_page}"></script>
 
         <%@include file="scripts_js.jsp" %>
-        <%@include file="footer.jsp" %>
 
-    </div>
-</body>
+
+
+
+    </body>
+
 </html>
 

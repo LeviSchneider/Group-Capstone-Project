@@ -24,6 +24,7 @@ import com.tsg.cms.dto.CategoryContainer;
 import com.tsg.cms.dto.TagContainer;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 
 /**
  *
@@ -37,12 +38,15 @@ public class BlogPostController {
     private final BlogPostDbDao dao;
     private final TagDbDao tagDao;
     private final CategoryDbDao categoryDao;
-
+    private final HashTagMatcher hashTagMatcher;
+    
     @Inject
-    public BlogPostController(BlogPostDbDao dao, TagDbDao tagDao, CategoryDbDao categoryDao) {
+    public BlogPostController(BlogPostDbDao dao, TagDbDao tagDao, CategoryDbDao categoryDao, HashTagMatcher hashTagMatcher ) {
         this.dao = dao;
         this.tagDao = tagDao;
         this.categoryDao = categoryDao;
+        this.hashTagMatcher = hashTagMatcher;
+        
     }
 
     //We'll need methods to
@@ -76,7 +80,17 @@ public class BlogPostController {
     @ResponseBody
     public BlogPost createBlogPost(@RequestBody BlogPost blogPost) {
         blogPost.setUserIdFK(999);
-        return dao.addBlogPost(blogPost);
+        blogPost = dao.addBlogPost(blogPost);
+        
+        String body = blogPost.getPostBody();
+        List<String> tags = hashTagMatcher.findHashTags(body);
+        
+        for (String tag : tags) {
+            System.out.println(tag);
+            tagDao.addTag(tag, blogPost.getPostId());
+        }
+
+        return blogPost ;
     }
 
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.DELETE)

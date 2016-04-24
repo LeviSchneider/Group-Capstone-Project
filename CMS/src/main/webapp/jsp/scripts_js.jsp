@@ -16,6 +16,12 @@
 
     $(document).ready(function () {
         loadTags();
+
+        $('[data-toggle=offcanvas]').click(function () {
+            $('.row-offcanvas').toggleClass('active');
+        });
+
+
         $('#click-me').click(function () {
 
             [].forEach.call($("*"), function (a) {
@@ -23,7 +29,7 @@
             });
         });
     });
-    
+
     function loadTags() {
         var tagCloud = $('#tagcloud');
         var tagString = "";
@@ -38,15 +44,15 @@
                     for (var key in tagMap) {
                         if (tagMap[key] <= 3) {
                             tagString += "<a>";
-                            tagString += " #" + key;
+                            tagString += " " + key;
                             tagString += "</a>";
                         } else if (tagMap[key] <= 7) {
                             tagString += "<a style='font-size:150%'>";
-                            tagString += " #" + key;
+                            tagString += " " + key;
                             tagString += "</a>";
                         } else {
                             tagString += "<a style='font-size:200%'>";
-                            tagString += " #" + key;
+                            tagString += " " + key;
                             tagString += "</a>";
                         }
                     }
