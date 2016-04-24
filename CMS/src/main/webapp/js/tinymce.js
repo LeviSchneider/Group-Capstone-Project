@@ -7,32 +7,40 @@
 
 $(document).ready(function () {
     loadCategories();
-
-    $('#tiny-submit').click(function (event) {
+    $('#tiny-save').click(function (event) {
         event.preventDefault();
+        $('#post-status').val();
+        createPost();
+    });
+    $('#tiny-publish').click(function (event) {
+        event.preventDefault();
+        $('#post-status').val("published");
+        createPost();
+    });
+});
 
-        $.ajax({
-            type: 'POST',
-            url: 'blogPost',
-            data: JSON.stringify({
-                dateSubmitted: '2016-12-28',
-                startDate: $('#start-date').val(),
-                endDate: $('#end-date').val(),
-                title: $('#post-title').val(),
-                postBody: tinyMCE.activeEditor.getContent(),
-                status: $('#post-status').val(),
-                postType: 'blogPost'
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            'dataType': 'json'
-        }).success(function (data, status) {
-            var postId = data.postId;
-            //var tagString = $('#csvHashTags').val();
-            var category = $('#categories').val();
-
+function createPost() {
+    $.ajax({
+        type: 'POST',
+        url: 'blogPost',
+        data: JSON.stringify({
+            dateSubmitted: '2016-12-28',
+            startDate: $('#start-date').val(),
+            endDate: $('#end-date').val(),
+            title: $('#post-title').val(),
+            postBody: tinyMCE.activeEditor.getContent(),
+            status: $('#post-status').val(),
+            postType: 'blogPost'
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        'dataType': 'json'
+    }).success(function (data, status) {
+        var postId = data.postId;
+        //var tagString = $('#csvHashTags').val();
+        var category = $('#categories').val();
 //            if (tagString !== "") {
 //                $.ajax({
 //                    type: 'POST',
@@ -49,31 +57,28 @@ $(document).ready(function () {
 //                });
 //            }
 
-            if (category !== "none") {
-                $.ajax({
-                    type: 'POST',
-                    url: 'category/' + postId,
-                    data: JSON.stringify({
-                        categoryId: category
+        if (category !== "none") {
+            $.ajax({
+                type: 'POST',
+                url: 'category/' + postId,
+                data: JSON.stringify({
+                    categoryId: category
 
-                    }),
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    'dataType': 'json'
-                });
-            }
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                'dataType': 'json'
+            });
+        }
 
-            window.location = 'blog';
-        });
+        window.location = 'blog';
     });
-});
-
+}
 
 function loadCategories() {
     var contentDiv = $('#categories');
-
     $.ajax({
         type: 'GET',
         url: 'categories'
@@ -86,7 +91,6 @@ function loadCategories() {
                             .attr({'value': category.categoryId})
                             .text(category.categoryName));
         });
-
     });
 }
 
@@ -107,16 +111,13 @@ function addCategoryButton() {
         $('#add-category').val('');
         var contentDiv = $('#categories');
         var categoryIdForDropDown;
-
         contentDiv
                 .append($('<option>')
                         .attr({'value': data.category.categoryId})
                         .text(data.category.categoryName));
         categoryIdForDropDown = data.category.categoryId;
-
         $('#categories').effect("highlight");
         $('#categories').val(categoryIdForDropDown);
-
     }).error(function (data, status) {
         $.each(data.responseJSON.fieldErrors, function (index, validationError) {
 
