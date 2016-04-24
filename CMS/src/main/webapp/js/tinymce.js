@@ -8,6 +8,12 @@
 $(document).ready(function () {
     loadCategories();
 
+    if ($('#post-to-edit-id').val().length !== 0) {
+        
+        populateEditPostData();
+        
+    }
+    
     $('#tiny-save').click(function (event) {
 
         event.preventDefault();
@@ -19,7 +25,7 @@ $(document).ready(function () {
     $('#tiny-publish').click(function (event) {
 
         event.preventDefault();
-        $('#post-status').val('published');
+        $('#post-status').val('Published');
         updatePost();
         //this only redirects on a Publish.
         // hitting Save does not redirect 
@@ -39,7 +45,7 @@ function createPost() {
 
     $.ajax({
         type: 'POST',
-        url: 'blogPost',
+        url: '/CMS/blogPost',
         data: JSON.stringify({
             dateSubmitted: '2016-12-28',
             startDate: $('#start-date').val(),
@@ -78,7 +84,7 @@ function createPost() {
         if (category !== "none") {
             $.ajax({
                 type: 'POST',
-                url: 'category/' + postId,
+                url: '/CMS/category/' + postId,
                 data: JSON.stringify({
                     categoryId: category
 
@@ -95,10 +101,11 @@ function createPost() {
     });
 }
 function updatePost() {
+    alert($('#post-status').val());
     var postId = $('#tiny-blogpost-id').val();
     $.ajax({
         type: 'PUT',
-        url: 'blogPost/' + postId,
+        url: '/CMS/blogPost/' + postId,
         data: JSON.stringify({
             dateSubmitted: '2016-12-28',
             startDate: $('#start-date').val(),
@@ -183,4 +190,52 @@ function addCategoryButton() {
             alert(validationError.message);
         });
     });
+}
+
+function populateEditPostData() {
+    
+    $.ajax({
+        type: 'GET',
+        url: '/CMS/blogPost/' + $('#post-to-edit-id').val()
+        
+    }).success(function (blogPostContainer, status) {
+
+            //var categoryList = blogPostContainer.categoryContainer.categoryList;
+            alert(blogPostContainer.categoryContainer.categoryList[0].categoryName);
+            //$('#start-date').val(blogPostContainer.blogPost.startDate);
+            $('#post-title').val(blogPostContainer.blogPost.title);
+            $('#htmlOutput').val(blogPostContainer.blogPost.postBody);
+            $('#start-date').val(blogPostContainer.blogPost.startDate);
+            $('#end-date').val(blogPostContainer.blogPost.endDate);
+            $('#tiny-blogpost-id').val(blogPostContainer.blogPost.postId);
+            $('select[name="post-status"]').find('option:contains("'+ blogPostContainer.blogPost.status +'")').attr("selected",true);
+
+            $('select[name="categories"]').find('option:contains("'+ blogPostContainer.categoryContainer.categoryList[0].categoryName +'")').attr("selected",true);
+           // $("#post-status[option=" + blogPostContainer.blogPost.status + "]").attr('selected', 'selected'); 
+//                    .append($('<div>')
+//                            .addClass("panel panel-default")
+//                            .append($('<div>')
+//                                    .addClass('panel-heading')
+//                                    .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.dateSubmitted + ')'
+//                                            + ' (Status: ' + blogPostContainer.blogPost.status + ')'
+//                                            + '<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
+//                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'))
+//                            .append($('<div>')
+//                                    .addClass('panel-body')
+//                                    .append(blogPostContainer.blogPost.postBody))
+//                            .append($('<div>')
+//                                    .addClass('panel-footer')
+//                                    .attr({'id': 'post' + blogPostContainer.blogPost.postId})
+//                                    ));
+//            
+//            $.each(categoryList, function (index, category) {
+//
+//                $('#post' + blogPostContainer.blogPost.postId)
+//                        .append($('<span>')
+//                                .addClass('panel-body-blogcategories')
+//                                .append("(In category: " + category.categoryName + ")"));
+//            });
+        });
+   
+    
 }

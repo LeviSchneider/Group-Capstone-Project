@@ -15,13 +15,12 @@
         inline: false
     });
 
-    var editBlogPostId = ${editBlogPostId};
-
 </script>
 
 
-<form>
 
+<form>
+    <input type="hidden" id="post-to-edit-id" value="${editBlogPostId}"/>
     <select id="categories" name="categories">
         <option value="none">Choose Existing Category</option>
     </select>
@@ -35,14 +34,14 @@
     <textarea id="htmlOutput"></textarea>
 
     <select id="post-status" name="post-status">
-        <option value="draft">Draft</option>
-        <option value="pending">Pending</option>
-        <option value="unpublished">Unpublished</option>
-        <option value="published">Published</option>
+        <option value="Draft">Draft</option>
+        <option value="Pending">Pending</option>
+        <option value="Unpublished">Unpublished</option>
+        <option value="Published">Published</option>
     </select>
     <button id="tiny-save" type="button">Save</button>
     <input type="hidden" id="tiny-blogpost-id"/>
     <button id="tiny-publish" type="button">Publish</button>
 </form>
-<div id="contentDiv"></div>
+
 

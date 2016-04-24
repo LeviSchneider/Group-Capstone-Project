@@ -104,8 +104,9 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
                             blogPost.getTitleNumber(),
                             blogPost.getPostId()
         );
+       System.out.println(blogPost.getStatus());
         int postStatusId = jdbcTemplate.queryForObject(SQL_SELECT_STATUS, new String[]{blogPost.getStatus()}, Integer.class);
-
+         
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST_STATUS_INTO_BRIDGE, postStatusId, blogPost.getPostId());
     }
 

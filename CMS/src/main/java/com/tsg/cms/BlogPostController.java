@@ -160,6 +160,7 @@ public class BlogPostController {
         session.setAttribute("page", "tinymce");
 
         session.setAttribute("js_page", "tinymce.js");
+
         model.put("editBlogPostId", id);
         return "home";
     }
