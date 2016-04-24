@@ -7,16 +7,24 @@
 
 $(document).ready(function () {
     loadCategories();
+    
     $('#tiny-save').click(function (event) {
+        
         event.preventDefault();
         $('#post-status').val();
         createPost();
+        
     });
+    
     $('#tiny-publish').click(function (event) {
+        
         event.preventDefault();
-        $('#post-status').val("published");
+        $('#post-status').val("Published");
         createPost();
+
+        
     });
+    
 });
 
 function createPost() {
@@ -72,8 +80,12 @@ function createPost() {
                 'dataType': 'json'
             });
         }
-
+        //this needs to be moved out so hitting Save does not redirect 
+        //(ie, only Publish should redirect).
+        //However if you try to publish a saved post, it doesn't update
+        //so we need to have the Update functionality working first
         window.location = 'blog';
+
     });
 }
 
