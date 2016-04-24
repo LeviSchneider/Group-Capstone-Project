@@ -17,7 +17,7 @@
 
 
 <form>
-    <input type="text" id="csvHashTags" placeholder="Add a hashtag..."/>
+
     <select id="categories" name="categories">
         <option value="none">Choose Existing Category</option>
     </select>
@@ -27,7 +27,15 @@
     <button onclick="addCategoryButton()" class="btn btn-primary">Add</button>
 
     Start Date: <input type="date" id="start-date" /> End Date: <input type="date" id="end-date"/>
+    <br/><input type="text" id="post-title" placeholder="A title is required..."/>
     <textarea id="htmlOutput"></textarea>
+
+    <select id="post-status" name="post-status">
+        <option value="draft">Draft</option>
+        <option value="ready">Ready For Approval</option>
+        <option value="unpublished">Unpublished</option>
+        <option value="published">Published</option>
+    </select>
     <button id="tiny-submit" type="button">Submit</button>
 </form>
 <div id="contentDiv"></div>

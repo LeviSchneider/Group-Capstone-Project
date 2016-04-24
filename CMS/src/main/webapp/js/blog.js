@@ -98,7 +98,8 @@ function populateBlogPosts(data, status) {
                             .addClass("panel panel-default")
                             .append($('<div>')
                                     .addClass('panel-heading')
-                                    .append(blogPostContainer.blogPost.title + " by: Mayor McCheese (" + blogPostContainer.blogPost.dateSubmitted +")"))
+                                    .append(blogPostContainer.blogPost.title + " by: Mayor McCheese (" + blogPostContainer.blogPost.dateSubmitted +")"
+                                        + " (Status: " + blogPostContainer.blogPost.status + ")"))
                             .append($('<div>')
                                     .addClass('panel-body')
                                     .append(blogPostContainer.blogPost.postBody))

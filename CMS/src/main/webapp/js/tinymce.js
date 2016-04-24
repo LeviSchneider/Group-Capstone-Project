@@ -18,9 +18,9 @@ $(document).ready(function () {
                 dateSubmitted: '2016-12-28',
                 startDate: $('#start-date').val(),
                 endDate: $('#end-date').val(),
-                title: 'This is a title',
+                title: $('#post-title').val(),
                 postBody: tinyMCE.activeEditor.getContent(),
-                status: 'draft',
+                status: $('#post-status').val(),
                 postType: 'blogPost'
             }),
             headers: {
@@ -30,35 +30,41 @@ $(document).ready(function () {
             'dataType': 'json'
         }).success(function (data, status) {
             var postId = data.postId;
-            var tagString = $('#csvHashTags').val();
+            //var tagString = $('#csvHashTags').val();
             var category = $('#categories').val();
 
-            $.ajax({
-                type: 'POST',
-                url: 'tag/' + postId,
-                data:
-                        tagString
-                ,
-                headers: {
-                    'Accept': 'text/plain',
-                    'Content-Type': 'text/plain'
+//            if (tagString !== "") {
+//                $.ajax({
+//                    type: 'POST',
+//                    url: 'tag/' + postId,
+//                    data:
+//                            tagString
+//                    ,
+//                    headers: {
+//                        'Accept': 'text/plain',
+//                        'Content-Type': 'text/plain'
+//
+//                    },
+//                    'dataType': 'json'
+//                });
+//            }
 
-                },
-                'dataType': 'json'
-            });
-            $.ajax({
-                type: 'POST',
-                url: 'category/' + postId,
-                data: JSON.stringify({
-                    categoryId: category
+            if (category !== "none") {
+                $.ajax({
+                    type: 'POST',
+                    url: 'category/' + postId,
+                    data: JSON.stringify({
+                        categoryId: category
 
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                'dataType': 'json'
-            });
+                    }),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    'dataType': 'json'
+                });
+            }
+
             window.location = 'blog';
         });
     });
