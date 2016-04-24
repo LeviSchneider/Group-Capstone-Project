@@ -45,6 +45,8 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
             = "select * from categoriesPostsBridge ORDER BY categoriesPostsBridgeId DESC where categoryIdFK = ?";
     private static final String SQL_SELECT_CATEGORY
             = "select * from categories where categoryId = ?";
+    private static final String SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID
+            = "select categoriesPostsBridgeId from categoriesPostsBridge where categoryIdFK = ? and blogPostIdFK = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -57,7 +59,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     public Category addCategory(Category category) throws DuplicateKeyException {
 
         jdbcTemplate.update(SQL_INSERT_CATEGORY,
-                category.getCategoryName());
+                            category.getCategoryName());
         category.setCategoryId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
 
         return category;
@@ -67,18 +69,24 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void addCategoryAndPostToBridge(Category category, int blogPostIdFK) throws DuplicateKeyException {
 
-        jdbcTemplate.update(SQL_INSERT_CATEGORY_INTO_BRIDGE,
-                category.getCategoryId(), blogPostIdFK);
+        Integer bridgeId;
+        try {
+            bridgeId = jdbcTemplate.queryForObject(SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID, new Object[]{category.getCategoryId(), blogPostIdFK}, Integer.class);
+
+        } catch (EmptyResultDataAccessException e) {
+            jdbcTemplate.update(SQL_INSERT_CATEGORY_INTO_BRIDGE,
+                                category.getCategoryId(), blogPostIdFK);
+        }
 
     }
-    
+
     @Override
     public List<Category> getPostCategories(int postId) {
         List<Category> list = jdbcTemplate.query(SQL_SELECT_ALL_CATEGORIES_BY_POST_FROM_BRIDGE, new CategoryMapper(), postId);
-        
+
         return list;
     }
-    
+
     @Override
     public void removeCategory(int categoryId) {
         jdbcTemplate.update(SQL_DELETE_CATEGORY, categoryId);
@@ -87,7 +95,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     @Override
     public Category updateCategory(Category category) {
         jdbcTemplate.update(SQL_UPDATE_CATEGORY,
-                category.getCategoryName(), category.getCategoryId());
+                            category.getCategoryName(), category.getCategoryId());
         return category;
     }
 

@@ -27,7 +27,7 @@ $(document).ready(function () {
         //However if you try to publish a saved post, it doesn't update
         //so we need to have the Update functionality working first
         
-        window.location = 'blog';
+        //window.location = 'blog';
     });
 
     //autosaves every 1 minute

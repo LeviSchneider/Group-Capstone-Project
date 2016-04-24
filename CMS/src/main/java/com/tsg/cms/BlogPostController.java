@@ -39,14 +39,14 @@ public class BlogPostController {
     private final TagDbDao tagDao;
     private final CategoryDbDao categoryDao;
     private final HashTagMatcher hashTagMatcher;
-    
+
     @Inject
-    public BlogPostController(BlogPostDbDao dao, TagDbDao tagDao, CategoryDbDao categoryDao, HashTagMatcher hashTagMatcher ) {
+    public BlogPostController(BlogPostDbDao dao, TagDbDao tagDao, CategoryDbDao categoryDao, HashTagMatcher hashTagMatcher) {
         this.dao = dao;
         this.tagDao = tagDao;
         this.categoryDao = categoryDao;
         this.hashTagMatcher = hashTagMatcher;
-        
+
     }
 
     //We'll need methods to
@@ -59,7 +59,7 @@ public class BlogPostController {
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.GET)
     @ResponseBody
     public BlogPostContainer getBlogPost(@PathVariable("id") int id) {
-        
+
         BlogPostContainer container = new BlogPostContainer();
         container.setBlogPost(dao.getBlogPostById(id));
 
@@ -71,7 +71,7 @@ public class BlogPostController {
 
         container.setTagContainer(tagContainer);
         container.setCategoryContainer(categoryContainer);
-        
+
         return container;
     }
 
@@ -81,16 +81,16 @@ public class BlogPostController {
     public BlogPost createBlogPost(@RequestBody BlogPost blogPost) {
         blogPost.setUserIdFK(999);
         blogPost = dao.addBlogPost(blogPost);
-        
+
         String body = blogPost.getPostBody();
         List<String> tags = hashTagMatcher.findHashTags(body);
-        
+
         for (String tag : tags) {
 
             tagDao.addTag(tag, blogPost.getPostId());
         }
 
-        return blogPost ;
+        return blogPost;
     }
 
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.DELETE)
@@ -103,7 +103,14 @@ public class BlogPostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
         blogPost.setPostId(id);
-        
+
+        String body = blogPost.getPostBody();
+        List<String> tags = hashTagMatcher.findHashTags(body);
+
+        for (String tag : tags) {
+            tagDao.addTag(tag, blogPost.getPostId());
+        }
+
         dao.updateBlogPost(blogPost);
     }
 //        
@@ -127,11 +134,11 @@ public class BlogPostController {
             TagContainer tagContainer = new TagContainer();
             tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
             blogPostContainer.setTagContainer(tagContainer);
-      
+
             CategoryContainer categoryContainer = new CategoryContainer();
             categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
             blogPostContainer.setCategoryContainer(categoryContainer);
-                        
+
             blogPostContainer.setBlogPost(blogPost);
 
             blogPostContainerList.add(blogPostContainer);

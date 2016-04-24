@@ -31,6 +31,10 @@ public class TagDbDaoImpl implements TagDbDao {
             = "insert into hashTags (hashTagName) values(?)";
     private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE
             = "delete from postHashTagBridge where HashTagIdFK = ?";
+    private static final String SQL_GET_HASHTAG_BRIDGE_ID
+            = "select postHashTagId from postHashTagBridge where HashTagIdFK = ? and postIdFK = ?";
+    private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE_BY_POST_ID
+            = "delete from postHashTagBridge where postIdFK = ?";
     private static final String SQL_DELETE_HASHTAG
             = "delete from hashTags where HashTagId = ?";
     private static final String SQL_SELECT_HASHTAG
@@ -51,6 +55,7 @@ public class TagDbDaoImpl implements TagDbDao {
             + "limit ?";
     private static final String SQL_ALL_HASHTAGS
             = "select hashTagName from hashTags";
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -61,27 +66,32 @@ public class TagDbDaoImpl implements TagDbDao {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public String addTag(String tag, int postId) {
         try {
-        jdbcTemplate.update(SQL_ADD_HASHTAG, tag);
-        }
-        catch (DuplicateKeyException e) {
+            jdbcTemplate.update(SQL_ADD_HASHTAG, tag);
+        } catch (DuplicateKeyException e) {
             //ignore attempts to add same hashtag and just update bridge table
         }
         int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new String[]{tag}, Integer.class);
-       
-        jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE,
-                hashTagId,
-                postId);
+        Integer bridgeId;
+        try {
+            bridgeId = jdbcTemplate.queryForObject(SQL_GET_HASHTAG_BRIDGE_ID, new Object[]{hashTagId, postId}, Integer.class);
+
+        } catch (EmptyResultDataAccessException e) {
+            jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE,
+                                hashTagId,
+                                postId);
+        }
+
         return tag;
     }
 
     @Override
     public void removeTag(String tag) {
-        try{
-        int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{tag}, Integer.class);
-        jdbcTemplate.update(SQL_DELETE_TAG_POST_HASHTAG_BRIDGE, hashTagId);
-        jdbcTemplate.update(SQL_DELETE_HASHTAG, hashTagId);
-        }catch(EmptyResultDataAccessException e){
-            
+        try {
+            int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{tag}, Integer.class);
+            jdbcTemplate.update(SQL_DELETE_TAG_POST_HASHTAG_BRIDGE, hashTagId);
+            jdbcTemplate.update(SQL_DELETE_HASHTAG, hashTagId);
+        } catch (EmptyResultDataAccessException e) {
+
         }
     }
 
@@ -100,15 +110,15 @@ public class TagDbDaoImpl implements TagDbDao {
     @Override
     public Map<String, Integer> getNumberOfTags(int num) {
         return jdbcTemplate.query(SQL_SELECT_NUMBER_OF_HASHTAGS, new ResultSetExtractor<Map<String, Integer>>() {
-            @Override
-            public Map extractData(ResultSet rs) throws SQLException, DataAccessException {
-                Map<String, Integer> mapRet = new HashMap<>();
-                while (rs.next()) {
-                    mapRet.put(rs.getString("hashTagName"), rs.getInt("numberofhashtags"));
-                }
-                return mapRet;
-            }
-        }, new Object[] {num});
+                              @Override
+                              public Map extractData(ResultSet rs) throws SQLException, DataAccessException {
+                                  Map<String, Integer> mapRet = new HashMap<>();
+                                  while (rs.next()) {
+                                      mapRet.put(rs.getString("hashTagName"), rs.getInt("numberofhashtags"));
+                                  }
+                                  return mapRet;
+                              }
+                          }, new Object[]{num});
 
     }
 
@@ -116,5 +126,6 @@ public class TagDbDaoImpl implements TagDbDao {
     public List<String> getAllTags() {
         return jdbcTemplate.query(SQL_ALL_HASHTAGS, new SingleColumnRowMapper<String>());
     }
+
 
 }
