@@ -19,7 +19,7 @@ $(document).ready(function () {
     $('#tiny-publish').click(function (event) {
 
         event.preventDefault();
-        $('#post-status').val("Published");
+        $('#post-status').val('published');
         updatePost();
         //this only redirects on a Publish.
         // hitting Save does not redirect 
@@ -31,11 +31,12 @@ $(document).ready(function () {
     });
 
     //autosaves every 1 minute
-    setInterval(createPost, 60000);
+   //setInterval(createPost, 60000);
 
 });
 
 function createPost() {
+
     $.ajax({
         type: 'POST',
         url: 'blogPost',

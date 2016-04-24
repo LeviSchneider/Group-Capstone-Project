@@ -32,7 +32,7 @@
 
     <select id="post-status" name="post-status">
         <option value="draft">Draft</option>
-        <option value="ready">Ready For Approval</option>
+        <option value="pending">Pending</option>
         <option value="unpublished">Unpublished</option>
         <option value="published">Published</option>
     </select>

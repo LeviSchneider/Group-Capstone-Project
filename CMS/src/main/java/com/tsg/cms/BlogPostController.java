@@ -86,7 +86,7 @@ public class BlogPostController {
         List<String> tags = hashTagMatcher.findHashTags(body);
         
         for (String tag : tags) {
-            System.out.println(tag);
+
             tagDao.addTag(tag, blogPost.getPostId());
         }
 
@@ -103,6 +103,7 @@ public class BlogPostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
         blogPost.setPostId(id);
+        
         dao.updateBlogPost(blogPost);
     }
 //        
