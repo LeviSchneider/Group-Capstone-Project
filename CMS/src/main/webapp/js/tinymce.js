@@ -80,7 +80,6 @@ function loadCategories() {
                             .attr({'value': category.categoryId})
                             .text(category.categoryName));
         });
-
     });
 }
 

@@ -30,7 +30,6 @@
                         <div class="jumbotron">
                             <h1>I heard you like cheese.</h1>
                             <p>But check out the side-toggling navbars first. #dual-wielding</p>
-
                         </div>
 
                         <div class="row">

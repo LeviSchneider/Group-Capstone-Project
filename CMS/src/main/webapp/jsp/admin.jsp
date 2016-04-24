@@ -1,9 +1,3 @@
-<%-- 
-    Document   : categoryAdmin
-    Created on : Apr 21, 2016, 9:52:59 AM
-    Author     : apprentice
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
