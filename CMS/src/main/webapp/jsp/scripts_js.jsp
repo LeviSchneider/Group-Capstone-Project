@@ -8,7 +8,7 @@
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+
 
 
 
@@ -36,7 +36,7 @@
         var counter = 0;
         $.ajax({
             type: 'GET',
-            url: 'tags/10'
+            url: '${pageContext.request.contextPath}/tags/10'
         }).success(function (data, status) {
             $.each(data, function (index, tagMap) {
                 if (counter === 2)

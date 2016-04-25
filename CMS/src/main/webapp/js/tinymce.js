@@ -3,43 +3,61 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+var validationError = "";
 
 $(document).ready(function () {
     loadCategories();
 
+
+    if ($('#post-to-edit-id').val().length !== 0) {
+
+        populateEditPostData();
+
+    }
+
     $('#tiny-save').click(function (event) {
 
-        event.preventDefault();
-        $('#post-status').val();
-        createPost();
+        if (formIsValid()) {
+            event.preventDefault();
+            $('#tiny-save').effect("highlight");
+            createPost();
+        } else {
+            alert(validationError);
+            validationError = "";
+        }
+
 
     });
 
     $('#tiny-publish').click(function (event) {
 
         event.preventDefault();
-        $('#post-status').val('published');
-        updatePost();
-        //this only redirects on a Publish.
-        // hitting Save does not redirect 
-        // autosave does not redirect
-        //However if you try to publish a saved post, it doesn't update
-        //so we need to have the Update functionality working first
-        
-        //window.location = 'blog';
+        $('#post-status').val('Published');
+        createPost();
+
+        window.location = '/CMS/blog';
     });
 
     //autosaves every 1 minute
-   //setInterval(createPost, 60000);
+    //setInterval(createPost, 60000);
 
 });
 
 function createPost() {
 
+    var postId = $('#tiny-blogpost-id').val();
+    var url;
+    var putOrPost;
+    if (postId.length === 0) {
+        url = '/CMS/blogPost';
+        putOrPost = 'POST';
+    } else {
+        putOrPost = 'PUT';
+        url = '/CMS/blogPost/' + postId;
+    }
     $.ajax({
         type: 'POST',
-        url: 'blogPost',
+        url: url,
         data: JSON.stringify({
             dateSubmitted: '2016-12-28',
             startDate: $('#start-date').val(),
@@ -55,30 +73,13 @@ function createPost() {
         },
         'dataType': 'json'
     }).success(function (data, status) {
-        var postId = data.postId;
-        $('#tiny-blogpost-id').val(postId);
-        //var tagString = $('#csvHashTags').val();
-        var category = $('#categories').val();
-//            if (tagString !== "") {
-//                $.ajax({
-//                    type: 'POST',
-//                    url: 'tag/' + postId,
-//                    data:
-//                            tagString
-//                    ,
-//                    headers: {
-//                        'Accept': 'text/plain',
-//                        'Content-Type': 'text/plain'
-//
-//                    },
-//                    'dataType': 'json'
-//                });
-//            }
 
+        $('#tiny-blogpost-id').val(data.postId);
+        var category = $('#categories').val();
         if (category !== "none") {
             $.ajax({
                 type: 'POST',
-                url: 'category/' + postId,
+                url: '/CMS/category/' + $('#tiny-blogpost-id').val(),
                 data: JSON.stringify({
                     categoryId: category
 
@@ -95,10 +96,20 @@ function createPost() {
     });
 }
 function updatePost() {
+
     var postId = $('#tiny-blogpost-id').val();
+
+    var putOrPost;
+    if (postId.length === 0) {
+        url = '/CMS/blogPost';
+        putOrPost = 'POST';
+    } else {
+        putOrPost = 'PUT';
+        url = '/CMS/blogPost/' + postId;
+    }
     $.ajax({
-        type: 'PUT',
-        url: 'blogPost/' + postId,
+        type: putOrPost,
+        url: url,
         data: JSON.stringify({
             dateSubmitted: '2016-12-28',
             startDate: $('#start-date').val(),
@@ -114,12 +125,12 @@ function updatePost() {
         },
         'dataType': 'json'
     }).success(function (data, status) {
-        
+
         var category = $('#categories').val();
         if (category !== "none") {
             $.ajax({
                 type: 'POST',
-                url: 'category/' + postId,
+                url: '/CMS/category/' + postId,
                 data: JSON.stringify({
                     categoryId: category
 
@@ -140,7 +151,7 @@ function loadCategories() {
     var contentDiv = $('#categories');
     $.ajax({
         type: 'GET',
-        url: 'categories'
+        url: '/CMS/categories'
     }).success(function (data, status) {
 
         $.each(data, function (index, category) {
@@ -157,7 +168,7 @@ function addCategoryButton() {
     event.preventDefault();
     $.ajax({
         type: 'POST',
-        url: 'category',
+        url: '/CMS/category',
         data: JSON.stringify({
             categoryName: $('#add-category').val()
         }),
@@ -183,4 +194,41 @@ function addCategoryButton() {
             alert(validationError.message);
         });
     });
+}
+
+function populateEditPostData() {
+
+    $.ajax({
+        type: 'GET',
+        url: '/CMS/blogPost/' + $('#post-to-edit-id').val()
+
+    }).success(function (blogPostContainer, status) {
+
+        $('#post-title').val(blogPostContainer.blogPost.title);
+        $('#htmlOutput').val(blogPostContainer.blogPost.postBody);
+        $('#start-date').val(blogPostContainer.blogPost.startDate);
+        $('#end-date').val(blogPostContainer.blogPost.endDate);
+        $('#tiny-blogpost-id').val(blogPostContainer.blogPost.postId);
+        $('select[name="post-status"]').find('option:contains("' + blogPostContainer.blogPost.status + '")').attr("selected", true);
+
+        if (blogPostContainer.categoryContainer.categoryList.length !== 0) {
+            $('select[name="categories"]').find('option:contains("' + blogPostContainer.categoryContainer.categoryList[0].categoryName + '")').attr("selected", true);
+        }
+    });
+
+
+}
+function formIsValid() {
+
+    var result = true;
+    if ($('#post-title').val().length <= 0) {
+        validationError += "A title is required!\n";
+        result = false;
+    }
+    if (tinyMCE.activeEditor.getContent().length <= 0) {
+        validationError += "The body of your post is required!\n";
+        result = false;
+    }
+    
+    return result;
 }

@@ -6,18 +6,23 @@
         plugins: ["image imagetools contextmenu advlist link colorpicker paste table textcolor ",
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
-            "insertdatetime media table contextmenu paste youtube"],
+            "insertdatetime media table contextmenu paste youtube",
+            "autoresize"],
+        autoresize_bottom_margin: 50,
         external_plugins: {"youtube": "${pageContext.request.contextPath}/js/tiny_mce/plugins/youtube/plugin.min.js"},
         // menubar: "insert",
         //toolbar: "image styleselect fontsizeselect hr link preview",
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image| youtube",
         contextmenu: "link image inserttable | cell row column deletetable",
         inline: false
-    });</script>
+    });
+
+</script>
+
 
 
 <form>
-
+    <input type="hidden" id="post-to-edit-id" value="${editBlogPostId}"/>
     <select id="categories" name="categories">
         <option value="none">Choose Existing Category</option>
     </select>
@@ -31,14 +36,14 @@
     <textarea id="htmlOutput"></textarea>
 
     <select id="post-status" name="post-status">
-        <option value="draft">Draft</option>
-        <option value="pending">Pending</option>
-        <option value="unpublished">Unpublished</option>
-        <option value="published">Published</option>
+        <option value="Draft">Draft</option>
+        <option value="Pending">Pending</option>
+        <option value="Unpublished">Unpublished</option>
+        <option value="Published">Published</option>
     </select>
     <button id="tiny-save" type="button">Save</button>
     <input type="hidden" id="tiny-blogpost-id"/>
     <button id="tiny-publish" type="button">Publish</button>
 </form>
-<div id="contentDiv"></div>
+
 

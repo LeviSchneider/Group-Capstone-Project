@@ -7,15 +7,25 @@ package com.tsg.cms.dao;
 
 import com.tsg.cms.dto.StaticPage;
 import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author apprentice
  */
 public interface StaticPageDao {
+
     public StaticPage addStaticPages(StaticPage page);
-    public void removeStaticPage(int pageId);
-    public void updateStaticPage(int pageId);
-    public List<StaticPage> listAllStaticPages();
+
     public StaticPage getStaticPage(int pageId);
+
+    public List<StaticPage> listAllStaticPages();
+
+    public void removeStaticPage(int pageId);
+
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate);
+
+    public StaticPage updateStaticPage(StaticPage pageId);
 }
