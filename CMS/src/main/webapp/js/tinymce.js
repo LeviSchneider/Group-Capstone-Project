@@ -95,57 +95,6 @@ function createPost() {
 
     });
 }
-function updatePost() {
-
-    var postId = $('#tiny-blogpost-id').val();
-
-    var putOrPost;
-    if (postId.length === 0) {
-        url = '/CMS/blogPost';
-        putOrPost = 'POST';
-    } else {
-        putOrPost = 'PUT';
-        url = '/CMS/blogPost/' + postId;
-    }
-    $.ajax({
-        type: putOrPost,
-        url: url,
-        data: JSON.stringify({
-            dateSubmitted: '2016-12-28',
-            startDate: $('#start-date').val(),
-            endDate: $('#end-date').val(),
-            title: $('#post-title').val(),
-            postBody: tinyMCE.activeEditor.getContent(),
-            status: $('#post-status').val(),
-            postType: 'blogPost'
-        }),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        'dataType': 'json'
-    }).success(function (data, status) {
-
-        var category = $('#categories').val();
-        if (category !== "none") {
-            $.ajax({
-                type: 'POST',
-                url: '/CMS/category/' + postId,
-                data: JSON.stringify({
-                    categoryId: category
-
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                'dataType': 'json'
-            });
-        }
-
-
-    });
-}
 
 function loadCategories() {
     var contentDiv = $('#categories');
@@ -229,6 +178,6 @@ function formIsValid() {
         validationError += "The body of your post is required!\n";
         result = false;
     }
-    
+
     return result;
 }
