@@ -96,9 +96,10 @@ public class BlogPostController {
         dao.removeBlogPost(id);
     }
 
-    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
+    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public BlogPost updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
         blogPost.setPostId(id);
 
         String body = blogPost.getPostBody();
@@ -109,6 +110,7 @@ public class BlogPostController {
         }
 
         dao.updateBlogPost(blogPost);
+        return blogPost;
     }
 //        
 //    @RequestMapping(value = "/pubblogPost", method = RequestMethod.GET)
@@ -146,7 +148,7 @@ public class BlogPostController {
 
     @RequestMapping(value = "/tinymce", method = RequestMethod.GET)
     public String showEditor(Map<String, Object> model, HttpSession session) {
-      
+
         session.setAttribute("page", "tinymce");
 
         session.setAttribute("js_page", "tinymce.js");
@@ -155,7 +157,7 @@ public class BlogPostController {
 
     @RequestMapping(value = "/tinymce/{id}", method = RequestMethod.GET)
     public String showPopulatedEditor(@PathVariable("id") int id, Map<String, Object> model, HttpSession session) {
-        
+
         //model.put("blogPost", dao.getBlogPostById(id));
         session.setAttribute("page", "tinymce");
 

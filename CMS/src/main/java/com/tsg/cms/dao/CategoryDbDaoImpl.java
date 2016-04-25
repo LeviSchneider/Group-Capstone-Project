@@ -36,17 +36,17 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     private static final String SQL_UPDATE_CATEGORY
             = "update categories set categoryName = ? where categoryId = ?";
     private static final String SQL_UPDATE_CATEGORY_IN_BRIDGE
-            = "update categoriesPostsBridge set categoryIdFK = ?, blogPostIdFK = ? ";
+            = "update categoriesPostsBridge set categoryIdFK = ?, blogPostIdFK = ? where categoriesPostsBridgeId = ?";
     private static final String SQL_SELECT_ALL_CATEGORY
             = "select * from categories ORDER BY categoryId DESC";
     private static final String SQL_SELECT_ALL_CATEGORIES_BY_POST_FROM_BRIDGE
             = "select categoryName, categoryId from categories as c inner join categoriesPostsBridge on c.categoryId = categoriesPostsBridge.categoryIdFK where blogPostIdFK = ?";
-    private static final String SQL_SELECT_ALL_POSTS_BY_CATEGORY_FROM_BRIDGE
-            = "select * from categoriesPostsBridge ORDER BY categoriesPostsBridgeId DESC where categoryIdFK = ?";
     private static final String SQL_SELECT_CATEGORY
             = "select * from categories where categoryId = ?";
     private static final String SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID
             = "select categoriesPostsBridgeId from categoriesPostsBridge where categoryIdFK = ? and blogPostIdFK = ?";
+    private static final String SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID_BY_BLOG_ID
+            = "select categoriesPostsBridgeId from categoriesPostsBridge where blogPostIdFK = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -71,9 +71,11 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
 
         Integer bridgeId;
         try {
-            bridgeId = jdbcTemplate.queryForObject(SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID, new Object[]{category.getCategoryId(), blogPostIdFK}, Integer.class);
+            bridgeId = jdbcTemplate.queryForObject(SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID_BY_BLOG_ID, new Object[]{blogPostIdFK}, Integer.class);
+            jdbcTemplate.update(SQL_UPDATE_CATEGORY_IN_BRIDGE,
+                                category.getCategoryId(), blogPostIdFK, bridgeId);
 
-        } catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException x) {
             jdbcTemplate.update(SQL_INSERT_CATEGORY_INTO_BRIDGE,
                                 category.getCategoryId(), blogPostIdFK);
         }

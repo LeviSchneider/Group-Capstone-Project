@@ -3,22 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+var validationError = "";
 
 $(document).ready(function () {
     loadCategories();
 
+
     if ($('#post-to-edit-id').val().length !== 0) {
-        
+
         populateEditPostData();
-        
+
     }
-    
+
     $('#tiny-save').click(function (event) {
 
-        event.preventDefault();
-        $('#post-status').val();
-        createPost();
+        if (formIsValid()) {
+            event.preventDefault();
+            $('#tiny-save').effect("highlight");
+            createPost();
+        } else {
+            alert(validationError);
+            validationError = "";
+        }
+
 
     });
 
@@ -26,14 +33,9 @@ $(document).ready(function () {
 
         event.preventDefault();
         $('#post-status').val('Published');
-        updatePost();
-        //this only redirects on a Publish.
-        // hitting Save does not redirect 
-        // autosave does not redirect
-        //However if you try to publish a saved post, it doesn't update
-        //so we need to have the Update functionality working first
+        createPost();
 
-        //window.location = 'blog';
+        window.location = '/CMS/blog';
     });
 
     //autosaves every 1 minute
@@ -43,9 +45,19 @@ $(document).ready(function () {
 
 function createPost() {
 
+    var postId = $('#tiny-blogpost-id').val();
+    var url;
+    var putOrPost;
+    if (postId.length === 0) {
+        url = '/CMS/blogPost';
+        putOrPost = 'POST';
+    } else {
+        putOrPost = 'PUT';
+        url = '/CMS/blogPost/' + postId;
+    }
     $.ajax({
         type: 'POST',
-        url: '/CMS/blogPost',
+        url: url,
         data: JSON.stringify({
             dateSubmitted: '2016-12-28',
             startDate: $('#start-date').val(),
@@ -61,30 +73,13 @@ function createPost() {
         },
         'dataType': 'json'
     }).success(function (data, status) {
-        var postId = data.postId;
-        $('#tiny-blogpost-id').val(postId);
-        //var tagString = $('#csvHashTags').val();
-        var category = $('#categories').val();
-//            if (tagString !== "") {
-//                $.ajax({
-//                    type: 'POST',
-//                    url: 'tag/' + postId,
-//                    data:
-//                            tagString
-//                    ,
-//                    headers: {
-//                        'Accept': 'text/plain',
-//                        'Content-Type': 'text/plain'
-//
-//                    },
-//                    'dataType': 'json'
-//                });
-//            }
 
+        $('#tiny-blogpost-id').val(data.postId);
+        var category = $('#categories').val();
         if (category !== "none") {
             $.ajax({
                 type: 'POST',
-                url: '/CMS/category/' + postId,
+                url: '/CMS/category/' + $('#tiny-blogpost-id').val(),
                 data: JSON.stringify({
                     categoryId: category
 
@@ -101,11 +96,20 @@ function createPost() {
     });
 }
 function updatePost() {
-    alert($('#post-status').val());
+
     var postId = $('#tiny-blogpost-id').val();
+
+    var putOrPost;
+    if (postId.length === 0) {
+        url = '/CMS/blogPost';
+        putOrPost = 'POST';
+    } else {
+        putOrPost = 'PUT';
+        url = '/CMS/blogPost/' + postId;
+    }
     $.ajax({
-        type: 'PUT',
-        url: '/CMS/blogPost/' + postId,
+        type: putOrPost,
+        url: url,
         data: JSON.stringify({
             dateSubmitted: '2016-12-28',
             startDate: $('#start-date').val(),
@@ -126,7 +130,7 @@ function updatePost() {
         if (category !== "none") {
             $.ajax({
                 type: 'POST',
-                url: 'category/' + postId,
+                url: '/CMS/category/' + postId,
                 data: JSON.stringify({
                     categoryId: category
 
@@ -164,7 +168,7 @@ function addCategoryButton() {
     event.preventDefault();
     $.ajax({
         type: 'POST',
-        url: 'category',
+        url: '/CMS/category',
         data: JSON.stringify({
             categoryName: $('#add-category').val()
         }),
@@ -193,49 +197,38 @@ function addCategoryButton() {
 }
 
 function populateEditPostData() {
-    
+
     $.ajax({
         type: 'GET',
         url: '/CMS/blogPost/' + $('#post-to-edit-id').val()
-        
+
     }).success(function (blogPostContainer, status) {
 
-            //var categoryList = blogPostContainer.categoryContainer.categoryList;
-            alert(blogPostContainer.categoryContainer.categoryList[0].categoryName);
-            //$('#start-date').val(blogPostContainer.blogPost.startDate);
-            $('#post-title').val(blogPostContainer.blogPost.title);
-            $('#htmlOutput').val(blogPostContainer.blogPost.postBody);
-            $('#start-date').val(blogPostContainer.blogPost.startDate);
-            $('#end-date').val(blogPostContainer.blogPost.endDate);
-            $('#tiny-blogpost-id').val(blogPostContainer.blogPost.postId);
-            $('select[name="post-status"]').find('option:contains("'+ blogPostContainer.blogPost.status +'")').attr("selected",true);
+        $('#post-title').val(blogPostContainer.blogPost.title);
+        $('#htmlOutput').val(blogPostContainer.blogPost.postBody);
+        $('#start-date').val(blogPostContainer.blogPost.startDate);
+        $('#end-date').val(blogPostContainer.blogPost.endDate);
+        $('#tiny-blogpost-id').val(blogPostContainer.blogPost.postId);
+        $('select[name="post-status"]').find('option:contains("' + blogPostContainer.blogPost.status + '")').attr("selected", true);
 
-            $('select[name="categories"]').find('option:contains("'+ blogPostContainer.categoryContainer.categoryList[0].categoryName +'")').attr("selected",true);
-           // $("#post-status[option=" + blogPostContainer.blogPost.status + "]").attr('selected', 'selected'); 
-//                    .append($('<div>')
-//                            .addClass("panel panel-default")
-//                            .append($('<div>')
-//                                    .addClass('panel-heading')
-//                                    .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.dateSubmitted + ')'
-//                                            + ' (Status: ' + blogPostContainer.blogPost.status + ')'
-//                                            + '<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
-//                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'))
-//                            .append($('<div>')
-//                                    .addClass('panel-body')
-//                                    .append(blogPostContainer.blogPost.postBody))
-//                            .append($('<div>')
-//                                    .addClass('panel-footer')
-//                                    .attr({'id': 'post' + blogPostContainer.blogPost.postId})
-//                                    ));
-//            
-//            $.each(categoryList, function (index, category) {
-//
-//                $('#post' + blogPostContainer.blogPost.postId)
-//                        .append($('<span>')
-//                                .addClass('panel-body-blogcategories')
-//                                .append("(In category: " + category.categoryName + ")"));
-//            });
-        });
-   
+        if (blogPostContainer.categoryContainer.categoryList.length !== 0) {
+            $('select[name="categories"]').find('option:contains("' + blogPostContainer.categoryContainer.categoryList[0].categoryName + '")').attr("selected", true);
+        }
+    });
+
+
+}
+function formIsValid() {
+
+    var result = true;
+    if ($('#post-title').val().length <= 0) {
+        validationError += "A title is required!\n";
+        result = false;
+    }
+    if (tinyMCE.activeEditor.getContent().length <= 0) {
+        validationError += "The body of your post is required!\n";
+        result = false;
+    }
     
+    return result;
 }

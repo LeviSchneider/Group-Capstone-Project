@@ -95,7 +95,6 @@ function populateBlogPosts(data, status) {
                                 .append(tag + " "));
             });
             $.each(categoryList, function (index, category) {
-
                 $('#post' + blogPostContainer.blogPost.postId)
                         .append($('<span>')
                                 .addClass('panel-body-blogcategories')

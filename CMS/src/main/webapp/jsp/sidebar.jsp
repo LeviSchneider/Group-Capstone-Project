@@ -8,7 +8,7 @@
             <li><a href="${pageContext.request.contextPath}/articles">Articles</a></li>
             <li><a href="${pageContext.request.contextPath}/admin">Admin</a></li>
             <li><a href="${pageContext.request.contextPath}/categoryAdmin">Category Admin</a></li>
-            <li><a href="${pageContext.request.contextPath}/tinymce">TinyMCE</a></li>
+            <li><a href="${pageContext.request.contextPath}/tinymce">Create Blog Entry</a></li>
         </ul>
     </div>
 </div>
