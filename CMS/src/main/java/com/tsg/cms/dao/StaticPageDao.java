@@ -5,10 +5,17 @@
  */
 package com.tsg.cms.dao;
 
+import com.tsg.cms.dto.StaticPage;
+import java.util.List;
+
 /**
  *
  * @author apprentice
  */
-public class StaticPageDao {
-    
+public interface StaticPageDao {
+    public StaticPage addStaticPages(StaticPage page);
+    public void removeStaticPage(int pageId);
+    public void updateStaticPage(int pageId);
+    public List<StaticPage> listAllStaticPages();
+    public StaticPage getStaticPage(int pageId);
 }
