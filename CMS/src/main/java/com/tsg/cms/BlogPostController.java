@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -168,22 +169,14 @@ public class BlogPostController {
     
     
     @RequestMapping(value = "/link/{titleNumber}", method = RequestMethod.GET)
-    @ResponseBody
-    public BlogPostContainer getLinkedPost(@PathVariable("titleNumber") String titleNumber) {
+    public String getLinkedPost(@PathVariable("titleNumber") String titleNumber, Map<String, Object> model, HttpSession session) {
+        
+        session.setAttribute("page", "singlePage");
 
-        BlogPostContainer container = new BlogPostContainer();
-        container.setBlogPost(dao.getBlogPostByTitleNumber(titleNumber));
-
-        TagContainer tagContainer = new TagContainer();
-        tagContainer.setTagList(tagDao.getPostTags(container.getBlogPost().getPostId()));
-
-        CategoryContainer categoryContainer = new CategoryContainer();
-        categoryContainer.setCategoryList(categoryDao.getPostCategories(container.getBlogPost().getPostId()));
-
-        container.setTagContainer(tagContainer);
-        container.setCategoryContainer(categoryContainer);
-
-        return container;
+        session.setAttribute("js_page", "singlePage.js");
+        int id = dao.getBlogPostByTitleNumber(titleNumber).getPostId();
+        model.put("id", id);
+        return "home";
     }
     
     @RequestMapping(value = "/taggedPosts/{tag}", method = RequestMethod.GET)

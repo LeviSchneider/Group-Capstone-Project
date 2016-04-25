@@ -79,7 +79,9 @@ function populateBlogPosts(data, status) {
                                     .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.dateSubmitted + ')'
                                             + ' (Status: ' + blogPostContainer.blogPost.status + ')'
                                             + '<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
-                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'))
+                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'
+                                            + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
+                                            + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'))
                             .append($('<div>')
                                     .addClass('panel-body')
                                     .append(blogPostContainer.blogPost.postBody))
@@ -109,14 +111,13 @@ function clearPopulatedPosts() {
     $('#blog-post-display').empty();
 }
 
-function populatedTagPosts(data){
-    alert(data);
+function populatedTagPosts(data) {
     clearPopulatedPosts();
     var blogPanel = $('#blog-post-display');
     $.ajax({
         type: 'GET',
         url: 'taggedPosts/' + data
-    }).success(function(data, status) {
+    }).success(function (data, status) {
         $.each(data, function (index, blogPostContainer) {
 
             var tagList = blogPostContainer.tagContainer.tagList;
@@ -130,7 +131,9 @@ function populatedTagPosts(data){
                                     .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.dateSubmitted + ')'
                                             + ' (Status: ' + blogPostContainer.blogPost.status + ')'
                                             + '<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
-                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'))
+                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>' 
+                                            + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
+                                            + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'))
                             .append($('<div>')
                                     .addClass('panel-body')
                                     .append(blogPostContainer.blogPost.postBody))
@@ -153,4 +156,5 @@ function populatedTagPosts(data){
             });
         });
     });
-};
+}
+;
