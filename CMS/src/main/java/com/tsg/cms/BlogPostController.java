@@ -186,10 +186,10 @@ public class BlogPostController {
         return container;
     }
     
-     @RequestMapping(value = "/taggedPosts/{tag}", method = RequestMethod.GET)
+    @RequestMapping(value = "/taggedPosts/{tag}", method = RequestMethod.GET)
     @ResponseBody
     public List<BlogPostContainer> getPostsByTag(@PathVariable("tag") String tag) {
-
+        tag = "#"+ tag;
         List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
         List<BlogPost> blogPosts = dao.getBlogPostByTag(tag);
 

@@ -3,7 +3,6 @@
     Created on : Apr 6, 2016, 7:35:02 PM
     Author     : apprentice
 --%>
-<%@page import="java.util.Enumeration"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -41,17 +40,19 @@
             $.each(data, function (index, tagMap) {
                 if (counter === 2)
                 {
+                    var newKey;
                     for (var key in tagMap) {
+                        newKey = key.replace("#", "");
                         if (tagMap[key] <= 3) {
-                            tagString += "<a>";
+                            tagString += "<a onclick='populatedTagPosts(\""+newKey+"\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         } else if (tagMap[key] <= 7) {
-                            tagString += "<a style='font-size:150%'>";
+                            tagString += "<a style='font-size:150%' onclick='populatedTagPosts(\""+newKey+"\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         } else {
-                            tagString += "<a style='font-size:200%'>";
+                            tagString += "<a style='font-size:200%' onclick='populatedTagPosts(\""+newKey+"\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         }

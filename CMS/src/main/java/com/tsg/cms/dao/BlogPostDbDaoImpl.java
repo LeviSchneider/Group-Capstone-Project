@@ -233,7 +233,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             blogPost.setPostType(rs.getString("postType"));
             blogPost.setPostId(rs.getInt("postId"));
             blogPost.setTitleNumber(rs.getString("titleNumber"));
-            blogPost.setStatus(rs.getString("status"));
+            //blogPost.setStatus(rs.getString("status"));
             return blogPost;
         }
 
