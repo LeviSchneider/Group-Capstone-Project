@@ -50,7 +50,6 @@ public class BlogPostController {
         this.tagDao = tagDao;
         this.categoryDao = categoryDao;
         this.hashTagMatcher = hashTagMatcher;
-
     }
 
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.GET)
@@ -166,5 +165,54 @@ public class BlogPostController {
         model.put("editBlogPostId", id);
         return "home";
     }
+    
+    
+    @RequestMapping(value = "/link/{titleNumber}", method = RequestMethod.GET)
+    @ResponseBody
+    public BlogPostContainer getLinkedPost(@PathVariable("titleNumber") String titleNumber) {
+
+        BlogPostContainer container = new BlogPostContainer();
+        container.setBlogPost(dao.getBlogPostByTitleNumber(titleNumber));
+
+        TagContainer tagContainer = new TagContainer();
+        tagContainer.setTagList(tagDao.getPostTags(container.getBlogPost().getPostId()));
+
+        CategoryContainer categoryContainer = new CategoryContainer();
+        categoryContainer.setCategoryList(categoryDao.getPostCategories(container.getBlogPost().getPostId()));
+
+        container.setTagContainer(tagContainer);
+        container.setCategoryContainer(categoryContainer);
+
+        return container;
+    }
+    
+     @RequestMapping(value = "/taggedPosts/{tag}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<BlogPostContainer> getPostsByTag(@PathVariable("tag") String tag) {
+
+        List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
+        List<BlogPost> blogPosts = dao.getBlogPostByTag(tag);
+
+        for (BlogPost blogPost : blogPosts) {
+
+            BlogPostContainer blogPostContainer = new BlogPostContainer();
+
+            TagContainer tagContainer = new TagContainer();
+            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+            blogPostContainer.setTagContainer(tagContainer);
+
+            CategoryContainer categoryContainer = new CategoryContainer();
+            categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
+            blogPostContainer.setCategoryContainer(categoryContainer);
+
+            blogPostContainer.setBlogPost(blogPost);
+
+            blogPostContainerList.add(blogPostContainer);
+        }
+        return blogPostContainerList;
+
+    }
 
 }
+
+

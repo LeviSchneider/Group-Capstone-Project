@@ -30,8 +30,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             + "on postStatusBlogPostBridge.blogPostIdFK = blogPosts.PostId "
             + "JOIN postStatus "
             + "on postStatusBlogPostBridge.postStatusIdFK = postStatus.postStatusId";
-    private static final String SQL_SUFFIX 
-            = " ORDER by postId DESC"; 
+    private static final String SQL_SUFFIX
+            = " ORDER by postId DESC";
     private static final String SQL_INSERT_BLOGPOST
             = "insert into blogPosts (dateSubmitted, startDate, endDate, title, postBody, userIdFK, postType, titleNumber) value(?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE_BLOGPOST
@@ -54,6 +54,14 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             = "update `postStatusBlogPostBridge` set `postStatusIdFK` = ? WHERE `blogPostIdFK` = ? ";
     private static final String SQL_SELECT_STATUS
             = "SELECT postStatusId from postStatus where postStatusName = ?";
+    private static final String SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME
+            = "select blogPosts.*, hashTags.hashTagName "
+            + "from blogPosts "
+            + "join postHashTagBridge "
+            + "on blogPosts.postId = postHashTagBridge.postIdFK "
+            + "join hashTags "
+            + "on postHashTagBridge.HashTagIdFK = hashTags.hashTagId "
+            + "where hashTagName = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -68,14 +76,14 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         setTitleNumber(blogPost);
 
         jdbcTemplate.update(SQL_INSERT_BLOGPOST,
-                            blogPost.getDateSubmitted(),
-                            blogPost.getStartDate(),
-                            blogPost.getEndDate(),
-                            blogPost.getTitle(),
-                            blogPost.getPostBody(),
-                            blogPost.getUserIdFK(),
-                            blogPost.getPostType(),
-                            blogPost.getTitleNumber());
+                blogPost.getDateSubmitted(),
+                blogPost.getStartDate(),
+                blogPost.getEndDate(),
+                blogPost.getTitle(),
+                blogPost.getPostBody(),
+                blogPost.getUserIdFK(),
+                blogPost.getPostType(),
+                blogPost.getTitleNumber());
 
         blogPost.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         int postStatusId = jdbcTemplate.queryForObject(SQL_SELECT_STATUS, new String[]{blogPost.getStatus()}, Integer.class);
@@ -89,23 +97,22 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         jdbcTemplate.update(SQL_DELETE_BLOGPOST, postId);
     }
 
-    //need to ensure urls work here!!!
     @Override
     public void updateBlogPost(BlogPost blogPost) {
         setTitleNumber(blogPost);
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
-                            blogPost.getDateSubmitted(),
-                            blogPost.getStartDate(),
-                            blogPost.getEndDate(),
-                            blogPost.getTitle(),
-                            blogPost.getPostBody(),
-                            blogPost.getUserIdFK(),
-                            blogPost.getPostType(),
-                            blogPost.getTitleNumber(),
-                            blogPost.getPostId()
+                blogPost.getDateSubmitted(),
+                blogPost.getStartDate(),
+                blogPost.getEndDate(),
+                blogPost.getTitle(),
+                blogPost.getPostBody(),
+                blogPost.getUserIdFK(),
+                blogPost.getPostType(),
+                blogPost.getTitleNumber(),
+                blogPost.getPostId()
         );
         int postStatusId = jdbcTemplate.queryForObject(SQL_SELECT_STATUS, new String[]{blogPost.getStatus()}, Integer.class);
-         
+
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST_STATUS_INTO_BRIDGE, postStatusId, blogPost.getPostId());
     }
 
@@ -195,6 +202,15 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     public String getBlogPostStatus(int postId) {
         try {
             return jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_STATUS, String.class, postId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<BlogPost> getBlogPostByTag(String tag) {
+        try {
+            return jdbcTemplate.query(SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME, new BlogPostMapper(), tag);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
