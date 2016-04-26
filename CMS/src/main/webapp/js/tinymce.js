@@ -32,7 +32,9 @@ $(document).ready(function () {
     $('#tiny-publish').click(function (event) {
 
         event.preventDefault();
-        $('#post-status').val('Published');
+        
+        $('#post-status').val('PUBLISHED');
+  
         createPost();
 
         window.location = '/CMS/blog';
@@ -55,8 +57,10 @@ function createPost() {
         putOrPost = 'PUT';
         url = '/CMS/blogPost/' + postId;
     }
+    
     $.ajax({
-        type: 'POST',
+        
+        type: putOrPost,
         url: url,
         data: JSON.stringify({
             dateSubmitted: '2016-12-28',
@@ -74,23 +78,23 @@ function createPost() {
         'dataType': 'json'
     }).success(function (data, status) {
 
-        $('#tiny-blogpost-id').val(data.postId);
-        var category = $('#categories').val();
-        if (category !== "none") {
-            $.ajax({
-                type: 'POST',
-                url: '/CMS/category/' + $('#tiny-blogpost-id').val(),
-                data: JSON.stringify({
-                    categoryId: category
-
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                'dataType': 'json'
-            });
-        }
+//        $('#tiny-blogpost-id').val(data.postId);
+//        var category = $('#categories').val();
+//        if (category !== "none") {
+//            $.ajax({
+//                type: 'POST',
+//                url: '/CMS/category/' + $('#tiny-blogpost-id').val(),
+//                data: JSON.stringify({
+//                    categoryId: category
+//
+//                }),
+//                headers: {
+//                    'Accept': 'application/json',
+//                    'Content-Type': 'application/json'
+//                },
+//                'dataType': 'json'
+//            });
+//        }
 
 
     });

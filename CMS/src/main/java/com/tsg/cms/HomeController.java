@@ -27,11 +27,7 @@ public class HomeController {
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String displayHomePage(Model model, HttpSession session) {
 
-        //this attribute is used to set the content of the middle pane
-        //it refers to the JSP file, without the JSP extension
         session.setAttribute("page", "blog");
-        //this attribute is used to include any JavaScript pages associated with the above page
-        //this is so we don't have to include JS pages that we don't need
         session.setAttribute("js_page", "blog.js");
         return "home";
 
@@ -39,11 +35,8 @@ public class HomeController {
 
     @RequestMapping(value = "/blog", method = RequestMethod.GET)
     public String showBlog(Map<String, Object> model, HttpSession session) {
-        //this attribute is used to set the content of the middle pane
-        //it refers to the JSP file, without the JSP extension
+
         session.setAttribute("page", "blog");
-        //this attribute is used to include any JavaScript pages associated with the above page
-        //this is so we don't have to include JS pages that we don't need
         session.setAttribute("js_page", "blog.js");
         
         return "home";
@@ -51,57 +44,49 @@ public class HomeController {
     
     @RequestMapping(value = "/articles", method = RequestMethod.GET)
     public String showArticles(Map<String, Object> model, HttpSession session) {
-        //this attribute is used to set the content of the middle pane
-        //it refers to the JSP file, without the JSP extension
+
         session.setAttribute("page", "articles");
-        //this attribute is used to include any JavaScript pages associated with the above page
-        //this is so we don't have to include JS pages that we don't need
         session.setAttribute("js_page", "blog.js");
         
         return "home";
     }
 
-    
-    @RequestMapping(value = "/render", method = RequestMethod.POST)
-    public String renderHtmlOutput(HttpServletRequest req, Model model, HttpSession session) {
-        String htmlOutput = req.getParameter("htmlOutput");
-        model.addAttribute("htmlOutput", htmlOutput);
-        //this attribute is used to set the content of the middle pane
-        //it refers to the JSP file, without the JSP extension
-        session.setAttribute("page", "render");
-        //this attribute is used to include any JavaScript pages associated with the above page
-        //this is so we don't have to include JS pages that we don't need
-        //session.setAttribute("js_page", "tempLandingPage.js");
-        return "home";
-    }
-
     @RequestMapping(value = "/categoryAdmin", method = RequestMethod.GET)
     public String showCategoryAdmin(HttpServletRequest req, Model model, HttpSession session) {
-        //this attribute is used to set the content of the middle pane
-        //it refers to the JSP file, without the JSP extension
+     
         session.setAttribute("page", "categoryAdmin");
         session.setAttribute("js_page", "categoryAdmin.js");
 
-        //this attribute is used to include any JavaScript pages associated with the above page
-        //this is so we don't have to include JS pages that we don't need
-        //session.setAttribute("js_page", "tempLandingPage.js");
         return "home";
     }
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String showAdminPage(HttpServletRequest req, Model model, HttpSession session) {
+       
         String htmlOutput = req.getParameter("htmlOutput");
         model.addAttribute("htmlOutput", htmlOutput);
-        //this attribute is used to set the content of the middle pane
-        //it refers to the JSP file, without the JSP extension
         session.setAttribute("page", "admin");
         session.setAttribute("js_page", "categoryAdmin.js");
 
-        //this attribute is used to include any JavaScript pages associated with the above page
-        //this is so we don't have to include JS pages that we don't need
-        //session.setAttribute("js_page", "tempLandingPage.js");
         return "home";
     }
     
+    @RequestMapping(value = "/tinymce", method = RequestMethod.GET)
+    public String showEditor(Map<String, Object> model, HttpSession session) {
 
+        session.setAttribute("page", "tinymce");
+        session.setAttribute("js_page", "tinymce.js");
+        return "home";
+    }
+
+    @RequestMapping(value = "/tinymce/{id}", method = RequestMethod.GET)
+    public String showPopulatedEditor(@PathVariable("id") int id, Map<String, Object> model, HttpSession session) {
+
+        session.setAttribute("page", "tinymce");
+        session.setAttribute("js_page", "tinymce.js");
+        model.put("editBlogPostId", id);
+        
+        return "home";
+    }
+    
 }

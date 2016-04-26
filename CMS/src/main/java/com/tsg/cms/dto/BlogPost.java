@@ -27,6 +27,7 @@ public class BlogPost {
     private int userIdFK;
     private Integer categoryIdFK;
     private String titleNumber;
+    private Status status;
 
     @Override
     public int hashCode() {
@@ -92,11 +93,9 @@ public class BlogPost {
         }
         return true;
     }
-    private Status status;
+
     //titleNumber concatenates the title, and if the title isn't unique, the 
     //ordinal number of the title, starting with 1.
-
-
 
     public int getPostId() {
         return postId;
@@ -166,8 +165,8 @@ public class BlogPost {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = Status.valueOf(status);
     }
 
     public String getTitleNumber() {

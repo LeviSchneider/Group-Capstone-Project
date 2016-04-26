@@ -17,19 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import com.tsg.cms.dao.BlogPostDbDao;
-import com.tsg.cms.dao.CategoryDbDao;
-import com.tsg.cms.dao.TagDbDao;
+
 import com.tsg.cms.dto.BlogPostContainer;
-import com.tsg.cms.dto.CategoryContainer;
-import com.tsg.cms.dto.TagContainer;
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -40,172 +31,74 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class BlogPostController {
 
-    private final BlogPostDbDao dao;
-    private final TagDbDao tagDao;
-    private final CategoryDbDao categoryDao;
-    private final HashTagMatcher hashTagMatcher;
+    private final BlogPostDbDao blogPostDao;
 
     @Inject
-    public BlogPostController(BlogPostDbDao dao, TagDbDao tagDao, CategoryDbDao categoryDao, HashTagMatcher hashTagMatcher) {
-        this.dao = dao;
-        this.tagDao = tagDao;
-        this.categoryDao = categoryDao;
-        this.hashTagMatcher = hashTagMatcher;
+    public BlogPostController(BlogPostDbDao blogPostDao) {
+
+        this.blogPostDao = blogPostDao;
+
     }
 
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.GET)
     @ResponseBody
     public BlogPostContainer getBlogPost(@PathVariable("id") int id) {
 
-        BlogPostContainer container = new BlogPostContainer();
-        container.setBlogPost(dao.getBlogPostById(id));
+        return blogPostDao.getBlogPostById(id);
 
-        TagContainer tagContainer = new TagContainer();
-        tagContainer.setTagList(tagDao.getPostTags(id));
-
-        CategoryContainer categoryContainer = new CategoryContainer();
-        //categoryContainer.setCategoryList(categoryDao.getPostCategories(id));
-
-        container.setTagContainer(tagContainer);
-        container.setCategoryContainer(categoryContainer);
-
-        return container;
     }
 
     @RequestMapping(value = "/blogPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public BlogPost createBlogPost(@RequestBody BlogPost blogPost) {
+    public BlogPostContainer createBlogPost(@RequestBody BlogPost blogPost) {
+
         blogPost.setUserIdFK(999);
-        blogPost = dao.addBlogPost(blogPost);
+        return blogPostDao.addBlogPost(blogPost);
 
-        String body = blogPost.getPostBody();
-        List<String> tags = hashTagMatcher.findHashTags(body);
-
-        for (String tag : tags) {
-
-            tagDao.addTag(tag, blogPost.getPostId());
-        }
-
-        return blogPost;
     }
 
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBlogPost(@PathVariable("id") int id) {
-        dao.removeBlogPost(id);
+        blogPostDao.removeBlogPost(id);
     }
 
     @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public BlogPost updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
+    public BlogPostContainer updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
+
         blogPost.setPostId(id);
+        return blogPostDao.updateBlogPost(blogPost);
 
-        String body = blogPost.getPostBody();
-        List<String> tags = hashTagMatcher.findHashTags(body);
-
-        for (String tag : tags) {
-            tagDao.addTag(tag, blogPost.getPostId());
-        }
-
-        dao.updateBlogPost(blogPost);
-        return blogPost;
     }
-//        
-//    @RequestMapping(value = "/pubblogPost", method = RequestMethod.GET)
-//    @ResponseBody
-//    public List<BlogPost> getPublishedBlogPost () {
-//        return dao.getPublishedBlogPost();
-//    }
 
     @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
     @ResponseBody
     public List<BlogPostContainer> getAllBlogPost() {
 
-        List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
-        List<BlogPost> blogPosts = dao.getAllBlogPost();
-
-        for (BlogPost blogPost : blogPosts) {
-
-            BlogPostContainer blogPostContainer = new BlogPostContainer();
-
-            TagContainer tagContainer = new TagContainer();
-            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
-            blogPostContainer.setTagContainer(tagContainer);
-
-            CategoryContainer categoryContainer = new CategoryContainer();
-            //categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
-            blogPostContainer.setCategoryContainer(categoryContainer);
-
-            blogPostContainer.setBlogPost(blogPost);
-
-            blogPostContainerList.add(blogPostContainer);
-        }
-        return blogPostContainerList;
+        return blogPostDao.getAllBlogPosts();
 
     }
 
-    @RequestMapping(value = "/tinymce", method = RequestMethod.GET)
-    public String showEditor(Map<String, Object> model, HttpSession session) {
-
-        session.setAttribute("page", "tinymce");
-
-        session.setAttribute("js_page", "tinymce.js");
-        return "home";
-    }
-
-    @RequestMapping(value = "/tinymce/{id}", method = RequestMethod.GET)
-    public String showPopulatedEditor(@PathVariable("id") int id, Map<String, Object> model, HttpSession session) {
-
-        //model.put("blogPost", dao.getBlogPostById(id));
-        session.setAttribute("page", "tinymce");
-
-        session.setAttribute("js_page", "tinymce.js");
-
-        model.put("editBlogPostId", id);
-        return "home";
-    }
-    
-    
     @RequestMapping(value = "/link/{titleNumber}", method = RequestMethod.GET)
     public String getLinkedPost(@PathVariable("titleNumber") String titleNumber, Map<String, Object> model, HttpSession session) {
-        
-        session.setAttribute("page", "singlePage");
 
-        session.setAttribute("js_page", "singlePage.js");
-        int id = dao.getBlogPostByTitleNumber(titleNumber).getPostId();
+        int id = blogPostDao.getBlogPostByTitleNumber(titleNumber).getBlogPost().getPostId();
         model.put("id", id);
+        session.setAttribute("page", "singlePage");
+        session.setAttribute("js_page", "singlePage.js");
+
         return "home";
     }
-    
+
     @RequestMapping(value = "/taggedPosts/{tag}", method = RequestMethod.GET)
     @ResponseBody
     public List<BlogPostContainer> getPostsByTag(@PathVariable("tag") String tag) {
-        tag = "#"+ tag;
-        List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
-        List<BlogPost> blogPosts = dao.getBlogPostByTag(tag);
 
-        for (BlogPost blogPost : blogPosts) {
-
-            BlogPostContainer blogPostContainer = new BlogPostContainer();
-
-            TagContainer tagContainer = new TagContainer();
-            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
-            blogPostContainer.setTagContainer(tagContainer);
-
-            CategoryContainer categoryContainer = new CategoryContainer();
-            //categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
-            blogPostContainer.setCategoryContainer(categoryContainer);
-
-            blogPostContainer.setBlogPost(blogPost);
-
-            blogPostContainerList.add(blogPostContainer);
-        }
-        return blogPostContainerList;
+        return blogPostDao.getBlogPostsByTag(tag);
 
     }
 
 }
-
-

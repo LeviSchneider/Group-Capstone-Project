@@ -25,22 +25,25 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class TagDbDaoImpl implements TagDbDao {
 
-    private static final String SQL_ADD_TAG_POST_HASHTAG_BRIDGE
-            = "insert into postHashTagBridge (HashTagIdFK, postIdFK) values(?,?)";
+   
     private static final String SQL_ADD_HASHTAG
             = "insert into hashTags (hashTagName) values(?)";
-    private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE
-            = "delete from postHashTagBridge where HashTagIdFK = ?";
-    private static final String SQL_GET_HASHTAG_BRIDGE_ID
-            = "select postIdFK from postHashTagBridge where HashTagIdFK = ? and postIdFK = ?";
-    private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE_BY_POST_ID
-            = "delete from postHashTagBridge where postIdFK = ?";
     private static final String SQL_DELETE_HASHTAG
             = "delete from hashTags where HashTagId = ?";
     private static final String SQL_SELECT_HASHTAG
             = "select hashTagId from hashTags where hashTagName = ?";
     private static final String SQL_UPDATE_HASHTAG
             = "update hashTags set hashTagName = ? where HashTagId = ?";
+    private static final String SQL_ALL_HASHTAGS
+            = "select hashTagName from hashTags";
+    private static final String SQL_ADD_TAG_POST_HASHTAG_BRIDGE
+            = "insert into postHashTagBridge (HashTagIdFK, postIdFK) values(?,?)";
+    private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE
+            = "delete from postHashTagBridge where HashTagIdFK = ?";
+    private static final String SQL_GET_HASHTAG_BRIDGE_ID
+            = "select postIdFK from postHashTagBridge where HashTagIdFK = ? and postIdFK = ?";
+    private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE_BY_POST_ID
+            = "delete from postHashTagBridge where postIdFK = ?";
     private static final String SQL_SELECT_POST_HASHTAGS_BY_ID
             = "select hashTagName from hashTags "
             + "inner join postHashTagBridge "
@@ -53,8 +56,6 @@ public class TagDbDaoImpl implements TagDbDao {
             + "group by hashTagName "
             + "order by numberOfHashTags desc "
             + "limit ?";
-    private static final String SQL_ALL_HASHTAGS
-            = "select hashTagName from hashTags";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -69,16 +70,6 @@ public class TagDbDaoImpl implements TagDbDao {
             jdbcTemplate.update(SQL_ADD_HASHTAG, tag);
         } catch (DuplicateKeyException e) {
             //ignore attempts to add same hashtag and just update bridge table
-        }
-        int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new String[]{tag}, Integer.class);
-        Integer bridgeId;//checking to see if the hasgTag and postId exist together 
-        try {
-            bridgeId = jdbcTemplate.queryForObject(SQL_GET_HASHTAG_BRIDGE_ID, new Object[]{hashTagId, postId}, Integer.class);
-
-        } catch (EmptyResultDataAccessException e) {
-            jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE,
-                    hashTagId,
-                    postId);
         }
 
         return tag;

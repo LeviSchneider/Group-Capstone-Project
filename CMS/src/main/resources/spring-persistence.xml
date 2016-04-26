@@ -48,5 +48,9 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
     
+    <bean id="StaticPageDbDao" class="com.tsg.cms.dao.StaticPageDbDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+                
     <bean id="HashTagMatcher" class="com.tsg.cms.HashTagMatcher"/>    
 </beans>

@@ -5,7 +5,7 @@
  */
 package com.tsg.cms.dao;
 
-import com.tsg.cms.dto.StaticPage;
+import com.tsg.cms.dto.SideBarLink;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author apprentice
  */
-public class SideBarLinksDbDaoImpl implements SideBarLinksDao {
+public class SideBarLinksDbDaoImpl implements SideBarLinksDbDao {
 
     private static final String SQL_INSERT_STATIC_PAGE
             = "insert into static_pages (staticPageName, url, jspPage, javaScriptPage, position) values(?,?,?,?,?)";
@@ -47,7 +47,7 @@ public class SideBarLinksDbDaoImpl implements SideBarLinksDao {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    public StaticPage addStaticPages(StaticPage page) {
+    public SideBarLink addStaticPages(SideBarLink page) {
         jdbcTemplate.update(SQL_INSERT_STATIC_PAGE,
                             page.getStaticPageName(),
                             page.getStaticPageUrl(),
@@ -68,7 +68,7 @@ public class SideBarLinksDbDaoImpl implements SideBarLinksDao {
     }
 
     @Override
-    public StaticPage updateStaticPage(StaticPage staticPage) {
+    public SideBarLink updateStaticPage(SideBarLink staticPage) {
         jdbcTemplate.update(SQL_UPDATE_STATIC_PAGE,
                             staticPage.getStaticPageName(),
                             staticPage.getStaticPageUrl(),
@@ -80,14 +80,14 @@ public class SideBarLinksDbDaoImpl implements SideBarLinksDao {
     }
 
     @Override
-    public List<StaticPage> listAllStaticPages() {
+    public List<SideBarLink> listAllStaticPages() {
 
         return jdbcTemplate.query(SQL_SELECT_ALL_STATIC_PAGES, new StaticPageMapper());
 
     }
 
     @Override
-    public StaticPage getStaticPage(int pageId) {
+    public SideBarLink getStaticPage(int pageId) {
         try {
             return jdbcTemplate.queryForObject(SQL_SELECT_STATIC_PAGE, new StaticPageMapper(), pageId);
         } catch (EmptyResultDataAccessException e) {
@@ -95,10 +95,10 @@ public class SideBarLinksDbDaoImpl implements SideBarLinksDao {
         }
     }
 
-    private static final class StaticPageMapper implements RowMapper<StaticPage> {
+    private static final class StaticPageMapper implements RowMapper<SideBarLink> {
 
         @Override
-        public StaticPage mapRow(ResultSet rs, int i) throws SQLException {
+        public SideBarLink mapRow(ResultSet rs, int i) throws SQLException {
 
             throw new UnsupportedOperationException("Need the new database schema!!"); //To change body of generated methods, choose Tools | Templates.
 

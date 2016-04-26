@@ -25,11 +25,12 @@ import javax.validation.Valid;
 @Controller
 public class TagController {
 
-    private final TagDbDao dao;
+    private final TagDbDao tagDao;
+    
 
     @Inject
-    public TagController(TagDbDao dao) {
-        this.dao = dao;
+    public TagController(TagDbDao tagDao) {
+        this.tagDao = tagDao;
     }
 
     @RequestMapping(value = "/tag/{postId}", method = RequestMethod.POST)
@@ -41,7 +42,8 @@ public class TagController {
         String[] tagArray = tagName.split(",");
 
         for (String s : tagArray) {
-            tagContainer.setTagName(dao.addTag(s, postId));
+            tagContainer.setTagName(tagDao.addTag(s, postId));
+            
         }
 
         return tagContainer;
@@ -51,7 +53,7 @@ public class TagController {
     @RequestMapping(value = "/tag/{tagName}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable("tagName") String tagName) {
-        dao.removeTag(tagName);
+        tagDao.removeTag(tagName);
     }
 
     @RequestMapping(value = "/tag/{oldTagName}", method = RequestMethod.PUT)
@@ -61,7 +63,7 @@ public class TagController {
 
         TagContainer tagContainer = new TagContainer();
 
-        tagContainer.setTagName(dao.updateTag(newTag, oldTagName));
+        tagContainer.setTagName(tagDao.updateTag(newTag, oldTagName));
 
         return tagContainer;
     }
@@ -71,7 +73,7 @@ public class TagController {
     public TagContainer getAllTags() {
         TagContainer tagContainer = new TagContainer();
 
-        tagContainer.setTagList(dao.getAllTags());
+        tagContainer.setTagList(tagDao.getAllTags());
         return tagContainer;
     }
 
@@ -79,7 +81,7 @@ public class TagController {
     @ResponseBody
     public TagContainer getNumberOfTags(@PathVariable("num") int num) {
         TagContainer tagContainer = new TagContainer();
-        tagContainer.setRankedTags(dao.getNumberOfTags(num));
+        tagContainer.setRankedTags(tagDao.getNumberOfTags(num));
         return tagContainer;
     }
 
@@ -88,7 +90,7 @@ public class TagController {
     public TagContainer getPostTags(@PathVariable("postId") int postId) {
         TagContainer tagContainer = new TagContainer();
 
-        tagContainer.setTagList(dao.getPostTags(postId));
+        tagContainer.setTagList(tagDao.getPostTags(postId));
         return tagContainer;
     }
 }

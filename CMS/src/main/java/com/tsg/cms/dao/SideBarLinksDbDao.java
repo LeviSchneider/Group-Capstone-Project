@@ -5,7 +5,7 @@
  */
 package com.tsg.cms.dao;
 
-import com.tsg.cms.dto.StaticPage;
+import com.tsg.cms.dto.SideBarLink;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,17 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author apprentice
  */
-public interface SideBarLinksDao {
+public interface SideBarLinksDbDao {
 
-    public StaticPage addStaticPages(StaticPage page);
+    public SideBarLink addStaticPages(SideBarLink page);
 
-    public StaticPage getStaticPage(int pageId);
+    public SideBarLink getStaticPage(int pageId);
 
-    public List<StaticPage> listAllStaticPages();
+    public List<SideBarLink> listAllStaticPages();
 
     public void removeStaticPage(int pageId);
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate);
 
-    public StaticPage updateStaticPage(StaticPage pageId);
+    public SideBarLink updateStaticPage(SideBarLink pageId);
 }

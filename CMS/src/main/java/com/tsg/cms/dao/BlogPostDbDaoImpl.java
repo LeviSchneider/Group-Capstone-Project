@@ -5,14 +5,23 @@
  */
 package com.tsg.cms.dao;
 
+import com.tsg.cms.HashTagMatcher;
 import com.tsg.cms.dto.BlogPost;
+import com.tsg.cms.dto.BlogPostContainer;
+import com.tsg.cms.dto.CategoryContainer;
+import com.tsg.cms.dto.TagContainer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,6 +34,18 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
+    private final TagDbDao tagDao;
+
+    private final HashTagMatcher hashTagMatcher;
+
+    @Inject
+    public BlogPostDbDaoImpl(TagDbDao tagDao, HashTagMatcher hashTagMatcher) {
+
+        this.tagDao = tagDao;
+        this.hashTagMatcher = hashTagMatcher;
+
+    }
+
     private static final String SQL_INSERT_BLOGPOST
             = "insert into blogPosts (timeCreated, timeEdited, startDate, endDate, title, postBody, userIdFK, titleNumber, status) value(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE_BLOGPOST
@@ -32,7 +53,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     private static final String SQL_UPDATE_BLOGPOST
             = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?";
     private static final String SQL_SELECT_ALL_BLOGPOSTS
-            = "select * from blogPosts";
+            = "select * from blogPosts ORDER BY postId DESC";
     private static final String SQL_SELECT_BLOGPOST_BY_ID
             = "select * from blogPosts where postId = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLENUMBER
@@ -55,24 +76,71 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     }
 
     @Override
+    public BlogPostContainer getBlogPostById(Integer postId) {
+
+        try {
+
+            BlogPostContainer container = new BlogPostContainer();
+            BlogPost blogPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), postId);
+
+            container.setBlogPost(blogPost);
+
+            TagContainer tagContainer = new TagContainer();
+            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+            container.setTagContainer(tagContainer);
+
+            return container;
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    public BlogPost addBlogPost(BlogPost blogPost) {
+    public BlogPostContainer addBlogPost(BlogPost blogPost) {
 
         setTitleNumber(blogPost);
 
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date date = new Date();
+        blogPost.setTimeCreated(date);
+        blogPost.setTimeEdited(date);
+        
+        System.out.println(blogPost.getStatus());
         jdbcTemplate.update(SQL_INSERT_BLOGPOST,
-                blogPost.getTimeCreated(),
-                blogPost.getTimeEdited(),
-                blogPost.getStartDate(),
-                blogPost.getEndDate(),
-                blogPost.getTitle(),
-                blogPost.getPostBody(),
-                blogPost.getUserIdFK(),
-                blogPost.getTitleNumber(),
-                blogPost.getStatus().toString());
+                            blogPost.getTimeCreated(),
+                            blogPost.getTimeEdited(),
+                            blogPost.getStartDate(),
+                            blogPost.getEndDate(),
+                            blogPost.getTitle(),
+                            blogPost.getPostBody(),
+                            blogPost.getUserIdFK(),
+                            blogPost.getTitleNumber(),
+                            blogPost.getStatus().toString());
 
         blogPost.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
-        return blogPost;
+
+        String body = blogPost.getPostBody();
+        List<String> tags = hashTagMatcher.findHashTags(body);
+
+        for (String tag : tags) {
+
+            tagDao.addTag(tag, blogPost.getPostId());
+
+        }
+
+        BlogPostContainer container = new BlogPostContainer();
+        container.setBlogPost(blogPost);
+
+        TagContainer tagContainer = new TagContainer();
+        //we are not re-getting the list of hashTags so we can make sure we
+        //have valid tags (ie, the tags have been processed)
+        tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+        container.setTagContainer(tagContainer);
+
+        return container;
+
     }
     //= "insert into blogPosts (timeCreated, timeEdited, startDate, endDate, title, postBody, userIdFK, titleNumber, status) value(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -82,57 +150,95 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     }
 
     @Override
-    public void updateBlogPost(BlogPost blogPost) {
+    public BlogPostContainer updateBlogPost(BlogPost blogPost) {
+
+        //run setTitleNumber() again in case the title has changed
         setTitleNumber(blogPost);
+
+        //getting any new HashTags
+        String body = blogPost.getPostBody();
+        List<String> tags = hashTagMatcher.findHashTags(body);
+
+        for (String tag : tags) {
+            tagDao.addTag(tag, blogPost.getPostId());
+        }
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date date = new Date();
+        blogPost.setTimeEdited(date);
+
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
-                blogPost.getTimeCreated(),
-                blogPost.getTimeEdited(),
-                blogPost.getStartDate(),
-                blogPost.getEndDate(),
-                blogPost.getTitle(),
-                blogPost.getPostBody(),
-                blogPost.getUserIdFK(),
-                blogPost.getTitleNumber(),
-                blogPost.getStatus().toString()
+                            blogPost.getTimeCreated(),
+                            blogPost.getTimeEdited(),
+                            blogPost.getStartDate(),
+                            blogPost.getEndDate(),
+                            blogPost.getTitle(),
+                            blogPost.getPostBody(),
+                            blogPost.getUserIdFK(),
+                            blogPost.getTitleNumber(),
+                            blogPost.getStatus().toString()
         );
+
+        BlogPostContainer container = new BlogPostContainer();
+        container.setBlogPost(blogPost);
+
+        TagContainer tagContainer = new TagContainer();
+        //we are not re-getting the list of hashTags so we can make sure we
+        //have valid tags (ie, the tags have been processed)
+        tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+        container.setTagContainer(tagContainer);
+
+        return container;
+
     }
 
     @Override
-    public List<BlogPost> getAllBlogPost() {
-        return jdbcTemplate.query(SQL_SELECT_ALL_BLOGPOSTS, new BlogPostMapper());
+    public List<BlogPostContainer> getAllBlogPosts() {
+
+        List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
+
+        List<BlogPost> blogPostList = jdbcTemplate.query(SQL_SELECT_ALL_BLOGPOSTS, new BlogPostMapper());
+
+        for (BlogPost b : blogPostList) {
+
+            BlogPostContainer container = new BlogPostContainer();
+            container.setBlogPost(b);
+            TagContainer tagContainer = new TagContainer();
+            tagContainer.setTagList(tagDao.getPostTags(b.getPostId()));
+            container.setTagContainer(tagContainer);
+            blogPostContainerList.add(container);
+
+        }
+
+        return blogPostContainerList;
+
     }
 
     @Override
-    public BlogPost getBlogPostById(Integer postId) {
+    public BlogPostContainer getBlogPostByTitleNumber(String titleNumber) {
+
         try {
-            return jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), postId);
+
+            BlogPost blogPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_TITLENUMBER, new BlogPostMapper(), titleNumber);
+
+            BlogPostContainer container = new BlogPostContainer();
+            container.setBlogPost(blogPost);
+            TagContainer tagContainer = new TagContainer();
+            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+            container.setTagContainer(tagContainer);
+
+            return container;
+
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     @Override
-    public BlogPost getBlogPostByTitleNumber(String titleNumber) {
-        try {
-            return jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_TITLENUMBER, new BlogPostMapper(), titleNumber);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public List<BlogPost> getBlogPostByTitle(String title) {
-        try {
-            return jdbcTemplate.query(SQL_SELECT_BLOGPOST_BY_TITLE, new BlogPostMapper(), title);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public List<BlogPost> searchBlogPost(Map<SearchTerm, String> criteria) {
+    public List<BlogPostContainer> searchBlogPosts(Map<SearchTerm, String> criteria) {
         if (criteria.size() == 0) {
-            return getAllBlogPost();
+
+            return getAllBlogPosts();
         } else {
             StringBuilder sQuery = new StringBuilder("select * from blogPosts where ");
             int numParams = criteria.size();
@@ -153,7 +259,31 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
                 paramVals[paramPosition] = criteria.get(currentKey);
                 paramPosition++;
             }
-            return jdbcTemplate.query(sQuery.toString(), new BlogPostMapper(), paramVals);
+
+            List<BlogPost> blogPostList = jdbcTemplate.query(sQuery.toString(), new BlogPostMapper(), paramVals);
+            List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
+
+            for (BlogPost b : blogPostList) {
+
+                BlogPostContainer container = new BlogPostContainer();
+                container.setBlogPost(b);
+                TagContainer tagContainer = new TagContainer();
+                tagContainer.setTagList(tagDao.getPostTags(b.getPostId()));
+                container.setTagContainer(tagContainer);
+                blogPostContainerList.add(container);
+
+            }
+
+            return blogPostContainerList;
+
+        }
+    }
+
+    public List<BlogPost> getBlogPostsByTitle(String title) {
+        try {
+            return jdbcTemplate.query(SQL_SELECT_BLOGPOST_BY_TITLE, new BlogPostMapper(), title);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         }
     }
 
@@ -162,7 +292,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
         String title = blogPost.getTitle();
-        List<BlogPost> postsWithSameTitle = getBlogPostByTitle(title);
+        List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
 
         if (postsWithSameTitle.isEmpty()) {
             title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
@@ -183,9 +313,25 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     }
 
     @Override
-    public List<BlogPost> getBlogPostByTag(String tag) {
+    public List<BlogPostContainer> getBlogPostsByTag(String tag) {
         try {
-            return jdbcTemplate.query(SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME, new BlogPostMapper(), tag);
+
+            List<BlogPost> blogPostList = jdbcTemplate.query(SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME, new BlogPostMapper(), tag);
+            List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
+
+            for (BlogPost b : blogPostList) {
+
+                BlogPostContainer container = new BlogPostContainer();
+                container.setBlogPost(b);
+                TagContainer tagContainer = new TagContainer();
+                tagContainer.setTagList(tagDao.getPostTags(b.getPostId()));
+                container.setTagContainer(tagContainer);
+                blogPostContainerList.add(container);
+
+            }
+
+            return blogPostContainerList;
+
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -208,9 +354,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             blogPost.setPostBody(rs.getString("postBody"));
             blogPost.setUserIdFK(rs.getInt("userIdFK"));
             blogPost.setTitleNumber(rs.getString("titleNumber"));
-            int value = rs.getInt("categoryIdFK");
-            blogPost.setCategoryIdFK(rs.wasNull() ? null : value);
-            blogPost.setStatus(Status.valueOf(rs.getString("status")));
+            blogPost.setStatus((rs.getString("status")));
             return blogPost;
         }
 

@@ -5,6 +5,8 @@
  */
 package com.tsg.cms.dto;
 
+import com.tsg.cms.dao.Status;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -13,22 +15,122 @@ import java.util.Objects;
  */
 public class StaticPage {
 
-    private String staticPageName;
-    private String staticPageUrl;
     private int pageId;
-    private String staticPageJsp;
-    private String staticPageJavaScript;
-    private int staticPagePosition;
+    private Date timeCreated;
+    private Date timeEdited;
+    private Date startDate;
+    private Date endDate;
+    private String title;
+    private String pageBody;
+    private int userIdFK;
+    private Integer categoryIdFK;
+    private String titleNumber;
+    private Status status;
+    
+  
+    
+    public int getPageId() {
+        return pageId;
+    }
+
+    public void setPageId(int pageId) {
+        this.pageId = pageId;
+    }
+
+    public Date getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(Date timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public Date getTimeEdited() {
+        return timeEdited;
+    }
+
+    public void setTimeEdited(Date timeEdited) {
+        this.timeEdited = timeEdited;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPageBody() {
+        return pageBody;
+    }
+
+    public void setPageBody(String pageBody) {
+        this.pageBody = pageBody;
+    }
+
+    public int getUserIdFK() {
+        return userIdFK;
+    }
+
+    public void setUserIdFK(int userIdFK) {
+        this.userIdFK = userIdFK;
+    }
+
+    public Integer getCategoryIdFK() {
+        return categoryIdFK;
+    }
+
+    public void setCategoryIdFK(Integer categoryIdFK) {
+        this.categoryIdFK = categoryIdFK;
+    }
+
+    public String getTitleNumber() {
+        return titleNumber;
+    }
+
+    public void setTitleNumber(String titleNumber) {
+        this.titleNumber = titleNumber;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 53 * hash + Objects.hashCode(this.staticPageName);
-        hash = 53 * hash + Objects.hashCode(this.staticPageUrl);
-        hash = 53 * hash + this.pageId;
-        hash = 53 * hash + Objects.hashCode(this.staticPageJsp);
-        hash = 53 * hash + Objects.hashCode(this.staticPageJavaScript);
-        hash = 53 * hash + this.staticPagePosition;
+        int hash = 5;
+        hash = 83 * hash + this.pageId;
+        hash = 83 * hash + Objects.hashCode(this.timeCreated);
+        hash = 83 * hash + Objects.hashCode(this.timeEdited);
+        hash = 83 * hash + Objects.hashCode(this.startDate);
+        hash = 83 * hash + Objects.hashCode(this.endDate);
+        hash = 83 * hash + Objects.hashCode(this.title);
+        hash = 83 * hash + Objects.hashCode(this.pageBody);
+        hash = 83 * hash + this.userIdFK;
+        hash = 83 * hash + Objects.hashCode(this.categoryIdFK);
+        hash = 83 * hash + Objects.hashCode(this.titleNumber);
+        hash = 83 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
@@ -47,69 +149,37 @@ public class StaticPage {
         if (this.pageId != other.pageId) {
             return false;
         }
-        if (this.staticPagePosition != other.staticPagePosition) {
+        if (this.userIdFK != other.userIdFK) {
             return false;
         }
-        if (!Objects.equals(this.staticPageName, other.staticPageName)) {
+        if (!Objects.equals(this.title, other.title)) {
             return false;
         }
-        if (!Objects.equals(this.staticPageUrl, other.staticPageUrl)) {
+        if (!Objects.equals(this.pageBody, other.pageBody)) {
             return false;
         }
-        if (!Objects.equals(this.staticPageJsp, other.staticPageJsp)) {
+        if (!Objects.equals(this.titleNumber, other.titleNumber)) {
             return false;
         }
-        if (!Objects.equals(this.staticPageJavaScript, other.staticPageJavaScript)) {
+        if (!Objects.equals(this.timeCreated, other.timeCreated)) {
+            return false;
+        }
+        if (!Objects.equals(this.timeEdited, other.timeEdited)) {
+            return false;
+        }
+        if (!Objects.equals(this.startDate, other.startDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.endDate, other.endDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.categoryIdFK, other.categoryIdFK)) {
+            return false;
+        }
+        if (this.status != other.status) {
             return false;
         }
         return true;
     }
 
-    public String getStaticPageName() {
-        return staticPageName;
-    }
-
-    public void setStaticPageName(String staticPageName) {
-        this.staticPageName = staticPageName;
-    }
-
-    public String getStaticPageUrl() {
-        return staticPageUrl;
-    }
-
-    public void setStaticPageUrl(String staticPageUrl) {
-        this.staticPageUrl = staticPageUrl;
-    }
-
-    public int getPageId() {
-        return pageId;
-    }
-
-    public void setPageId(int pageId) {
-        this.pageId = pageId;
-    }
-
-    public String getStaticPageJsp() {
-        return staticPageJsp;
-    }
-
-    public void setStaticPageJsp(String staticPageJsp) {
-        this.staticPageJsp = staticPageJsp;
-    }
-
-    public String getStaticPageJavaScript() {
-        return staticPageJavaScript;
-    }
-
-    public void setStaticPageJavaScript(String staticPageJavaScript) {
-        this.staticPageJavaScript = staticPageJavaScript;
-    }
-
-    public int getStaticPagePosition() {
-        return staticPagePosition;
-    }
-
-    public void setStaticPagePosition(int staticPagePosition) {
-        this.staticPagePosition = staticPagePosition;
-    }
 }

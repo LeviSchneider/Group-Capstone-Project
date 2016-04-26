@@ -16,7 +16,6 @@ public class BlogPostContainer {
     private BlogPost blogPost;
     private String message;
     private TagContainer tagContainer;
-    private CategoryContainer categoryContainer;
 
     public BlogPost getBlogPost() {
         return blogPost;
@@ -42,13 +41,6 @@ public class BlogPostContainer {
         this.tagContainer = tagContainer;
     }
 
-    public CategoryContainer getCategoryContainer() {
-        return categoryContainer;
-    }
-
-    public void setCategoryContainer(CategoryContainer categoryContainer) {
-        this.categoryContainer = categoryContainer;
-    }
 
     @Override
     public int hashCode() {
@@ -56,7 +48,6 @@ public class BlogPostContainer {
         hash = 47 * hash + Objects.hashCode(this.blogPost);
         hash = 47 * hash + Objects.hashCode(this.message);
         hash = 47 * hash + Objects.hashCode(this.tagContainer);
-        hash = 47 * hash + Objects.hashCode(this.categoryContainer);
         return hash;
     }
 
@@ -79,9 +70,6 @@ public class BlogPostContainer {
             return false;
         }
         if (!Objects.equals(this.tagContainer, other.tagContainer)) {
-            return false;
-        }
-        if (!Objects.equals(this.categoryContainer, other.categoryContainer)) {
             return false;
         }
         return true;

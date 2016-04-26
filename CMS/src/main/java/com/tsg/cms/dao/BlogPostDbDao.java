@@ -6,9 +6,9 @@
 package com.tsg.cms.dao;
 
 import com.tsg.cms.dto.BlogPost;
+import com.tsg.cms.dto.BlogPostContainer;
 import java.util.List;
 import java.util.Map;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 /**
  *
@@ -16,14 +16,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
  */
 public interface BlogPostDbDao {
 
-    public BlogPost addBlogPost(BlogPost blogPost);
+    public BlogPostContainer addBlogPost(BlogPost blogPost);
     public void removeBlogPost(Integer postId);
-    public void updateBlogPost(BlogPost blogPost);
-    public List<BlogPost> getAllBlogPost();
-    public BlogPost getBlogPostById(Integer postId);
-    public List<BlogPost> searchBlogPost(Map<SearchTerm, String> criteria);
-    public BlogPost getBlogPostByTitleNumber(String titleNumber);
-    public List<BlogPost> getBlogPostByTitle(String title);
-    public List<BlogPost> getBlogPostByTag(String tag);
+    public BlogPostContainer updateBlogPost(BlogPost blogPost);
+    public List<BlogPostContainer> getAllBlogPosts();
+    public BlogPostContainer getBlogPostById(Integer postId);
+    public List<BlogPostContainer> searchBlogPosts(Map<SearchTerm, String> criteria);
+    public BlogPostContainer getBlogPostByTitleNumber(String titleNumber);
+    public List<BlogPostContainer> getBlogPostsByTag(String tag);
     
 }
