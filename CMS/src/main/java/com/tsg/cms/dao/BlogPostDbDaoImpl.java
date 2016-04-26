@@ -25,35 +25,20 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
-    private static final String SQL_SELECT_BLOGPOST_PREFIX
-            = "select *, `postStatusName` as status from blogPosts JOIN postStatusBlogPostBridge "
-            + "on postStatusBlogPostBridge.blogPostIdFK = blogPosts.PostId "
-            + "JOIN postStatus "
-            + "on postStatusBlogPostBridge.postStatusIdFK = postStatus.postStatusId";
-    private static final String SQL_SUFFIX
-            = " ORDER by postId DESC";
     private static final String SQL_INSERT_BLOGPOST
-            = "insert into blogPosts (dateSubmitted, startDate, endDate, title, postBody, userIdFK, postType, titleNumber) value(?, ?, ?, ?, ?, ?, ?, ?)";
+            = "insert into blogPosts (timeCreated, timeEdited, startDate, endDate, title, postBody, userIdFK, titleNumber, status) value(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE_BLOGPOST
             = "delete from blogPosts where postId = ?";
     private static final String SQL_UPDATE_BLOGPOST
-            = "update blogPosts set dateSubmitted = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, postType = ?, titleNumber = ? where postId = ?";
-    private static final String SQL_SELECT_ALL_BLOGPOST
-            = SQL_SELECT_BLOGPOST_PREFIX + SQL_SUFFIX;
-    private static final String SQL_SELECT_BLOGPOST
-            = SQL_SELECT_BLOGPOST_PREFIX + " where postId = ?";
+            = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?";
+    private static final String SQL_SELECT_ALL_BLOGPOSTS
+            = "select * from blogPosts";
+    private static final String SQL_SELECT_BLOGPOST_BY_ID
+            = "select * from blogPosts where postId = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLENUMBER
-            = SQL_SELECT_BLOGPOST_PREFIX + " where titleNumber = ?";
+            = "select * from blogPosts where titleNumber = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLE
-            = SQL_SELECT_BLOGPOST_PREFIX + " where title = ?";
-    private static final String SQL_SELECT_BLOGPOST_STATUS
-            = "SELECT postStatusName as status FROM `postStatus` inner join postStatusBlogPostBridge on postStatusBlogPostBridge.postStatusIdFK = postStatus.postStatusId where blogPostIdFK = ?";
-    private static final String SQL_INSERT_BLOGPOST_STATUS_INTO_BRIDGE
-            = "INSERT INTO `postStatusBlogPostBridge`(`postStatusIdFK`, `blogPostIdFK`) VALUES (?, ?)";
-    private static final String SQL_UPDATE_BLOGPOST_STATUS_INTO_BRIDGE
-            = "update `postStatusBlogPostBridge` set `postStatusIdFK` = ? WHERE `blogPostIdFK` = ? ";
-    private static final String SQL_SELECT_STATUS
-            = "SELECT postStatusId from postStatus where postStatusName = ?";
+            = "select * from blogPosts where title = ?";
     private static final String SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME
             = "select blogPosts.*, hashTags.hashTagName "
             + "from blogPosts "
@@ -76,19 +61,17 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         setTitleNumber(blogPost);
 
         jdbcTemplate.update(SQL_INSERT_BLOGPOST,
-                blogPost.getDateSubmitted(),
+                blogPost.getTimeCreated(),
+                blogPost.getTimeEdited(),
                 blogPost.getStartDate(),
                 blogPost.getEndDate(),
                 blogPost.getTitle(),
                 blogPost.getPostBody(),
                 blogPost.getUserIdFK(),
-                blogPost.getPostType(),
-                blogPost.getTitleNumber());
+                blogPost.getTitleNumber(),
+                blogPost.getStatus().toString());
 
         blogPost.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
-        int postStatusId = jdbcTemplate.queryForObject(SQL_SELECT_STATUS, new String[]{blogPost.getStatus()}, Integer.class);
-
-        jdbcTemplate.update(SQL_INSERT_BLOGPOST_STATUS_INTO_BRIDGE, postStatusId, blogPost.getPostId());
         return blogPost;
     }
 
@@ -101,37 +84,32 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     public void updateBlogPost(BlogPost blogPost) {
         setTitleNumber(blogPost);
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
-                blogPost.getDateSubmitted(),
+                blogPost.getTimeCreated(),
+                blogPost.getTimeEdited(),
                 blogPost.getStartDate(),
                 blogPost.getEndDate(),
                 blogPost.getTitle(),
                 blogPost.getPostBody(),
                 blogPost.getUserIdFK(),
-                blogPost.getPostType(),
                 blogPost.getTitleNumber(),
-                blogPost.getPostId()
+                blogPost.getStatus().toString()
         );
-        int postStatusId = jdbcTemplate.queryForObject(SQL_SELECT_STATUS, new String[]{blogPost.getStatus()}, Integer.class);
-
-        jdbcTemplate.update(SQL_UPDATE_BLOGPOST_STATUS_INTO_BRIDGE, postStatusId, blogPost.getPostId());
     }
 
     @Override
     public List<BlogPost> getAllBlogPost() {
-        return jdbcTemplate.query(SQL_SELECT_ALL_BLOGPOST, new BlogPostMapper());
+        return jdbcTemplate.query(SQL_SELECT_ALL_BLOGPOSTS, new BlogPostMapper());
     }
 
     @Override
     public BlogPost getBlogPostById(int postId) {
         try {
-            return jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST, new BlogPostMapper(), postId);
+            return jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), postId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    //add to interface
-    //maybe come up with better name for this; it's a local resource locator
     @Override
     public BlogPost getBlogPostByTitleNumber(String titleNumber) {
         try {
@@ -145,7 +123,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     public List<BlogPost> getBlogPostByTitle(String title) {
         try {
             return jdbcTemplate.query(SQL_SELECT_BLOGPOST_BY_TITLE, new BlogPostMapper(), title);
-            // ^ check this, not sure if args / sql arg is correct
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -179,6 +156,9 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         }
     }
 
+    //search for all posts with same title; if none exist, set titleNumber to title.
+    //if the title already exists, extract titlenumbers from result.
+    //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
         String title = blogPost.getTitle();
         title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
@@ -200,15 +180,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     }
 
     @Override
-    public String getBlogPostStatus(int postId) {
-        try {
-            return jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_STATUS, String.class, postId);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
-    @Override
     public List<BlogPost> getBlogPostByTag(String tag) {
         try {
             return jdbcTemplate.query(SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME, new BlogPostMapper(), tag);
@@ -225,16 +196,16 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         @Override
         public BlogPost mapRow(ResultSet rs, int i) throws SQLException {
             BlogPost blogPost = new BlogPost();
-            blogPost.setDateSubmitted(rs.getDate("dateSubmitted"));
+            blogPost.setPostId(rs.getInt("postId"));
+            blogPost.setTimeCreated(rs.getDate("timeCreated"));
+            blogPost.setTimeEdited(rs.getDate("timeEdited"));
             blogPost.setStartDate(rs.getDate("startDate"));
             blogPost.setEndDate(rs.getDate("endDate"));
             blogPost.setTitle(rs.getString("title"));
             blogPost.setPostBody(rs.getString("postBody"));
             blogPost.setUserIdFK(rs.getInt("userIdFK"));
-            blogPost.setPostType(rs.getString("postType"));
-            blogPost.setPostId(rs.getInt("postId"));
             blogPost.setTitleNumber(rs.getString("titleNumber"));
-            //blogPost.setStatus(rs.getString("status"));
+            blogPost.setStatus(Status.valueOf(rs.getString("status")));
             return blogPost;
         }
 

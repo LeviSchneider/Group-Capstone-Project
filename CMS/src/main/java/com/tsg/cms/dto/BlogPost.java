@@ -4,41 +4,45 @@
  * and open the template in the editor.
  */
 package com.tsg.cms.dto;
+
+import com.tsg.cms.dao.Status;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
+
 /**
  *
  * @author apprentice
  */
 public class BlogPost {
+
     //We will probably need a private String category;
     //and perhaps a private List<tags> tags; 
     private int postId;
-    private Date dateSubmitted;
+    private Date timeCreated;
+    private Date timeEdited;
     private Date startDate;
     private Date endDate;
     private String title;
     private String postBody;
     private int userIdFK;
-    private String status;
-    private String postType; // <<<---- I am uncertain what the postType is for.
     private String titleNumber;
+    private Status status;
     //titleNumber concatenates the title, and if the title isn't unique, the 
     //ordinal number of the title, starting with 1.
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + this.postId;
-        hash = 83 * hash + Objects.hashCode(this.dateSubmitted);
-        hash = 83 * hash + Objects.hashCode(this.startDate);
-        hash = 83 * hash + Objects.hashCode(this.endDate);
-        hash = 83 * hash + Objects.hashCode(this.title);
-        hash = 83 * hash + Objects.hashCode(this.postBody);
-        hash = 83 * hash + this.userIdFK;
-        hash = 83 * hash + Objects.hashCode(this.status);
-        hash = 83 * hash + Objects.hashCode(this.postType);
+        int hash = 5;
+        hash = 59 * hash + this.postId;
+        hash = 59 * hash + Objects.hashCode(this.timeCreated);
+        hash = 59 * hash + Objects.hashCode(this.timeEdited);
+        hash = 59 * hash + Objects.hashCode(this.startDate);
+        hash = 59 * hash + Objects.hashCode(this.endDate);
+        hash = 59 * hash + Objects.hashCode(this.title);
+        hash = 59 * hash + Objects.hashCode(this.postBody);
+        hash = 59 * hash + this.userIdFK;
+        hash = 59 * hash + Objects.hashCode(this.status);
+        hash = 59 * hash + Objects.hashCode(this.titleNumber);
         return hash;
     }
 
@@ -66,19 +70,22 @@ public class BlogPost {
         if (!Objects.equals(this.postBody, other.postBody)) {
             return false;
         }
-        if (!Objects.equals(this.status, other.status)) {
+        if (!Objects.equals(this.titleNumber, other.titleNumber)) {
             return false;
         }
-        if (!Objects.equals(this.postType, other.postType)) {
+        if (!Objects.equals(this.timeCreated, other.timeCreated)) {
             return false;
         }
-        if (!Objects.equals(this.dateSubmitted, other.dateSubmitted)) {
+        if (!Objects.equals(this.timeEdited, other.timeEdited)) {
             return false;
         }
         if (!Objects.equals(this.startDate, other.startDate)) {
             return false;
         }
         if (!Objects.equals(this.endDate, other.endDate)) {
+            return false;
+        }
+        if (this.status != other.status) {
             return false;
         }
         return true;
@@ -92,12 +99,20 @@ public class BlogPost {
         this.postId = postId;
     }
 
-    public Date getDateSubmitted() {
-        return dateSubmitted;
+    public Date getTimeCreated() {
+        return timeCreated;
     }
 
-    public void setDateSubmitted(Date dateSubmitted) {
-        this.dateSubmitted = dateSubmitted;
+    public void setTimeCreated(Date timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public Date getTimeEdited() {
+        return timeEdited;
+    }
+
+    public void setTimeEdited(Date timeEdited) {
+        this.timeEdited = timeEdited;
     }
 
     public Date getStartDate() {
@@ -140,20 +155,12 @@ public class BlogPost {
         this.userIdFK = userIdFK;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public String getPostType() {
-        return postType;
-    }
-
-    public void setPostType(String postType) {
-        this.postType = postType;
     }
 
     public String getTitleNumber() {
@@ -163,5 +170,5 @@ public class BlogPost {
     public void setTitleNumber(String titleNumber) {
         this.titleNumber = titleNumber;
     }
-    
+
 }
