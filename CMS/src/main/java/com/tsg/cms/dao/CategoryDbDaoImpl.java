@@ -27,26 +27,23 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
 
     private static final String SQL_INSERT_CATEGORY
             = "insert into categories (categoryName) value(?)";
-    private static final String SQL_INSERT_CATEGORY_INTO_BRIDGE
-            = "insert into categoriesPostsBridge (categoryIdFK, blogPostIdFK) value(?,?)";
     private static final String SQL_DELETE_CATEGORY
             = "delete from categories where categoryId = ?";
-    private static final String SQL_DELETE_CATEGORY_FROM_BRIDGE
-            = "delete from categoriesPostsBridge where categoriesPostsBridgeId=?";
     private static final String SQL_UPDATE_CATEGORY
             = "update categories set categoryName = ? where categoryId = ?";
-    private static final String SQL_UPDATE_CATEGORY_IN_BRIDGE
-            = "update categoriesPostsBridge set categoryIdFK = ?, blogPostIdFK = ? where categoriesPostsBridgeId = ?";
     private static final String SQL_SELECT_ALL_CATEGORY
             = "select * from categories ORDER BY categoryId DESC";
-    private static final String SQL_SELECT_ALL_CATEGORIES_BY_POST_FROM_BRIDGE
-            = "select categoryName, categoryId from categories as c inner join categoriesPostsBridge on c.categoryId = categoriesPostsBridge.categoryIdFK where blogPostIdFK = ?";
     private static final String SQL_SELECT_CATEGORY
             = "select * from categories where categoryId = ?";
-    private static final String SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID
-            = "select categoriesPostsBridgeId from categoriesPostsBridge where categoryIdFK = ? and blogPostIdFK = ?";
-    private static final String SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID_BY_BLOG_ID
-            = "select categoriesPostsBridgeId from categoriesPostsBridge where blogPostIdFK = ?";
+    private static final String SQL_SELECT_POST_CATEGORY
+            = "select * from categories "
+            + "join on categories.categoryId = blogPosts.categoryIdFK "
+            + "where blogPost.postId = ?";
+    private static final String SQL_ADD_CATEGORY_TO_POST
+            = "update blogPosts set categoryIdFK = ? where blogPosts.postId = ?";
+    private static final String SQL_REMOVE_CATEGORY_FROM_POST
+            = "update blogPosts set categoryIdFK = null where blogPosts.postId = ?";
+    //private static final String SQL_UPDATE_POST_CATEGORY
 
     private JdbcTemplate jdbcTemplate;
 
@@ -59,34 +56,16 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     public Category addCategory(Category category) throws DuplicateKeyException {
 
         jdbcTemplate.update(SQL_INSERT_CATEGORY,
-                            category.getCategoryName());
+                category.getCategoryName());
         category.setCategoryId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
 
         return category;
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    public void addCategoryAndPostToBridge(Category category, int blogPostIdFK) throws DuplicateKeyException {
-
-        Integer bridgeId;
-        try {
-            bridgeId = jdbcTemplate.queryForObject(SQL_GET_SQL_SELECT_CATEGORY_BRIDGE_ID_BY_BLOG_ID, new Object[]{blogPostIdFK}, Integer.class);
-            jdbcTemplate.update(SQL_UPDATE_CATEGORY_IN_BRIDGE,
-                                category.getCategoryId(), blogPostIdFK, bridgeId);
-
-        } catch (EmptyResultDataAccessException x) {
-            jdbcTemplate.update(SQL_INSERT_CATEGORY_INTO_BRIDGE,
-                                category.getCategoryId(), blogPostIdFK);
-        }
-
-    }
-
-    @Override
-    public List<Category> getPostCategories(int postId) {
-        List<Category> list = jdbcTemplate.query(SQL_SELECT_ALL_CATEGORIES_BY_POST_FROM_BRIDGE, new CategoryMapper(), postId);
-
-        return list;
+    public Category getPostCategory(int postId) {
+        Category category = jdbcTemplate.queryForObject(SQL_SELECT_POST_CATEGORY, new Object[]{postId}, new CategoryMapper());
+        return category;
     }
 
     @Override
@@ -97,7 +76,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     @Override
     public Category updateCategory(Category category) {
         jdbcTemplate.update(SQL_UPDATE_CATEGORY,
-                            category.getCategoryName(), category.getCategoryId());
+                category.getCategoryName(), category.getCategoryId());
         return category;
     }
 
@@ -142,6 +121,23 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
             }
             return jdbcTemplate.query(sQuery.toString(), new CategoryMapper(), paramVals);
         }
+    }
+
+    @Override
+    public void updateBlogPostCategory(Category category, int postId) {
+        jdbcTemplate.update(SQL_ADD_CATEGORY_TO_POST,
+                category.getCategoryId(),
+                postId);
+    }
+
+    @Override
+    public void removeBlogPostCategory(int postId) {
+        jdbcTemplate.update(SQL_REMOVE_CATEGORY_FROM_POST, postId);
+    }
+
+    @Override
+    public Category getBlogPostCategory(int postId) {
+        return jdbcTemplate.queryForObject(SQL_SELECT_POST_CATEGORY, new Object[]{postId}, new CategoryMapper());
     }
 
     private static final class CategoryMapper implements RowMapper<Category> {
