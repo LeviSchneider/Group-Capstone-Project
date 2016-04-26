@@ -77,8 +77,8 @@ public class TagDbDaoImpl implements TagDbDao {
 
         } catch (EmptyResultDataAccessException e) {
             jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE,
-                                hashTagId,
-                                postId);
+                    hashTagId,
+                    postId);
         }
 
         return tag;
@@ -110,15 +110,15 @@ public class TagDbDaoImpl implements TagDbDao {
     @Override
     public Map<String, Integer> getNumberOfTags(int num) {
         return jdbcTemplate.query(SQL_SELECT_NUMBER_OF_HASHTAGS, new ResultSetExtractor<Map<String, Integer>>() {
-                              @Override
-                              public Map extractData(ResultSet rs) throws SQLException, DataAccessException {
-                                  Map<String, Integer> mapRet = new HashMap<>();
-                                  while (rs.next()) {
-                                      mapRet.put(rs.getString("hashTagName"), rs.getInt("numberofhashtags"));
-                                  }
-                                  return mapRet;
-                              }
-                          }, new Object[]{num});
+            @Override
+            public Map extractData(ResultSet rs) throws SQLException, DataAccessException {
+                Map<String, Integer> mapRet = new HashMap<>();
+                while (rs.next()) {
+                    mapRet.put(rs.getString("hashTagName"), rs.getInt("numberofhashtags"));
+                }
+                return mapRet;
+            }
+        }, new Object[]{num});
 
     }
 
@@ -126,6 +126,5 @@ public class TagDbDaoImpl implements TagDbDao {
     public List<String> getAllTags() {
         return jdbcTemplate.query(SQL_ALL_HASHTAGS, new SingleColumnRowMapper<String>());
     }
-
 
 }

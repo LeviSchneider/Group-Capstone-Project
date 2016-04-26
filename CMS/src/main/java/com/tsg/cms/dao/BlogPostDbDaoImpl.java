@@ -74,6 +74,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         blogPost.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         return blogPost;
     }
+    //= "insert into blogPosts (timeCreated, timeEdited, startDate, endDate, title, postBody, userIdFK, titleNumber, status) value(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Override
     public void removeBlogPost(int postId) {
@@ -161,13 +162,16 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
         String title = blogPost.getTitle();
-        title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-        title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+
         List<BlogPost> postsWithSameTitle = getBlogPostByTitle(title);
 
         if (postsWithSameTitle.isEmpty()) {
+            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
             blogPost.setTitleNumber(title);
         } else {
+            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
             List<String> titleNumbers = postsWithSameTitle.stream()
                     .map(p -> p.getTitleNumber())
                     .collect(Collectors.toList());
