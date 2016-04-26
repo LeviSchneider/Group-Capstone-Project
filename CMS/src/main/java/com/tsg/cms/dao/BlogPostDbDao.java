@@ -24,7 +24,6 @@ public interface BlogPostDbDao {
     public List<BlogPost> searchBlogPost(Map<SearchTerm, String> criteria);
     public BlogPost getBlogPostByTitleNumber(String titleNumber);
     public List<BlogPost> getBlogPostByTitle(String title);
-    public String getBlogPostStatus(int postId);
     public List<BlogPost> getBlogPostByTag(String tag);
     
 }

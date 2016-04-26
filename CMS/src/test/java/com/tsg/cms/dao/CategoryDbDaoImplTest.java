@@ -201,4 +201,59 @@
 ////        Dao.addCategoryAndPostToBridge(C3, blogPost3.getPostId());
 //    }
 //
+
+    //from blogpostdao tests
+    
+    /**
+     * Test of addBlogPost method, of class BlogPostDbDaoImpl.
+     */
+//    @Test
+//    public void testAddBlogPostDuplicateCategory() {
+//        try {
+//            c1 = dao.addBlogPost(c1);
+//            cat1 = categoryDao.addCategory(cat1);
+//            cat1 = categoryDao.addCategory(cat1);
+//            categoryDao.addCategoryAndPostToBridge(cat1, c1.getPostId());
+//
+//        } catch (DuplicateKeyException e) {
+//            Boolean thrown = true;
+//            System.out.println("Duplicate Key");
+//            Assert.assertTrue(thrown);
+//        }
+//
+//    }
+//
+//    @Test
+//    public void testAddBlogPostUniqueCategory() {
+//        try {
+//            Category Cat4 = new Category();
+//            Cat4.setCategoryName("Unique");
+//
+//            c1 = dao.addBlogPost(c1);
+//            Cat4 = categoryDao.addCategory(Cat4);
+//            categoryDao.addCategoryAndPostToBridge(Cat4, c1.getPostId());
+//
+//        } catch (DuplicateKeyException e) {
+//            System.out.println("Duplicate Key");
+//            fail();
+//        }
+//
+//    }
+//
+//    @Test
+//    public void testUpdateBlogPostDuplicateCategory() {
+//        try {
+//
+//            c3 = dao.addBlogPost(c3);
+//            categoryDao.addCategoryAndPostToBridge(cat1, c3.getPostId());
+//            c3.setTitle("M");
+//            dao.updateBlogPost(c3);
+//            categoryDao.addCategoryAndPostToBridge(cat1, c3.getPostId());
+//
+//        } catch (DuplicateKeyException e) {
+//            Boolean thrown = true;
+//            Assert.assertTrue(thrown);
+//        }
+//
+//    }
 //}
