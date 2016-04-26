@@ -90,7 +90,7 @@ public class CategoryController {
 
         CategoryContainer categoryContainer = new CategoryContainer();
 
-        dao.addCategoryAndPostToBridge(category, postId);
+        //dao.addCategoryAndPostToBridge(category, postId);
 
         return categoryContainer;
 

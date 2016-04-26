@@ -17,10 +17,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 public interface BlogPostDbDao {
 
     public BlogPost addBlogPost(BlogPost blogPost);
-    public void removeBlogPost(int postId);
+    public void removeBlogPost(Integer postId);
     public void updateBlogPost(BlogPost blogPost);
     public List<BlogPost> getAllBlogPost();
-    public BlogPost getBlogPostById(int postId);
+    public BlogPost getBlogPostById(Integer postId);
     public List<BlogPost> searchBlogPost(Map<SearchTerm, String> criteria);
     public BlogPost getBlogPostByTitleNumber(String titleNumber);
     public List<BlogPost> getBlogPostByTitle(String title);

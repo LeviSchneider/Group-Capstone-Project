@@ -64,7 +64,7 @@ public class BlogPostController {
         tagContainer.setTagList(tagDao.getPostTags(id));
 
         CategoryContainer categoryContainer = new CategoryContainer();
-        categoryContainer.setCategoryList(categoryDao.getPostCategories(id));
+        //categoryContainer.setCategoryList(categoryDao.getPostCategories(id));
 
         container.setTagContainer(tagContainer);
         container.setCategoryContainer(categoryContainer);
@@ -135,7 +135,7 @@ public class BlogPostController {
             blogPostContainer.setTagContainer(tagContainer);
 
             CategoryContainer categoryContainer = new CategoryContainer();
-            categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
+            //categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
             blogPostContainer.setCategoryContainer(categoryContainer);
 
             blogPostContainer.setBlogPost(blogPost);
@@ -195,7 +195,7 @@ public class BlogPostController {
             blogPostContainer.setTagContainer(tagContainer);
 
             CategoryContainer categoryContainer = new CategoryContainer();
-            categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
+            //categoryContainer.setCategoryList(categoryDao.getPostCategories(blogPost.getPostId()));
             blogPostContainer.setCategoryContainer(categoryContainer);
 
             blogPostContainer.setBlogPost(blogPost);

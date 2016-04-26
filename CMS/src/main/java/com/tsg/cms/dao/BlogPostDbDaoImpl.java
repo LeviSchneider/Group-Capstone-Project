@@ -77,7 +77,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //= "insert into blogPosts (timeCreated, timeEdited, startDate, endDate, title, postBody, userIdFK, titleNumber, status) value(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Override
-    public void removeBlogPost(int postId) {
+    public void removeBlogPost(Integer postId) {
         jdbcTemplate.update(SQL_DELETE_BLOGPOST, postId);
     }
 
@@ -103,7 +103,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     }
 
     @Override
-    public BlogPost getBlogPostById(int postId) {
+    public BlogPost getBlogPostById(Integer postId) {
         try {
             return jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), postId);
         } catch (EmptyResultDataAccessException e) {
@@ -208,6 +208,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             blogPost.setPostBody(rs.getString("postBody"));
             blogPost.setUserIdFK(rs.getInt("userIdFK"));
             blogPost.setTitleNumber(rs.getString("titleNumber"));
+            int value = rs.getInt("categoryIdFK");
+            blogPost.setCategoryIdFK(rs.wasNull() ? null : value);
             blogPost.setStatus(Status.valueOf(rs.getString("status")));
             return blogPost;
         }

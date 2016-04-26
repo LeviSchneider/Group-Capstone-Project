@@ -124,7 +124,6 @@ public class CategoryDbDaoImplTest {
     public void testAddCategory() {
 
         C1 = Dao.addCategory(C1);
-        Dao.addCategoryAndPostToBridge(C1, blogPost1.getPostId());
         Category fromDb = Dao.getCategoryById(C1.getCategoryId());
         C1.setCategoryId(fromDb.getCategoryId());
         assertEquals(C1, fromDb);
@@ -139,7 +138,6 @@ public class CategoryDbDaoImplTest {
     public void testRemoveCategory() {
 
         C2 = Dao.addCategory(C2);
-        Dao.addCategoryAndPostToBridge(C2, blogPost2.getPostId());
         Category fromDb = Dao.getCategoryById(C2.getCategoryId());
         C2.setCategoryId(fromDb.getCategoryId());
 
@@ -156,7 +154,6 @@ public class CategoryDbDaoImplTest {
     public void testUpdateCategory() {
 
         C3 = Dao.addCategory(C3);
-        Dao.addCategoryAndPostToBridge(C3, blogPost3.getPostId());
 
         C3.setCategoryName("CategoryTest");
         Dao.updateCategory(C3);
@@ -174,11 +171,8 @@ public class CategoryDbDaoImplTest {
     public void testGetAllCategories() {
 
         C1 = Dao.addCategory(C1);
-        Dao.addCategoryAndPostToBridge(C1, blogPost1.getPostId());
         C2 = Dao.addCategory(C2);
-        Dao.addCategoryAndPostToBridge(C2, blogPost2.getPostId());
         C3 = Dao.addCategory(C3);
-        Dao.addCategoryAndPostToBridge(C3, blogPost3.getPostId());
 
         List<Category> cList = Dao.getAllCategories();
         assertEquals(3, cList.size());
@@ -196,19 +190,15 @@ public class CategoryDbDaoImplTest {
 //        Dao.addCategoryAndPostToBridge(C3, blogPost3.getPostId());
     }
 
-    from blogpostdao tests
-    
     /**
      * Test of addBlogPost method, of class BlogPostDbDaoImpl.
      */
     @Test
 
-    public void testAddBlogPostDuplicateCategory() {
+    public void testAddDuplicateCategory() {
         try {
-            c1 = dao.addBlogPost(c1);
-            cat1 = categoryDao.addCategory(cat1);
-            cat1 = categoryDao.addCategory(cat1);
-            categoryDao.addCategoryAndPostToBridge(cat1, c1.getPostId());
+            C1 = Dao.addCategory(C1);
+            C1 = Dao.addCategory(C1);
 
         } catch (DuplicateKeyException e) {
             Boolean thrown = true;
@@ -220,31 +210,25 @@ public class CategoryDbDaoImplTest {
 
     @Test
     public void testAddBlogPostUniqueCategory() {
-        try {
-            Category Cat4 = new Category();
-            Cat4.setCategoryName("Unique");
-
-            c1 = dao.addBlogPost(c1);
-            Cat4 = categoryDao.addCategory(Cat4);
-            categoryDao.addCategoryAndPostToBridge(Cat4, c1.getPostId());
-
-        } catch (DuplicateKeyException e) {
-            System.out.println("Duplicate Key");
-            fail();
-        }
-
+        Category C4 = new Category();
+        C4.setCategoryName("Unique");
+        Dao.addCategory(C4);
+        Dao.updateBlogPostCategory(C4, blogPost1.getPostId());
+        blogPost1 = blogDao.getBlogPostById(blogPost1.getPostId());
+        Assert.assertEquals((Integer)C4.getCategoryId(), blogPost1.getCategoryIdFK());
+        Dao.removeBlogPostCategory(blogPost1.getPostId());
+        blogPost1 = blogDao.getBlogPostById(blogPost1.getPostId());
+        Assert.assertNull(blogPost1.getCategoryIdFK());
     }
 
     @Test
     public void testUpdateBlogPostDuplicateCategory() {
         try {
-
-            c3 = dao.addBlogPost(c3);
-            categoryDao.addCategoryAndPostToBridge(cat1, c3.getPostId());
-            c3.setTitle("M");
-            dao.updateBlogPost(c3);
-            categoryDao.addCategoryAndPostToBridge(cat1, c3.getPostId());
-
+            Category C4 = new Category();
+            C4.setCategoryName("Unique");
+            Dao.addCategory(C4);
+            Dao.updateBlogPostCategory(C4, blogPost1.getPostId());
+            Dao.updateBlogPostCategory(C4, blogPost1.getPostId());
         } catch (DuplicateKeyException e) {
             Boolean thrown = true;
             Assert.assertTrue(thrown);

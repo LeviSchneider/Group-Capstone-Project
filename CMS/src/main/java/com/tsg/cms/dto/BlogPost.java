@@ -25,14 +25,12 @@ public class BlogPost {
     private String title;
     private String postBody;
     private int userIdFK;
+    private Integer categoryIdFK;
     private String titleNumber;
-    private Status status;
-    //titleNumber concatenates the title, and if the title isn't unique, the 
-    //ordinal number of the title, starting with 1.
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 7;
         hash = 59 * hash + this.postId;
         hash = 59 * hash + Objects.hashCode(this.timeCreated);
         hash = 59 * hash + Objects.hashCode(this.timeEdited);
@@ -41,8 +39,9 @@ public class BlogPost {
         hash = 59 * hash + Objects.hashCode(this.title);
         hash = 59 * hash + Objects.hashCode(this.postBody);
         hash = 59 * hash + this.userIdFK;
-        hash = 59 * hash + Objects.hashCode(this.status);
+        hash = 59 * hash + this.categoryIdFK;
         hash = 59 * hash + Objects.hashCode(this.titleNumber);
+        hash = 59 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
@@ -62,6 +61,9 @@ public class BlogPost {
             return false;
         }
         if (this.userIdFK != other.userIdFK) {
+            return false;
+        }
+        if (this.categoryIdFK != other.categoryIdFK) {
             return false;
         }
         if (!Objects.equals(this.title, other.title)) {
@@ -90,6 +92,11 @@ public class BlogPost {
         }
         return true;
     }
+    private Status status;
+    //titleNumber concatenates the title, and if the title isn't unique, the 
+    //ordinal number of the title, starting with 1.
+
+
 
     public int getPostId() {
         return postId;
@@ -169,6 +176,14 @@ public class BlogPost {
 
     public void setTitleNumber(String titleNumber) {
         this.titleNumber = titleNumber;
+    }
+
+    public Integer getCategoryIdFK() {
+        return categoryIdFK;
+    }
+
+    public void setCategoryIdFK(Integer categoryIdFK) {
+        this.categoryIdFK = categoryIdFK;
     }
 
 }

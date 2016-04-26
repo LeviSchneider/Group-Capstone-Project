@@ -40,9 +40,9 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
             + "join on categories.categoryId = blogPosts.categoryIdFK "
             + "where blogPost.postId = ?";
     private static final String SQL_ADD_CATEGORY_TO_POST
-            = "update blogPosts set categoryIdFK = ? where blogPosts.postId = ?";
+            = "update blogPosts set categoryIdFK = ? where postId = ?";
     private static final String SQL_REMOVE_CATEGORY_FROM_POST
-            = "update blogPosts set categoryIdFK = null where blogPosts.postId = ?";
+            = "update blogPosts set categoryIdFK = NULL where blogPosts.postId = ?";
     //private static final String SQL_UPDATE_POST_CATEGORY
 
     private JdbcTemplate jdbcTemplate;
