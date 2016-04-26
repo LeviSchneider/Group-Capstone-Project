@@ -12,9 +12,9 @@ USE `PaloAlto_Test` ;
 */
 
 /*
-DROP SCHEMA IF EXISTS `PaloAlto_Test` ;
-CREATE SCHEMA IF NOT EXISTS `PaloAlto_Test` DEFAULT CHARACTER SET utf8 ;
-USE `PaloAlto_Test` ;
+DROP SCHEMA IF EXISTS `PaloAlto` ;
+CREATE SCHEMA IF NOT EXISTS `PaloAlto` DEFAULT CHARACTER SET utf8 ;
+USE `PaloAlto` ;
 */
 
 -- -----------------------------------------------------
@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS `pageHashTagBridge` (
   `HashTagIdFK` INT(11) NULL DEFAULT NULL,
   INDEX `HashTagIdFK` (`HashTagIdFK` ASC),
   INDEX `postHashTagBridge_ibfk_10_idx` (`pageIdFK` ASC),
+  UNIQUE INDEX `pageHashTagPK` (`pageIdFK` ASC, `HashTagIdFK` ASC),
   CONSTRAINT `pageHashTagBridge_ibfk_1`
     FOREIGN KEY (`pageIdFK`)
     REFERENCES `staticPages` (`pageId`)
@@ -140,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `postHashTagBridge` (
   `HashTagIdFK` INT(11) NULL DEFAULT NULL,
   INDEX `HashTagIdFK` (`HashTagIdFK` ASC),
   INDEX `postHashTagBridge_ibfk_1_idx` (`postIdFK` ASC),
+  UNIQUE INDEX `postHashTagPK` (`postIdFK` ASC, `HashTagIdFK` ASC),
   CONSTRAINT `postHashTagBridge_ibfk_1`
     FOREIGN KEY (`postIdFK`)
     REFERENCES `blogPosts` (`postId`)
@@ -192,3 +194,4 @@ DEFAULT CHARACTER SET = utf8;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
