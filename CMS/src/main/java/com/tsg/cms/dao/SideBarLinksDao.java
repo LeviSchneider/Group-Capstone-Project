@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author apprentice
  */
-public interface StaticPageDao {
+public interface SideBarLinksDao {
 
     public StaticPage addStaticPages(StaticPage page);
 

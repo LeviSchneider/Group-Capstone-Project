@@ -32,7 +32,7 @@ public class TagDbDaoImpl implements TagDbDao {
     private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE
             = "delete from postHashTagBridge where HashTagIdFK = ?";
     private static final String SQL_GET_HASHTAG_BRIDGE_ID
-            = "select postHashTagId from postHashTagBridge where HashTagIdFK = ? and postIdFK = ?";
+            = "select postIdFK from postHashTagBridge where HashTagIdFK = ? and postIdFK = ?";
     private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE_BY_POST_ID
             = "delete from postHashTagBridge where postIdFK = ?";
     private static final String SQL_DELETE_HASHTAG
@@ -71,7 +71,7 @@ public class TagDbDaoImpl implements TagDbDao {
             //ignore attempts to add same hashtag and just update bridge table
         }
         int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new String[]{tag}, Integer.class);
-        Integer bridgeId;
+        Integer bridgeId;//checking to see if the hasgTag and postId exist together 
         try {
             bridgeId = jdbcTemplate.queryForObject(SQL_GET_HASHTAG_BRIDGE_ID, new Object[]{hashTagId, postId}, Integer.class);
 
