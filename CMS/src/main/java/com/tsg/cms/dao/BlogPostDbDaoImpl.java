@@ -161,13 +161,15 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
         String title = blogPost.getTitle();
-        title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-        title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
         List<BlogPost> postsWithSameTitle = getBlogPostByTitle(title);
 
         if (postsWithSameTitle.isEmpty()) {
+            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
             blogPost.setTitleNumber(title);
         } else {
+            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
             List<String> titleNumbers = postsWithSameTitle.stream()
                     .map(p -> p.getTitleNumber())
                     .collect(Collectors.toList());
