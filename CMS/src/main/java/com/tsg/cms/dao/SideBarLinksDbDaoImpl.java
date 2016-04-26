@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author apprentice
  */
-public class StaticPageDbDaoImpl implements StaticPageDao {
+public class SideBarLinksDbDaoImpl implements SideBarLinksDao {
 
     private static final String SQL_INSERT_STATIC_PAGE
             = "insert into static_pages (staticPageName, url, jspPage, javaScriptPage, position) values(?,?,?,?,?)";
