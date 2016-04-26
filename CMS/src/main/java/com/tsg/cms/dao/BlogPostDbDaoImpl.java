@@ -162,7 +162,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
         String title = blogPost.getTitle();
-
         List<BlogPost> postsWithSameTitle = getBlogPostByTitle(title);
 
         if (postsWithSameTitle.isEmpty()) {
