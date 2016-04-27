@@ -37,6 +37,8 @@
     
     <bean id="BlogPostDbDao" class="com.tsg.cms.dao.BlogPostDbDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <constructor-arg ref="TagDbDao"/>
+        <constructor-arg ref="HashTagMatcher"/>
     </bean>
     
     <bean id="TagDbDao" class="com.tsg.cms.dao.TagDbDaoImpl">

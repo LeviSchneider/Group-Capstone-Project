@@ -96,7 +96,7 @@ public class BlogPostDbDaoImplTest {
         c2.setTitle("Ads");
         c2.setPostBody("B");
         c2.setUserIdFK(2222);
-        c2.setStatus("READY FOR APPROVAL");
+        c2.setStatus("READY_FOR_APPROVAL");
 
         c3 = new BlogPost();
 

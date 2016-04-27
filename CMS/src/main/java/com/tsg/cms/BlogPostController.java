@@ -34,7 +34,7 @@ public class BlogPostController {
 
     private final BlogPostDbDao blogPostDao;
 
-    @Autowired
+    @Inject
     public BlogPostController(BlogPostDbDao blogPostDao) {
 
         this.blogPostDao = blogPostDao;
