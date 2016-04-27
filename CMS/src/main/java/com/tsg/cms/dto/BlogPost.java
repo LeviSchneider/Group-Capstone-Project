@@ -31,18 +31,18 @@ public class BlogPost {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + this.postId;
-        hash = 59 * hash + Objects.hashCode(this.timeCreated);
-        hash = 59 * hash + Objects.hashCode(this.timeEdited);
-        hash = 59 * hash + Objects.hashCode(this.startDate);
-        hash = 59 * hash + Objects.hashCode(this.endDate);
-        hash = 59 * hash + Objects.hashCode(this.title);
-        hash = 59 * hash + Objects.hashCode(this.postBody);
-        hash = 59 * hash + this.userIdFK;
-        hash = 59 * hash + this.categoryIdFK;
-        hash = 59 * hash + Objects.hashCode(this.titleNumber);
-        hash = 59 * hash + Objects.hashCode(this.status);
+        int hash = 3;
+        hash = 17 * hash + this.postId;
+        hash = 17 * hash + Objects.hashCode(this.timeCreated);
+        hash = 17 * hash + Objects.hashCode(this.timeEdited);
+        hash = 17 * hash + Objects.hashCode(this.startDate);
+        hash = 17 * hash + Objects.hashCode(this.endDate);
+        hash = 17 * hash + Objects.hashCode(this.title);
+        hash = 17 * hash + Objects.hashCode(this.postBody);
+        hash = 17 * hash + this.userIdFK;
+        hash = 17 * hash + Objects.hashCode(this.categoryIdFK);
+        hash = 17 * hash + Objects.hashCode(this.titleNumber);
+        hash = 17 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
@@ -64,9 +64,6 @@ public class BlogPost {
         if (this.userIdFK != other.userIdFK) {
             return false;
         }
-        if (this.categoryIdFK != other.categoryIdFK) {
-            return false;
-        }
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
@@ -86,6 +83,9 @@ public class BlogPost {
             return false;
         }
         if (!Objects.equals(this.endDate, other.endDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.categoryIdFK, other.categoryIdFK)) {
             return false;
         }
         if (this.status != other.status) {

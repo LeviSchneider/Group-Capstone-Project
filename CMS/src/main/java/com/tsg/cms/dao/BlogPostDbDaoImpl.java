@@ -102,7 +102,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
         setTitleNumber(blogPost);
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date date = new Date();
         blogPost.setTimeCreated(date);
         blogPost.setTimeEdited(date);
@@ -333,7 +332,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
             return blogPostContainerList;
 
-        } catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException | NullPointerException e) {
             return null;
         }
     }
