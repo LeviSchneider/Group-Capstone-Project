@@ -34,7 +34,7 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     private static final String SQL_UPDATE_STATICPAGE
             = "update staticPages set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, pageBody = ?, userIdFK = ?, titleNumber = ?, status = ?";
     private static final String SQL_SELECT_ALL_STATICPAGES
-            = "select * from staticPages";
+            = "select * from staticPages ORDER by pageId DESC";
     private static final String SQL_SELECT_STATICPAGE_BY_ID
             = "select * from staticPages where pageId = ?";
     private static final String SQL_SELECT_STATICPAGE_BY_TITLENUMBER

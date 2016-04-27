@@ -53,7 +53,7 @@ public class StaticPageController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public StaticPage createStaticPage(@RequestBody StaticPage staticPage) {
-        
+
         staticPage.setUserIdFK(999);
         return staticPageDao.addStaticPage(staticPage);
 
@@ -69,7 +69,7 @@ public class StaticPageController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public StaticPage updateStaticPage(@PathVariable("id") int id, @RequestBody StaticPage staticPage) {
-     
+
         staticPage.setPageId(id);
         staticPageDao.updateStaticPage(staticPage);
         return staticPage;
@@ -83,25 +83,11 @@ public class StaticPageController {
 
     @RequestMapping(value = "/staticPages", method = RequestMethod.GET)
     @ResponseBody
-    public List<StaticPageContainer> getAllStaticPage() {
+    public List<StaticPage> getAllStaticPages() {
 
-        List<StaticPageContainer> staticPageContainerList = new ArrayList<>();
         List<StaticPage> staticPages = staticPageDao.getAllStaticPages();
 
-        for (StaticPage staticPage : staticPages) {
-
-            StaticPageContainer staticPageContainer = new StaticPageContainer();
-
-          
-            CategoryContainer categoryContainer = new CategoryContainer();
-            //categoryContainer.setCategoryList(categoryDao.getPageCategories(staticPage.getPageId()));
-            staticPageContainer.setCategoryContainer(categoryContainer);
-
-            staticPageContainer.setStaticPage(staticPage);
-
-            staticPageContainerList.add(staticPageContainer);
-        }
-        return staticPageContainerList;
+        return staticPages;
 
     }
 
@@ -129,14 +115,12 @@ public class StaticPageController {
     @RequestMapping(value = "/pagelink/{titleNumber}", method = RequestMethod.GET)
     public String getLinkedPage(@PathVariable("titleNumber") String titleNumber, Map<String, Object> model, HttpSession session) {
 
-        session.setAttribute("page", "singlePage");
+        session.setAttribute("page", "singleStaticPage");
 
-        session.setAttribute("js_page", "singlePage.js");
+        session.setAttribute("js_page", "singleStaticPage.js");
         int id = staticPageDao.getStaticPageByTitleNumber(titleNumber).getPageId();
         model.put("id", id);
         return "home";
     }
-
-  
 
 }

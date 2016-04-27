@@ -36,10 +36,7 @@ $(document).ready(function () {
         $('#staticpage-status').val('PUBLISHED');
 
         createStaticPage();
-
-//where should this go? the home page? the page we just created? stay on the editor?
-//
-        // window.location = '/CMS/blog';
+  
     });
 
     //autosaves every 1 minute
@@ -79,8 +76,11 @@ function createStaticPage() {
         },
         'dataType': 'json'
     }).success(function (data, status) {
-
+        
+   
         $('#tiny-staticpage-id').val(data.pageId);
+
+
         var category = $('#categories').val();
         if (category !== "none") {
             $.ajax({
@@ -97,7 +97,7 @@ function createStaticPage() {
                 'dataType': 'json'
             });
         }
-
+        window.location = '/CMS/pagelink/' + data.titleNumber;
 
     });
 }
