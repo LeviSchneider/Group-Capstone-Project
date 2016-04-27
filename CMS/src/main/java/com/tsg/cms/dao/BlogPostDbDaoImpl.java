@@ -161,7 +161,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             tagDao.addTag(tag, blogPost.getPostId());
         }
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date date = new Date();
         blogPost.setTimeEdited(date);
 
