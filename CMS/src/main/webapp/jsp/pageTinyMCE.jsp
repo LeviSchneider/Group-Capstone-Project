@@ -22,13 +22,20 @@
 
 
 <form>
-    <input type="hidden" id="post-to-edit-id" value="${editBlogPostId}"/>
+    <input type="hidden" id="staticpage-to-edit-id" value="${editBlogPostId}"/>
+    <select id="categories" name="categories">
+        <option value="none">Choose Existing Category</option>
+    </select>
+
+    <input id="add-category" type="text" placeholder="Add a NEW category...">
+
+    <button onclick="addCategoryButton()" class="btn btn-primary">Add</button>
 
     Start Date: <input type="date" id="start-date" /> End Date: <input type="date" id="end-date"/>
-    <br/><input type="text" id="post-title" placeholder="A title is required..."/>
+    <br/><input type="text" id="staticpage-title" placeholder="A title is required..."/>
     <textarea id="htmlOutput"></textarea>
 
-    <select id="post-status" name="post-status">
+    <select id="staticpage-status" name="staticpage-status">
         <option value="DRAFT">Draft</option>
         <option value="READY_FOR_APPROVAL">Pending</option>
         <option value="APPROVED">Unpublished</option>
@@ -36,7 +43,7 @@
         <option value="PUBLISHED">Published</option>
     </select>
     <button id="tiny-save" type="button">Save</button>
-    <input type="hidden" id="tiny-blogpost-id"/>
+    <input type="hidden" id="tiny-staticpage-id"/>
     <button id="tiny-publish" type="button">Publish</button>
 </form>
 
