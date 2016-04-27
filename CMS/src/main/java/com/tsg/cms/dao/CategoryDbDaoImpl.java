@@ -55,7 +55,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     public Category addCategory(Category category) throws DuplicateKeyException {
 
         jdbcTemplate.update(SQL_INSERT_CATEGORY,
-                            category.getCategoryName());
+                category.getCategoryName());
         category.setCategoryId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
 
         return category;
@@ -75,7 +75,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     @Override
     public Category updateCategory(Category category) {
         jdbcTemplate.update(SQL_UPDATE_CATEGORY,
-                            category.getCategoryName(), category.getCategoryId());
+                category.getCategoryName(), category.getCategoryId());
         return category;
     }
 
@@ -125,8 +125,8 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     @Override
     public void updateBlogPostCategory(Category category, int pageId) {
         jdbcTemplate.update(SQL_ADD_CATEGORY_TO_PAGE,
-                            category.getCategoryId(),
-                            pageId);
+                category.getCategoryId(),
+                pageId);
     }
 
     @Override
