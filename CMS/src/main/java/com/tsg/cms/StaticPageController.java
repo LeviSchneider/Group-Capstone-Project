@@ -108,9 +108,9 @@ public class StaticPageController {
     @RequestMapping(value = "/pageTinyMCE", method = RequestMethod.GET)
     public String showEditor(Map<String, Object> model, HttpSession session) {
 
-        session.setAttribute("page", "tinymce");
+        session.setAttribute("page", "pageTinyMCE");
 
-        session.setAttribute("js_page", "tinymce.js");
+        session.setAttribute("js_page", "pageTinyMCE.js");
         return "home";
     }
 
@@ -118,9 +118,9 @@ public class StaticPageController {
     public String showPopulatedEditor(@PathVariable("id") int id, Map<String, Object> model, HttpSession session) {
 
         //model.put("staticPage", dao.getStaticPageById(id));
-        session.setAttribute("page", "tinymce");
+        session.setAttribute("page", "pageTinyMCE");
 
-        session.setAttribute("js_page", "tinymce.js");
+        session.setAttribute("js_page", "pageTinyMCE.js");
 
         model.put("editStaticPageId", id);
         return "home";
