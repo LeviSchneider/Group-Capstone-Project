@@ -15,7 +15,6 @@ import java.util.Map;
  * @author apprentice
  */
 public interface BlogPostDbDao {
-
     public BlogPostContainer addBlogPost(BlogPost blogPost);
     public void removeBlogPost(Integer postId);
     public BlogPostContainer updateBlogPost(BlogPost blogPost);
@@ -23,6 +22,7 @@ public interface BlogPostDbDao {
     public BlogPostContainer getBlogPostById(Integer postId);
     public List<BlogPostContainer> searchBlogPosts(Map<SearchTerm, String> criteria);
     public BlogPostContainer getBlogPostByTitleNumber(String titleNumber);
+    public List<BlogPost> getBlogPostsByTitle(String title);
     public List<BlogPostContainer> getBlogPostsByTag(String tag);
     
 }

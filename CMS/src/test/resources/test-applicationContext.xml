@@ -50,4 +50,10 @@
     <bean id="CategoryDbDao" class="com.tsg.cms.dao.CategoryDbDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
+    
+    <bean id="SideBarLinksDbDao" class="com.tsg.cms.dao.SideBarLinksDbDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+    
+    <bean id="HashTagMatcher" class="com.tsg.cms.HashTagMatcher"/>
 </beans>

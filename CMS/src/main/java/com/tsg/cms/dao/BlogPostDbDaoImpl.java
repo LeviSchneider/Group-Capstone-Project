@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -34,16 +35,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
-    private final TagDbDao tagDao;
+    private TagDbDao tagDao;
 
-    private final HashTagMatcher hashTagMatcher;
+    private HashTagMatcher hashTagMatcher;
 
     @Inject
     public BlogPostDbDaoImpl(TagDbDao tagDao, HashTagMatcher hashTagMatcher) {
 
         this.tagDao = tagDao;
         this.hashTagMatcher = hashTagMatcher;
-
     }
 
     private static final String SQL_INSERT_BLOGPOST
@@ -278,7 +278,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
         }
     }
-
+    
+    @Override
     public List<BlogPost> getBlogPostsByTitle(String title) {
         try {
             return jdbcTemplate.query(SQL_SELECT_BLOGPOST_BY_TITLE, new BlogPostMapper(), title);

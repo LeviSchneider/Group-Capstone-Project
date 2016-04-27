@@ -21,6 +21,7 @@ import com.tsg.cms.dao.BlogPostDbDao;
 import com.tsg.cms.dto.BlogPostContainer;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -33,7 +34,7 @@ public class BlogPostController {
 
     private final BlogPostDbDao blogPostDao;
 
-    @Inject
+    @Autowired
     public BlogPostController(BlogPostDbDao blogPostDao) {
 
         this.blogPostDao = blogPostDao;
