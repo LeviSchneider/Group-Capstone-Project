@@ -88,8 +88,8 @@ public class BlogPostController {
 
         int id = blogPostDao.getBlogPostByTitleNumber(titleNumber).getBlogPost().getPostId();
         model.put("id", id);
-        session.setAttribute("page", "singlePage");
-        session.setAttribute("js_page", "singlePage.js");
+        session.setAttribute("page", "singlePost");
+        session.setAttribute("js_page", "singlePost.js");
 
         return "home";
     }

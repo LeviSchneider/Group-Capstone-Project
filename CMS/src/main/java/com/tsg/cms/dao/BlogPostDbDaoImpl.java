@@ -78,22 +78,21 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     @Override
     public BlogPostContainer getBlogPostById(Integer postId) {
 
+        BlogPostContainer container = new BlogPostContainer();
+        BlogPost blogPost = new BlogPost();
         try {
 
-            BlogPostContainer container = new BlogPostContainer();
-            BlogPost blogPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), postId);
-
+            blogPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), postId);
             container.setBlogPost(blogPost);
-
-            TagContainer tagContainer = new TagContainer();
-            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
-            container.setTagContainer(tagContainer);
-
-            return container;
-
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            container.setMessage("No blogPost with that id.");
         }
+        TagContainer tagContainer = new TagContainer();
+        tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+        container.setTagContainer(tagContainer);
+
+        return container;
+
     }
 
     @Override
@@ -105,18 +104,18 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         Date date = new Date();
         blogPost.setTimeCreated(date);
         blogPost.setTimeEdited(date);
-        
+
         System.out.println(blogPost.getStatus());
         jdbcTemplate.update(SQL_INSERT_BLOGPOST,
-                            blogPost.getTimeCreated(),
-                            blogPost.getTimeEdited(),
-                            blogPost.getStartDate(),
-                            blogPost.getEndDate(),
-                            blogPost.getTitle(),
-                            blogPost.getPostBody(),
-                            blogPost.getUserIdFK(),
-                            blogPost.getTitleNumber(),
-                            blogPost.getStatus().toString());
+                blogPost.getTimeCreated(),
+                blogPost.getTimeEdited(),
+                blogPost.getStartDate(),
+                blogPost.getEndDate(),
+                blogPost.getTitle(),
+                blogPost.getPostBody(),
+                blogPost.getUserIdFK(),
+                blogPost.getTitleNumber(),
+                blogPost.getStatus().toString());
 
         blogPost.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
 
@@ -162,20 +161,21 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             tagDao.addTag(tag, blogPost.getPostId());
         }
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date date = new Date();
         blogPost.setTimeEdited(date);
 
+        //            = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, 
+        //endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?";
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
-                            blogPost.getTimeCreated(),
-                            blogPost.getTimeEdited(),
-                            blogPost.getStartDate(),
-                            blogPost.getEndDate(),
-                            blogPost.getTitle(),
-                            blogPost.getPostBody(),
-                            blogPost.getUserIdFK(),
-                            blogPost.getTitleNumber(),
-                            blogPost.getStatus().toString()
+                blogPost.getTimeCreated(),
+                blogPost.getTimeEdited(),
+                blogPost.getStartDate(),
+                blogPost.getEndDate(),
+                blogPost.getTitle(),
+                blogPost.getPostBody(),
+                blogPost.getUserIdFK(),
+                blogPost.getTitleNumber(),
+                blogPost.getStatus().toString()
         );
 
         BlogPostContainer container = new BlogPostContainer();
@@ -277,7 +277,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
         }
     }
-    
+
     @Override
     public List<BlogPost> getBlogPostsByTitle(String title) {
         try {

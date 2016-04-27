@@ -25,7 +25,7 @@ function populatePostData() {
     }).success(function (blogPostContainer, status) {
 
         var tagList = blogPostContainer.tagContainer.tagList;
-        var categoryList = blogPostContainer.categoryContainer.categoryList;
+        //var categoryList = blogPostContainer.categoryContainer.categoryList;
 
         blogPanel
                 .append($('<div>')
@@ -52,11 +52,11 @@ function populatePostData() {
                             .addClass('panel-body-blogtags')
                             .append(tag + " "));
         });
-        $.each(categoryList, function (index, category) {
-            $('#post' + blogPostContainer.blogPost.postId)
-                    .append($('<span>')
-                            .addClass('panel-body-blogcategories')
-                            .append("(In category: " + category.categoryName + ")"));
-        });
+//        $.each(categoryList, function (index, category) {
+//            $('#post' + blogPostContainer.blogPost.postId)
+//                    .append($('<span>')
+//                            .addClass('panel-body-blogcategories')
+//                            .append("(In category: " + category.categoryName + ")"));
+//        });
     });
 }

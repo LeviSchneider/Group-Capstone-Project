@@ -25,24 +25,20 @@ public class BlogPost {
     private String title;
     private String postBody;
     private int userIdFK;
-    private Integer categoryIdFK;
+    private int categoryIdFK;
     private String titleNumber;
     private Status status;
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + this.postId;
-        hash = 17 * hash + Objects.hashCode(this.timeCreated);
-        hash = 17 * hash + Objects.hashCode(this.timeEdited);
-        hash = 17 * hash + Objects.hashCode(this.startDate);
-        hash = 17 * hash + Objects.hashCode(this.endDate);
-        hash = 17 * hash + Objects.hashCode(this.title);
-        hash = 17 * hash + Objects.hashCode(this.postBody);
-        hash = 17 * hash + this.userIdFK;
-        hash = 17 * hash + Objects.hashCode(this.categoryIdFK);
-        hash = 17 * hash + Objects.hashCode(this.titleNumber);
-        hash = 17 * hash + Objects.hashCode(this.status);
+        int hash = 7;
+        hash = 29 * hash + this.postId;
+        hash = 29 * hash + Objects.hashCode(this.title);
+        hash = 29 * hash + Objects.hashCode(this.postBody);
+        hash = 29 * hash + this.userIdFK;
+        hash = 29 * hash + this.categoryIdFK;
+        hash = 29 * hash + Objects.hashCode(this.titleNumber);
+        hash = 29 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
@@ -64,6 +60,9 @@ public class BlogPost {
         if (this.userIdFK != other.userIdFK) {
             return false;
         }
+        if (this.categoryIdFK != other.categoryIdFK) {
+            return false;
+        }
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
@@ -73,26 +72,80 @@ public class BlogPost {
         if (!Objects.equals(this.titleNumber, other.titleNumber)) {
             return false;
         }
-        if (!Objects.equals(this.timeCreated, other.timeCreated)) {
-            return false;
-        }
-        if (!Objects.equals(this.timeEdited, other.timeEdited)) {
-            return false;
-        }
-        if (!Objects.equals(this.startDate, other.startDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.endDate, other.endDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.categoryIdFK, other.categoryIdFK)) {
-            return false;
-        }
         if (this.status != other.status) {
             return false;
         }
         return true;
     }
+
+    
+    
+//    @Override
+//    public int hashCode() {
+//        int hash = 3;
+//        hash = 53 * hash + this.postId;
+//        hash = 53 * hash + Objects.hashCode(this.timeCreated);
+//        hash = 53 * hash + Objects.hashCode(this.timeEdited);
+//        hash = 53 * hash + Objects.hashCode(this.startDate);
+//        hash = 53 * hash + Objects.hashCode(this.endDate);
+//        hash = 53 * hash + Objects.hashCode(this.title);
+//        hash = 53 * hash + Objects.hashCode(this.postBody);
+//        hash = 53 * hash + this.userIdFK;
+//        hash = 53 * hash + this.categoryIdFK;
+//        hash = 53 * hash + Objects.hashCode(this.titleNumber);
+//        hash = 53 * hash + Objects.hashCode(this.status);
+//        return hash;
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (this == obj) {
+//            return true;
+//        }
+//        if (obj == null) {
+//            return false;
+//        }
+//        if (getClass() != obj.getClass()) {
+//            return false;
+//        }
+//        final BlogPost other = (BlogPost) obj;
+//        if (this.postId != other.postId) {
+//            return false;
+//        }
+//        if (this.userIdFK != other.userIdFK) {
+//            return false;
+//        }
+//        if (this.categoryIdFK != other.categoryIdFK) {
+//            return false;
+//        }
+//        if (!Objects.equals(this.title, other.title)) {
+//            return false;
+//        }
+//        if (!Objects.equals(this.postBody, other.postBody)) {
+//            return false;
+//        }
+//        if (!Objects.equals(this.titleNumber, other.titleNumber)) {
+//            return false;
+//        }
+//        if (!Objects.equals(this.timeCreated, other.timeCreated)) {
+//            return false;
+//        }
+//        if (!Objects.equals(this.timeEdited, other.timeEdited)) {
+//            return false;
+//        }
+//        if (!Objects.equals(this.startDate, other.startDate)) {
+//            return false;
+//        }
+//        if (!Objects.equals(this.endDate, other.endDate)) {
+//            return false;
+//        }
+//        if (this.status != other.status) {
+//            return false;
+//        }
+//        return true;
+//    }
+
+
 
     //titleNumber concatenates the title, and if the title isn't unique, the 
     //ordinal number of the title, starting with 1.
@@ -177,11 +230,11 @@ public class BlogPost {
         this.titleNumber = titleNumber;
     }
 
-    public Integer getCategoryIdFK() {
+    public int getCategoryIdFK() {
         return categoryIdFK;
     }
 
-    public void setCategoryIdFK(Integer categoryIdFK) {
+    public void setCategoryIdFK(int categoryIdFK) {
         this.categoryIdFK = categoryIdFK;
     }
 
