@@ -35,26 +35,26 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class BlogPostDbDaoImplTest {
 
-    private BlogPostDbDao dao;
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+    private BlogPostDbDao dao = ctx.getBean("BlogPostDbDao", BlogPostDbDao.class);
     private BlogPost c1;
     private BlogPost c2;
     private BlogPost c3;
     private BlogPost c4;
     private BlogPost c5;
     private BlogPost c6;
-    
+
     public BlogPostDbDaoImplTest() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-
-        JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-        cleaner.execute("delete from postHashTagBridge");
-        cleaner.execute("delete from blogPosts");
-        cleaner.execute("delete from hashTags");
-        cleaner.execute("delete from categories");
+////        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+//        JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+//        cleaner.execute("delete from postHashTagBridge");
+//        cleaner.execute("delete from blogPosts");
+//        cleaner.execute("delete from hashTags");
+//        cleaner.execute("delete from categories");
     }
 
     @AfterClass
@@ -64,18 +64,13 @@ public class BlogPostDbDaoImplTest {
     @Before
     public void setUp() throws ParseException {
 
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-        dao = ctx.getBean("BlogPostDbDao", BlogPostDbDao.class);
         //categoryDao = ctx.getBean("CategoryDbDao", CategoryDbDao.class);
-
         JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
         // cleaner.execute("delete from categoriesPostsBridge");
-        cleaner.execute("delete from blogPosts");
+        //cleaner.execute("delete from blogPosts");
         // cleaner.execute("delete from categories");
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = format.parse("12-25-2016 00:00:00");
-
+        Date date = new Date();
         c1 = new BlogPost();
 
         c1.setTimeCreated(date);
@@ -96,7 +91,7 @@ public class BlogPostDbDaoImplTest {
         c2.setTitle("Ads");
         c2.setPostBody("B");
         c2.setUserIdFK(2222);
-        c2.setStatus("READY FOR APPROVAL");
+        c2.setStatus("READY_FOR_APPROVAL");
 
         c3 = new BlogPost();
 
@@ -148,10 +143,8 @@ public class BlogPostDbDaoImplTest {
     public void tearDown() {
     }
 
-    
     //by rights, should be moved to category tests
     //blogposts shouldn't need category / hashtag, they can stand alone
-    
     /**
      * Test of addBlogPost method, of class BlogPostDbDaoImpl.
      */
@@ -212,6 +205,7 @@ public class BlogPostDbDaoImplTest {
         dao.addBlogPost(c2);
         BlogPost fromDb = dao.getBlogPostById(c2.getPostId()).getBlogPost();
         c2.setPostId(fromDb.getPostId());
+
         dao.removeBlogPost(c2.getPostId());
         fromDb = dao.getBlogPostById(c2.getPostId()).getBlogPost();
         assertNull(fromDb);
