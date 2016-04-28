@@ -295,12 +295,10 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
 
         if (postsWithSameTitle.isEmpty()) {
-            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+            title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
             blogPost.setTitleNumber(title);
         } else {
-            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+            title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
             List<String> titleNumbers = postsWithSameTitle.stream()
                     .map(p -> p.getTitleNumber())
                     .collect(Collectors.toList());

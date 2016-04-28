@@ -275,9 +275,6 @@ public class BlogPostDbDaoImplTest {
         c4.setTitle(c6.getTitle());
         c5.setTitle(c6.getTitle());
         //failsafe in case objects get changed in setup
-
-        Assert.assertEquals(c4.getTitle(), c5.getTitle());
-        Assert.assertEquals(c5.getTitle(), c6.getTitle());
         //titles are indeed the same
 
         dao.addBlogPost(c4);
@@ -287,11 +284,11 @@ public class BlogPostDbDaoImplTest {
         List<BlogPost> sameTitle = dao.getBlogPostsByTitle(c4.getTitle());
         Assert.assertEquals(3, sameTitle.size());
 
-        Assert.assertEquals(c4, dao.getBlogPostByTitleNumber(c4.getTitleNumber()));
-        Assert.assertEquals(c5, dao.getBlogPostByTitleNumber(c5.getTitleNumber()));
-        Assert.assertEquals(c6, dao.getBlogPostByTitleNumber(c6.getTitleNumber()));
+        Assert.assertEquals(c4, dao.getBlogPostByTitleNumber(c4.getTitleNumber()).getBlogPost());
+        Assert.assertEquals(c5, dao.getBlogPostByTitleNumber(c5.getTitleNumber()).getBlogPost());
+        Assert.assertEquals(c6, dao.getBlogPostByTitleNumber(c6.getTitleNumber()).getBlogPost());
 
-        Assert.assertNotSame(c5, dao.getBlogPostByTitleNumber(c6.getTitleNumber()));
+        Assert.assertNotSame(c5, dao.getBlogPostByTitleNumber(c6.getTitleNumber()).getBlogPost());
     }
 
 }
