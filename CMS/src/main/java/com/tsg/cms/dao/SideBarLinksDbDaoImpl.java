@@ -8,6 +8,7 @@ package com.tsg.cms.dao;
 import com.tsg.cms.dto.SideBarLink;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,15 +23,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class SideBarLinksDbDaoImpl implements SideBarLinksDbDao {
 
     private static final String SQL_INSERT_SIDEBAR_LINK
-            = "insert into sideBarLinks (staticPageName, url, jspPage, javaScriptPage, position) values(?,?,?,?,?)";
+            = "insert into sideBarLinks (staticPageName, url, position) values(?,?,?)";
     private static final String SQL_DELETE_SIDEBAR_LINK
             = "delete from sideBarLinks where sideBarLinksId = ?";
     private static final String SQL_UPDATE_SIDEBAR_LINK
-            = "update sideBarLinks set staticPageName = ?, url = ?, jspPage = ?, javaScriptPage = ?, position = ? where sideBarLinksId = ?";
+            = "update sideBarLinks set staticPageName = ?, url = ?, position = ? where sideBarLinksId = ?";
     private static final String SQL_SELECT_SIDEBAR_LINK
             = "select * from sideBarLinks where sideBarLinksId = ?";
     private static final String SQL_SELECT_ALL_SIDEBAR_LINKS
-            = "select * from sideBarLinks";
+            = "select * from sideBarLinks ORDER BY position ASC";
     private static final String SQL_SELECT_SIDEBAR_LINK_ID
             = "select sideBarLinksId from static_pages where staticPageName = ?";
     private JdbcTemplate jdbcTemplate;
@@ -46,8 +47,6 @@ public class SideBarLinksDbDaoImpl implements SideBarLinksDbDao {
         jdbcTemplate.update(SQL_INSERT_SIDEBAR_LINK,
                             link.getSideBarLinkName(),
                             link.getSideBarLinkUrl(),
-                            link.getSideBarLinkJsp(),
-                            link.getSideBarLinkJavaScript(),
                             link.getSideBarLinkPosition());
         link.setLinkId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
 
@@ -65,8 +64,6 @@ public class SideBarLinksDbDaoImpl implements SideBarLinksDbDao {
         jdbcTemplate.update(SQL_UPDATE_SIDEBAR_LINK,
                             link.getSideBarLinkName(),
                             link.getSideBarLinkUrl(),
-                            link.getSideBarLinkJsp(),
-                            link.getSideBarLinkJavaScript(),
                             link.getSideBarLinkPosition());
 
         return link;
@@ -97,10 +94,8 @@ public class SideBarLinksDbDaoImpl implements SideBarLinksDbDao {
             link.setLinkId(rs.getInt("sideBarLinksId"));
             link.setSideBarLinkName(rs.getString("staticPageName"));
             link.setSideBarLinkUrl(rs.getString("url"));
-            link.setSideBarLinkJsp(rs.getString("jspPage"));
-            link.setSideBarLinkJavaScript(rs.getString("JavaScriptPage"));
             link.setSideBarLinkPosition(rs.getInt("position"));
-          
+
             return link;
         }
     }

@@ -16,8 +16,6 @@ public class SideBarLink {
     private String sideBarLinkName;
     private String sideBarLinkUrl;
     private int linkId;
-    private String sideBarLinkJsp;
-    private String sideBarLinkJavaScript;
     private int sideBarLinkPosition;
 
     @Override
@@ -26,8 +24,6 @@ public class SideBarLink {
         hash = 53 * hash + Objects.hashCode(this.sideBarLinkName);
         hash = 53 * hash + Objects.hashCode(this.sideBarLinkUrl);
         hash = 53 * hash + this.linkId;
-        hash = 53 * hash + Objects.hashCode(this.sideBarLinkJsp);
-        hash = 53 * hash + Objects.hashCode(this.sideBarLinkJavaScript);
         hash = 53 * hash + this.sideBarLinkPosition;
         return hash;
     }
@@ -56,12 +52,6 @@ public class SideBarLink {
         if (!Objects.equals(this.sideBarLinkUrl, other.sideBarLinkUrl)) {
             return false;
         }
-        if (!Objects.equals(this.sideBarLinkJsp, other.sideBarLinkJsp)) {
-            return false;
-        }
-        if (!Objects.equals(this.sideBarLinkJavaScript, other.sideBarLinkJavaScript)) {
-            return false;
-        }
         return true;
     }
 
@@ -87,22 +77,6 @@ public class SideBarLink {
 
     public void setLinkId(int linkId) {
         this.linkId = linkId;
-    }
-
-    public String getSideBarLinkJsp() {
-        return sideBarLinkJsp;
-    }
-
-    public void setSideBarLinkJsp(String sideBarLinkJsp) {
-        this.sideBarLinkJsp = sideBarLinkJsp;
-    }
-
-    public String getSideBarLinkJavaScript() {
-        return sideBarLinkJavaScript;
-    }
-
-    public void setSideBarLinkJavaScript(String sideBarLinkJavaScript) {
-        this.sideBarLinkJavaScript = sideBarLinkJavaScript;
     }
 
     public int getSideBarLinkPosition() {

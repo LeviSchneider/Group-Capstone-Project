@@ -179,7 +179,7 @@
 
                 
                 sideBar.append($('<li>')
-                        .append('<a href="/CMS/pagelink/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
+                        .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
                         );
             });
 
