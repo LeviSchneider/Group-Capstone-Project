@@ -119,18 +119,14 @@ public class StaticPage {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 83 * hash + this.pageId;
-        hash = 83 * hash + Objects.hashCode(this.timeCreated);
-        hash = 83 * hash + Objects.hashCode(this.timeEdited);
-        hash = 83 * hash + Objects.hashCode(this.startDate);
-        hash = 83 * hash + Objects.hashCode(this.endDate);
-        hash = 83 * hash + Objects.hashCode(this.title);
-        hash = 83 * hash + Objects.hashCode(this.pageBody);
-        hash = 83 * hash + this.userIdFK;
-        hash = 83 * hash + Objects.hashCode(this.categoryIdFK);
-        hash = 83 * hash + Objects.hashCode(this.titleNumber);
-        hash = 83 * hash + Objects.hashCode(this.status);
+        int hash = 7;
+        hash = 43 * hash + this.pageId;
+        hash = 43 * hash + Objects.hashCode(this.title);
+        hash = 43 * hash + Objects.hashCode(this.pageBody);
+        hash = 43 * hash + this.userIdFK;
+        hash = 43 * hash + Objects.hashCode(this.categoryIdFK);
+        hash = 43 * hash + Objects.hashCode(this.titleNumber);
+        hash = 43 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
@@ -161,18 +157,6 @@ public class StaticPage {
         if (!Objects.equals(this.titleNumber, other.titleNumber)) {
             return false;
         }
-        if (!Objects.equals(this.timeCreated, other.timeCreated)) {
-            return false;
-        }
-        if (!Objects.equals(this.timeEdited, other.timeEdited)) {
-            return false;
-        }
-        if (!Objects.equals(this.startDate, other.startDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.endDate, other.endDate)) {
-            return false;
-        }
         if (!Objects.equals(this.categoryIdFK, other.categoryIdFK)) {
             return false;
         }
@@ -182,4 +166,5 @@ public class StaticPage {
         return true;
     }
 
+    
 }

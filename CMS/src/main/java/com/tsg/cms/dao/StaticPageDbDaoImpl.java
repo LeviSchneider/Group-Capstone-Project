@@ -6,9 +6,9 @@
 package com.tsg.cms.dao;
 
 import com.tsg.cms.dto.StaticPage;
-import com.tsg.cms.dto.StaticPageContainer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -62,19 +62,21 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
         setTitleNumber(staticPage);
         Date date = new Date();
+
+        SimpleDateFormat datf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         staticPage.setTimeCreated(date);
         staticPage.setTimeEdited(date);
-        
         jdbcTemplate.update(SQL_INSERT_STATICPAGE,
-                            staticPage.getTimeCreated(),
-                            staticPage.getTimeEdited(),
-                            staticPage.getStartDate(),
-                            staticPage.getEndDate(),
-                            staticPage.getTitle(),
-                            staticPage.getPageBody(),
-                            staticPage.getUserIdFK(),
-                            staticPage.getTitleNumber(),
-                            staticPage.getStatus().toString());
+                datf.format(staticPage.getTimeCreated()),
+                datf.format(staticPage.getTimeEdited()),
+                datf.format(staticPage.getStartDate()),
+                datf.format(staticPage.getEndDate()),
+                staticPage.getTitle(),
+                staticPage.getPageBody(),
+                staticPage.getUserIdFK(),
+                staticPage.getTitleNumber(),
+                staticPage.getStatus().toString());
 
         staticPage.setPageId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         return staticPage;
@@ -90,15 +92,15 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
         setTitleNumber(staticPage);
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE,
-                            staticPage.getTimeCreated(),
-                            staticPage.getTimeEdited(),
-                            staticPage.getStartDate(),
-                            staticPage.getEndDate(),
-                            staticPage.getTitle(),
-                            staticPage.getPageBody(),
-                            staticPage.getUserIdFK(),
-                            staticPage.getTitleNumber(),
-                            staticPage.getStatus().toString()
+                staticPage.getTimeCreated(),
+                staticPage.getTimeEdited(),
+                staticPage.getStartDate(),
+                staticPage.getEndDate(),
+                staticPage.getTitle(),
+                staticPage.getPageBody(),
+                staticPage.getUserIdFK(),
+                staticPage.getTitleNumber(),
+                staticPage.getStatus().toString()
         );
 
     }
@@ -163,17 +165,20 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         }
     }
 
-
     private static final class StaticPageMapper implements RowMapper<StaticPage> {
 
         @Override
         public StaticPage mapRow(ResultSet rs, int i) throws SQLException {
+            //insert simpledateformat parser to maintain timestamp information
+            //currently stripped by mapper after it goes in the db
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
             StaticPage staticPage = new StaticPage();
             staticPage.setPageId(rs.getInt("pageId"));
-            staticPage.setTimeCreated(rs.getDate("timeCreated"));
-            staticPage.setTimeEdited(rs.getDate("timeEdited"));
-            staticPage.setStartDate(rs.getDate("startDate"));
-            staticPage.setEndDate(rs.getDate("endDate"));
+            staticPage.setTimeCreated(rs.getTimestamp("timeCreated"));
+            staticPage.setTimeEdited(rs.getTimestamp("timeEdited"));
+            staticPage.setStartDate(rs.getTimestamp("startDate"));
+            staticPage.setEndDate(rs.getTimestamp("endDate"));
             staticPage.setTitle(rs.getString("title"));
             staticPage.setPageBody(rs.getString("pageBody"));
             staticPage.setUserIdFK(rs.getInt("userIdFK"));
@@ -207,5 +212,5 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             }
         }
     }
-    
+
 }
