@@ -2,7 +2,7 @@
 
 <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarLeft" role="navigation">
     <div class="well sidebar-nav">
-        <ul class="nav">
+        <ul class="nav" id="sidebar-list">
             <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/blog">Blog</a></li>
             <li><a href="${pageContext.request.contextPath}/articles">Articles</a></li>
