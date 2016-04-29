@@ -60,6 +60,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             = "select * from blogPosts where titleNumber = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLE
             = "select * from blogPosts where title = ?";
+    private static final String SQL_SELECT_TITLENUMBER_BY_TITLE
+            = "select titleNumber from blogPosts where title = ?";
     private static final String SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME
             = "select blogPosts.*, hashTags.hashTagName "
             + "from blogPosts "
@@ -105,18 +107,18 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         Date date = new Date();
         blogPost.setTimeCreated(date);
         blogPost.setTimeEdited(date);
-        
+
         System.out.println(blogPost.getStatus());
         jdbcTemplate.update(SQL_INSERT_BLOGPOST,
-                            blogPost.getTimeCreated(),
-                            blogPost.getTimeEdited(),
-                            blogPost.getStartDate(),
-                            blogPost.getEndDate(),
-                            blogPost.getTitle(),
-                            blogPost.getPostBody(),
-                            blogPost.getUserIdFK(),
-                            blogPost.getTitleNumber(),
-                            blogPost.getStatus().toString());
+                blogPost.getTimeCreated(),
+                blogPost.getTimeEdited(),
+                blogPost.getStartDate(),
+                blogPost.getEndDate(),
+                blogPost.getTitle(),
+                blogPost.getPostBody(),
+                blogPost.getUserIdFK(),
+                blogPost.getTitleNumber(),
+                blogPost.getStatus().toString());
 
         blogPost.setPostId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
 
@@ -167,15 +169,16 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         blogPost.setTimeEdited(date);
 
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
-                            blogPost.getTimeCreated(),
-                            blogPost.getTimeEdited(),
-                            blogPost.getStartDate(),
-                            blogPost.getEndDate(),
-                            blogPost.getTitle(),
-                            blogPost.getPostBody(),
-                            blogPost.getUserIdFK(),
-                            blogPost.getTitleNumber(),
-                            blogPost.getStatus().toString()
+                blogPost.getTimeCreated(),
+                blogPost.getTimeEdited(),
+                blogPost.getStartDate(),
+                blogPost.getEndDate(),
+                blogPost.getTitle(),
+                blogPost.getPostBody(),
+                blogPost.getUserIdFK(),
+                blogPost.getTitleNumber(),
+                blogPost.getStatus().toString()
+        //update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?
         );
 
         BlogPostContainer container = new BlogPostContainer();
@@ -277,7 +280,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
         }
     }
-    
+
     @Override
     public List<BlogPost> getBlogPostsByTitle(String title) {
         try {
@@ -292,22 +295,17 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
         String title = blogPost.getTitle();
+        title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
+        int compareInt = 0;
+        int idNum;
         List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
-
-        if (postsWithSameTitle.isEmpty()) {
-            title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
-            blogPost.setTitleNumber(title);
-        } else {
-            title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
-            List<String> titleNumbers = postsWithSameTitle.stream()
-                    .map(p -> p.getTitleNumber())
-                    .collect(Collectors.toList());
-            for (int i = 0; i <= titleNumbers.size() + 1; i++) {
-                if (!titleNumbers.contains(title + i)) {
-                    blogPost.setTitleNumber(title + i);
-                }
+        for (BlogPost key : postsWithSameTitle) {
+            idNum = Integer.parseInt(key.getTitleNumber().replaceAll("[^0-9]+", ""));
+            if (idNum > compareInt) {
+                compareInt = idNum;
             }
         }
+        blogPost.setTitleNumber(title + (compareInt + 1));
     }
 
     @Override

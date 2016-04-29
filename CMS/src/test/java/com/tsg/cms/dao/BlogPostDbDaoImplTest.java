@@ -66,9 +66,8 @@ public class BlogPostDbDaoImplTest {
 
         //categoryDao = ctx.getBean("CategoryDbDao", CategoryDbDao.class);
         JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-        // cleaner.execute("delete from categoriesPostsBridge");
-        //cleaner.execute("delete from blogPosts");
-        // cleaner.execute("delete from categories");
+        cleaner.execute("delete from blogPosts");
+        cleaner.execute("delete from categories");
 
         Date date = new Date();
         c1 = new BlogPost();
@@ -225,7 +224,10 @@ public class BlogPostDbDaoImplTest {
         BlogPost fromDb = dao.getBlogPostById(c3.getPostId()).getBlogPost();
         c3.setPostId(fromDb.getPostId());
 
-        assertEquals(c3, fromDb);
+        Assert.assertEquals(c3.getTitle(), fromDb.getTitle());
+        Assert.assertEquals(c3.getPostBody(), fromDb.getPostBody());
+        Assert.assertEquals(c3.getStatus(), fromDb.getStatus());
+        Assert.assertEquals(c3.getCategoryIdFK(), fromDb.getCategoryIdFK());
     }
 
     /**
@@ -265,7 +267,7 @@ public class BlogPostDbDaoImplTest {
         criteria = new HashMap<>();
         criteria.put(SearchTerm.STATUS, "PUBLISHED");
         cList = dao.searchBlogPosts(criteria);
-        assertEquals(c1, cList.get(0));
+        assertEquals(c1.getTitle(), cList.get(0).getBlogPost().getTitle());
 
     }
 
