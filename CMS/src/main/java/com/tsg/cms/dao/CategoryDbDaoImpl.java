@@ -5,7 +5,9 @@
  */
 package com.tsg.cms.dao;
 
+import com.tsg.cms.dto.BlogPost;
 import com.tsg.cms.dto.Category;
+import com.tsg.cms.dto.StaticPage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -41,8 +43,12 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
             + "where staticPages.pageId = ?";
     private static final String SQL_ADD_CATEGORY_TO_PAGE
             = "update staticPages set categoryIdFK = ? where pageId = ?";
+    private static final String SQL_ADD_CATEGORY_TO_POST
+            = "update blogPosts set categoryIdFK = ? where postId = ?";
     private static final String SQL_REMOVE_CATEGORY_FROM_PAGE
-            = "update staticPages set categoryIdFK = NULL where staticPages.pageId = ?";
+            = "update staticPages set categoryIdFK = null where staticPages.pageId = ?";
+    private static final String SQL_REMOVE_CATEGORY_FROM_POST
+            = "update blogPosts set categoryIdFK = null where postId = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -123,15 +129,28 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     }
 
     @Override
-    public void updateBlogPostCategory(Category category, int pageId) {
-        jdbcTemplate.update(SQL_ADD_CATEGORY_TO_PAGE,
+    public void updatePageCategory(Category category, StaticPage staticPage) {
+        staticPage.setCategoryIdFK(jdbcTemplate.update(SQL_ADD_CATEGORY_TO_PAGE,
                 category.getCategoryId(),
-                pageId);
+                staticPage.getPageId()));
+    }
+    
+    @Override
+    public void updateBlogPostCategory(Category category, BlogPost blogPost) {
+        jdbcTemplate.update(SQL_ADD_CATEGORY_TO_POST,
+                category.getCategoryId(),
+                blogPost.getPostId());
+        blogPost.setCategoryIdFK(category.getCategoryId());
     }
 
     @Override
-    public void removeBlogPostCategory(int pageId) {
+    public void removePageCategory(int pageId) {
         jdbcTemplate.update(SQL_REMOVE_CATEGORY_FROM_PAGE, pageId);
+    }
+    
+    @Override
+    public void removeBlogPostCategory(int postId) {
+        jdbcTemplate.update(SQL_REMOVE_CATEGORY_FROM_POST, postId);
     }
 
     @Override

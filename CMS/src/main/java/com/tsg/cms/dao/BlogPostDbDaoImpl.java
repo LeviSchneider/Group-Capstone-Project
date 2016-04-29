@@ -9,6 +9,7 @@ import com.tsg.cms.HashTagMatcher;
 import com.tsg.cms.dto.BlogPost;
 import com.tsg.cms.dto.BlogPostContainer;
 import com.tsg.cms.dto.CategoryContainer;
+import com.tsg.cms.dto.StaticPage;
 import com.tsg.cms.dto.TagContainer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,6 +61,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             = "select * from blogPosts where titleNumber = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLE
             = "select * from blogPosts where title = ?";
+    private static final String SQL_SELECT_TITLENUMBER_BY_TITLE
+            = "select titleNumber from blogPosts where title = ?";
     private static final String SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME
             = "select blogPosts.*, hashTags.hashTagName "
             + "from blogPosts "
@@ -291,17 +294,28 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //if the title already exists, extract titlenumbers from result.
     //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
+//        String title = blogPost.getTitle();
+//        title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
+//        int compareInt = 0;
+//        int idNum;
+//        List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
+//        for (BlogPost key : postsWithSameTitle) {
+//            idNum = Integer.parseInt(key.getTitleNumber().replaceAll("[^0-9]+", ""));
+//            if (idNum > compareInt) {
+//                compareInt = idNum;
+//            }
+//        }
         String title = blogPost.getTitle();
-        List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
+        List<BlogPost> pagesWithSameTitle = getBlogPostsByTitle(title);
 
-        if (postsWithSameTitle.isEmpty()) {
+        if (pagesWithSameTitle.isEmpty()) {
             title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
             title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
             blogPost.setTitleNumber(title);
         } else {
             title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
             title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
-            List<String> titleNumbers = postsWithSameTitle.stream()
+            List<String> titleNumbers = pagesWithSameTitle.stream()
                     .map(p -> p.getTitleNumber())
                     .collect(Collectors.toList());
             for (int i = 0; i <= titleNumbers.size() + 1; i++) {
@@ -353,6 +367,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             blogPost.setTitle(rs.getString("title"));
             blogPost.setPostBody(rs.getString("postBody"));
             blogPost.setUserIdFK(rs.getInt("userIdFK"));
+            int value = rs.getInt("categoryIdFK");
+            blogPost.setCategoryIdFK(rs.wasNull() ? null : value);
             blogPost.setTitleNumber(rs.getString("titleNumber"));
             blogPost.setStatus((rs.getString("status")));
             return blogPost;
