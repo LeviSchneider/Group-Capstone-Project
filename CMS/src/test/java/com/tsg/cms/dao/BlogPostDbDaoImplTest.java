@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,13 +5,10 @@
  */
 package com.tsg.cms.dao;
 
-import static com.tsg.cms.dao.Status.PUBLISHED;
-import com.tsg.cms.dto.Category;
 import com.tsg.cms.dto.BlogPost;
 import com.tsg.cms.dto.BlogPostContainer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +22,6 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -49,12 +44,12 @@ public class BlogPostDbDaoImplTest {
 
     @BeforeClass
     public static void setUpClass() {
-////        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
-//        JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
-//        cleaner.execute("delete from postHashTagBridge");
-//        cleaner.execute("delete from blogPosts");
-//        cleaner.execute("delete from hashTags");
-//        cleaner.execute("delete from categories");
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("test-applicationContext.xml");
+        JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        cleaner.execute("delete from postHashTagBridge");
+        cleaner.execute("delete from blogPosts");
+        cleaner.execute("delete from hashTags");
+        cleaner.execute("delete from categories");
     }
 
     @AfterClass
@@ -64,12 +59,14 @@ public class BlogPostDbDaoImplTest {
     @Before
     public void setUp() throws ParseException {
 
-        //categoryDao = ctx.getBean("CategoryDbDao", CategoryDbDao.class);
         JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        cleaner.execute("delete from postHashTagBridge");
+        cleaner.execute("delete from hashTags");
         cleaner.execute("delete from blogPosts");
-        cleaner.execute("delete from categories");
 
-        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = format.parse("12-25-2016 00:00:00");
+
         c1 = new BlogPost();
 
         c1.setTimeCreated(date);
@@ -142,60 +139,6 @@ public class BlogPostDbDaoImplTest {
     public void tearDown() {
     }
 
-    //by rights, should be moved to category tests
-    //blogposts shouldn't need category / hashtag, they can stand alone
-    /**
-     * Test of addBlogPost method, of class BlogPostDbDaoImpl.
-     */
-//    @Test
-//    public void testAddBlogPostDuplicateCategory() {
-//        try {
-//            c1 = dao.addBlogPost(c1);
-//            cat1 = categoryDao.addCategory(cat1);
-//            cat1 = categoryDao.addCategory(cat1);
-//            categoryDao.addCategoryAndPostToBridge(cat1, c1.getPostId());
-//
-//        } catch (DuplicateKeyException e) {
-//            Boolean thrown = true;
-//            System.out.println("Duplicate Key");
-//            Assert.assertTrue(thrown);
-//        }
-//
-//    }
-//
-//    @Test
-//    public void testAddBlogPostUniqueCategory() {
-//        try {
-//            Category Cat4 = new Category();
-//            Cat4.setCategoryName("Unique");
-//
-//            c1 = dao.addBlogPost(c1);
-//            Cat4 = categoryDao.addCategory(Cat4);
-//            categoryDao.addCategoryAndPostToBridge(Cat4, c1.getPostId());
-//
-//        } catch (DuplicateKeyException e) {
-//            System.out.println("Duplicate Key");
-//            fail();
-//        }
-//
-//    }
-//
-//    @Test
-//    public void testUpdateBlogPostDuplicateCategory() {
-//        try {
-//
-//            c3 = dao.addBlogPost(c3);
-//            categoryDao.addCategoryAndPostToBridge(cat1, c3.getPostId());
-//            c3.setTitle("M");
-//            dao.updateBlogPost(c3);
-//            categoryDao.addCategoryAndPostToBridge(cat1, c3.getPostId());
-//
-//        } catch (DuplicateKeyException e) {
-//            Boolean thrown = true;
-//            Assert.assertTrue(thrown);
-//        }
-//
-//    }
     /**
      * Test of removeBlogPost method, of class BlogPostDbDaoImpl.
      */
@@ -203,7 +146,8 @@ public class BlogPostDbDaoImplTest {
     public void testAddRemoveBlogPost() {
         dao.addBlogPost(c2);
         BlogPost fromDb = dao.getBlogPostById(c2.getPostId()).getBlogPost();
-        c2.setPostId(fromDb.getPostId());
+        //c2.setPostId(fromDb.getPostId());
+        Assert.assertEquals(c2, fromDb);
 
         dao.removeBlogPost(c2.getPostId());
         fromDb = dao.getBlogPostById(c2.getPostId()).getBlogPost();
@@ -220,7 +164,6 @@ public class BlogPostDbDaoImplTest {
         c3.setTitle("M");
         dao.updateBlogPost(c3);
 
-//        C3.setPostId(0);
         BlogPost fromDb = dao.getBlogPostById(c3.getPostId()).getBlogPost();
         c3.setPostId(fromDb.getPostId());
 
@@ -267,7 +210,7 @@ public class BlogPostDbDaoImplTest {
         criteria = new HashMap<>();
         criteria.put(SearchTerm.STATUS, "PUBLISHED");
         cList = dao.searchBlogPosts(criteria);
-        assertEquals(c1.getTitle(), cList.get(0).getBlogPost().getTitle());
+        assertEquals(c1, cList.get(0).getBlogPost());
 
     }
 
@@ -285,12 +228,15 @@ public class BlogPostDbDaoImplTest {
 
         List<BlogPost> sameTitle = dao.getBlogPostsByTitle(c4.getTitle());
         Assert.assertEquals(3, sameTitle.size());
+        
+        BlogPostContainer c4Container = dao.getBlogPostByTitleNumber(c4.getTitleNumber());
+        BlogPostContainer c5Container = dao.getBlogPostByTitleNumber(c5.getTitleNumber());
+        BlogPostContainer c6Container = dao.getBlogPostByTitleNumber(c6.getTitleNumber());
+        Assert.assertEquals(c4, c4Container.getBlogPost());
+        Assert.assertEquals(c5, c5Container.getBlogPost());
+        Assert.assertEquals(c6, c6Container.getBlogPost());
 
-        Assert.assertEquals(c4, dao.getBlogPostByTitleNumber(c4.getTitleNumber()).getBlogPost());
-        Assert.assertEquals(c5, dao.getBlogPostByTitleNumber(c5.getTitleNumber()).getBlogPost());
-        Assert.assertEquals(c6, dao.getBlogPostByTitleNumber(c6.getTitleNumber()).getBlogPost());
-
-        Assert.assertNotSame(c5, dao.getBlogPostByTitleNumber(c6.getTitleNumber()).getBlogPost());
+        Assert.assertNotSame(c5Container.getBlogPost(), c6Container.getBlogPost());
     }
 
 }

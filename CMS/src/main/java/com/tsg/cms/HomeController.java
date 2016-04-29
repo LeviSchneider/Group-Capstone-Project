@@ -50,15 +50,6 @@ public class HomeController {
         
         return "home";
     }
-
-    @RequestMapping(value = "/categoryAdmin", method = RequestMethod.GET)
-    public String showCategoryAdmin(HttpServletRequest req, Model model, HttpSession session) {
-     
-        session.setAttribute("page", "categoryAdmin");
-        session.setAttribute("js_page", "categoryAdmin.js");
-
-        return "home";
-    }
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String showAdminPage(HttpServletRequest req, Model model, HttpSession session) {
@@ -66,7 +57,7 @@ public class HomeController {
         String htmlOutput = req.getParameter("htmlOutput");
         model.addAttribute("htmlOutput", htmlOutput);
         session.setAttribute("page", "admin");
-        session.setAttribute("js_page", "categoryAdmin.js");
+        session.setAttribute("js_page", "admin.js");
 
         return "home";
     }

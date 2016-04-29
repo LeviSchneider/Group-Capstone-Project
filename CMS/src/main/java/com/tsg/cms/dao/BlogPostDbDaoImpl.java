@@ -9,6 +9,7 @@ import com.tsg.cms.HashTagMatcher;
 import com.tsg.cms.dto.BlogPost;
 import com.tsg.cms.dto.BlogPostContainer;
 import com.tsg.cms.dto.CategoryContainer;
+import com.tsg.cms.dto.StaticPage;
 import com.tsg.cms.dto.TagContainer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -80,22 +81,21 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     @Override
     public BlogPostContainer getBlogPostById(Integer postId) {
 
+        BlogPostContainer container = new BlogPostContainer();
+        BlogPost blogPost = new BlogPost();
         try {
 
-            BlogPostContainer container = new BlogPostContainer();
-            BlogPost blogPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), postId);
-
+            blogPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), postId);
             container.setBlogPost(blogPost);
-
-            TagContainer tagContainer = new TagContainer();
-            tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
-            container.setTagContainer(tagContainer);
-
-            return container;
-
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            container.setMessage("No blogPost with that id.");
         }
+        TagContainer tagContainer = new TagContainer();
+        tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+        container.setTagContainer(tagContainer);
+
+        return container;
+
     }
 
     @Override
@@ -164,10 +164,11 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             tagDao.addTag(tag, blogPost.getPostId());
         }
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date date = new Date();
         blogPost.setTimeEdited(date);
 
+        //            = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, 
+        //endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?";
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
                 blogPost.getTimeCreated(),
                 blogPost.getTimeEdited(),
@@ -178,7 +179,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
                 blogPost.getUserIdFK(),
                 blogPost.getTitleNumber(),
                 blogPost.getStatus().toString()
-        //update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?
         );
 
         BlogPostContainer container = new BlogPostContainer();
@@ -294,18 +294,36 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //if the title already exists, extract titlenumbers from result.
     //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
+//        String title = blogPost.getTitle();
+//        title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
+//        int compareInt = 0;
+//        int idNum;
+//        List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
+//        for (BlogPost key : postsWithSameTitle) {
+//            idNum = Integer.parseInt(key.getTitleNumber().replaceAll("[^0-9]+", ""));
+//            if (idNum > compareInt) {
+//                compareInt = idNum;
+//            }
+//        }
         String title = blogPost.getTitle();
-        title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
-        int compareInt = 0;
-        int idNum;
-        List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
-        for (BlogPost key : postsWithSameTitle) {
-            idNum = Integer.parseInt(key.getTitleNumber().replaceAll("[^0-9]+", ""));
-            if (idNum > compareInt) {
-                compareInt = idNum;
+        List<BlogPost> pagesWithSameTitle = getBlogPostsByTitle(title);
+
+        if (pagesWithSameTitle.isEmpty()) {
+            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+            blogPost.setTitleNumber(title);
+        } else {
+            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+            List<String> titleNumbers = pagesWithSameTitle.stream()
+                    .map(p -> p.getTitleNumber())
+                    .collect(Collectors.toList());
+            for (int i = 0; i <= titleNumbers.size() + 1; i++) {
+                if (!titleNumbers.contains(title + i)) {
+                    blogPost.setTitleNumber(title + i);
+                }
             }
         }
-        blogPost.setTitleNumber(title + (compareInt + 1));
     }
 
     @Override
@@ -349,6 +367,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             blogPost.setTitle(rs.getString("title"));
             blogPost.setPostBody(rs.getString("postBody"));
             blogPost.setUserIdFK(rs.getInt("userIdFK"));
+            int value = rs.getInt("categoryIdFK");
+            blogPost.setCategoryIdFK(rs.wasNull() ? null : value);
             blogPost.setTitleNumber(rs.getString("titleNumber"));
             blogPost.setStatus((rs.getString("status")));
             return blogPost;
