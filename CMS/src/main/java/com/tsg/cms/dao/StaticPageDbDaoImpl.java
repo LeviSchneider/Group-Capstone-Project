@@ -93,6 +93,7 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     @Override
     public void updateStaticPage(StaticPage staticPage) {
 
+        
         setTitleNumber(staticPage);
         staticPage.setSideBarPosition(0);
 

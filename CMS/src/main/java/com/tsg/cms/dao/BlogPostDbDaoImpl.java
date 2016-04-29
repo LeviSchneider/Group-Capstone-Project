@@ -108,7 +108,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         blogPost.setTimeCreated(date);
         blogPost.setTimeEdited(date);
 
-        System.out.println(blogPost.getStatus());
         jdbcTemplate.update(SQL_INSERT_BLOGPOST,
                 blogPost.getTimeCreated(),
                 blogPost.getTimeEdited(),

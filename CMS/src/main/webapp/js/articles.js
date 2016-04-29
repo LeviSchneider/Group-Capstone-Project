@@ -25,11 +25,8 @@ function loadStaticPages(data, status) {
                                         'href': '/CMS/pagelink/' + staticPage.titleNumber
                                     }).text(staticPage.title))
 
-                            .append($('<a>')
-                                    .attr({
-                                        'onclick': 'editStaticPage(' + staticPage.pageId + ')'
-                                    })
-                                    .text(' |Edit'))
+                            .append($('<a href="/CMS/pageTinyMCE/' + staticPage.pageId + '"><button type="button" class="btn btn-default btn-xs">'
+                                    + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'))
 
                             .append($('<a>')
                                     .attr({
@@ -39,7 +36,7 @@ function loadStaticPages(data, status) {
 
                             );
         });
-        
+
     });
 
 }
@@ -48,3 +45,4 @@ function loadStaticPages(data, status) {
 function clearStaticPageTable() {
     $('#staticPageContentRows').empty();
 }
+

@@ -32,8 +32,6 @@ public class SideBarLinksDbDaoImpl implements SideBarLinksDbDao {
             = "select * from sideBarLinks where sideBarLinksId = ?";
     private static final String SQL_SELECT_ALL_SIDEBAR_LINKS
             = "select * from sideBarLinks ORDER BY position ASC";
-    private static final String SQL_SELECT_SIDEBAR_LINK_ID
-            = "select sideBarLinksId from static_pages where staticPageName = ?";
     private JdbcTemplate jdbcTemplate;
 
     @Override

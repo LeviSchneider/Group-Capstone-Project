@@ -65,7 +65,7 @@ public class StaticPageController {
         staticPageDao.removeStaticPage(id);
     }
 
-    @RequestMapping(value = "/staticPage/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/staticPage/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public StaticPage updateStaticPage(@PathVariable("id") int id, @RequestBody StaticPage staticPage) {

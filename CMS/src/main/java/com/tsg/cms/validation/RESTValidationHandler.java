@@ -23,18 +23,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class RESTValidationHandler {
 
-    @ExceptionHandler(DuplicateKeyException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ValidationErrorContainer processDuplicateKeyException(DuplicateKeyException e) {
-
-        ValidationErrorContainer errors = new ValidationErrorContainer();
-
-        errors.addValidationError("errorMessage", "That category already exists!");
-
-        return errors;
-
-    }
+    //I turned this off temporary because it is throwing this error message for 
+    //any duplicate field. I will turn it back on when we apply server-side validation to everything
+    
+//    @ExceptionHandler(DuplicateKeyException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ResponseBody
+//    public ValidationErrorContainer processDuplicateKeyException(DuplicateKeyException e) {
+//
+//        ValidationErrorContainer errors = new ValidationErrorContainer();
+//
+//        errors.addValidationError("errorMessage", "That category already exists!");
+//
+//        return errors;
+//
+//    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

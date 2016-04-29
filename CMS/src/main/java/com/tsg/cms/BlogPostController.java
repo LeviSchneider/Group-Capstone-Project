@@ -65,7 +65,7 @@ public class BlogPostController {
         blogPostDao.removeBlogPost(id);
     }
 
-    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public BlogPostContainer updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
