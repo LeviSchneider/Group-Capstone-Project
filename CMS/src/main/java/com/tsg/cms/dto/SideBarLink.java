@@ -13,22 +13,18 @@ import java.util.Objects;
  */
 public class SideBarLink {
 
-    private String staticPageName;
-    private String staticPageUrl;
-    private int pageId;
-    private String staticPageJsp;
-    private String staticPageJavaScript;
-    private int staticPagePosition;
+    private String sideBarLinkName;
+    private String sideBarLinkUrl;
+    private int linkId;
+    private int sideBarLinkPosition;
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 53 * hash + Objects.hashCode(this.staticPageName);
-        hash = 53 * hash + Objects.hashCode(this.staticPageUrl);
-        hash = 53 * hash + this.pageId;
-        hash = 53 * hash + Objects.hashCode(this.staticPageJsp);
-        hash = 53 * hash + Objects.hashCode(this.staticPageJavaScript);
-        hash = 53 * hash + this.staticPagePosition;
+        hash = 53 * hash + Objects.hashCode(this.sideBarLinkName);
+        hash = 53 * hash + Objects.hashCode(this.sideBarLinkUrl);
+        hash = 53 * hash + this.linkId;
+        hash = 53 * hash + this.sideBarLinkPosition;
         return hash;
     }
 
@@ -44,72 +40,50 @@ public class SideBarLink {
             return false;
         }
         final SideBarLink other = (SideBarLink) obj;
-        if (this.pageId != other.pageId) {
+        if (this.linkId != other.linkId) {
             return false;
         }
-        if (this.staticPagePosition != other.staticPagePosition) {
+        if (this.sideBarLinkPosition != other.sideBarLinkPosition) {
             return false;
         }
-        if (!Objects.equals(this.staticPageName, other.staticPageName)) {
+        if (!Objects.equals(this.sideBarLinkName, other.sideBarLinkName)) {
             return false;
         }
-        if (!Objects.equals(this.staticPageUrl, other.staticPageUrl)) {
-            return false;
-        }
-        if (!Objects.equals(this.staticPageJsp, other.staticPageJsp)) {
-            return false;
-        }
-        if (!Objects.equals(this.staticPageJavaScript, other.staticPageJavaScript)) {
+        if (!Objects.equals(this.sideBarLinkUrl, other.sideBarLinkUrl)) {
             return false;
         }
         return true;
     }
 
-    public String getStaticPageName() {
-        return staticPageName;
+    public String getSideBarLinkName() {
+        return sideBarLinkName;
     }
 
-    public void setStaticPageName(String staticPageName) {
-        this.staticPageName = staticPageName;
+    public void setSideBarLinkName(String sideBarLinkName) {
+        this.sideBarLinkName = sideBarLinkName;
     }
 
-    public String getStaticPageUrl() {
-        return staticPageUrl;
+    public String getSideBarLinkUrl() {
+        return sideBarLinkUrl;
     }
 
-    public void setStaticPageUrl(String staticPageUrl) {
-        this.staticPageUrl = staticPageUrl;
+    public void setSideBarLinkUrl(String sideBarLinkUrl) {
+        this.sideBarLinkUrl = sideBarLinkUrl;
     }
 
-    public int getPageId() {
-        return pageId;
+    public int getLinkId() {
+        return linkId;
     }
 
-    public void setPageId(int pageId) {
-        this.pageId = pageId;
+    public void setLinkId(int linkId) {
+        this.linkId = linkId;
     }
 
-    public String getStaticPageJsp() {
-        return staticPageJsp;
+    public int getSideBarLinkPosition() {
+        return sideBarLinkPosition;
     }
 
-    public void setStaticPageJsp(String staticPageJsp) {
-        this.staticPageJsp = staticPageJsp;
-    }
-
-    public String getStaticPageJavaScript() {
-        return staticPageJavaScript;
-    }
-
-    public void setStaticPageJavaScript(String staticPageJavaScript) {
-        this.staticPageJavaScript = staticPageJavaScript;
-    }
-
-    public int getStaticPagePosition() {
-        return staticPagePosition;
-    }
-
-    public void setStaticPagePosition(int staticPagePosition) {
-        this.staticPagePosition = staticPagePosition;
+    public void setSideBarLinkPosition(int sideBarLinkPosition) {
+        this.sideBarLinkPosition = sideBarLinkPosition;
     }
 }

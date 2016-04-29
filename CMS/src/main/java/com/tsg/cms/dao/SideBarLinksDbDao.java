@@ -17,15 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface SideBarLinksDbDao {
 
-    public SideBarLink addStaticPages(SideBarLink page);
+    public SideBarLink addSideBarLink(SideBarLink link);
 
-    public SideBarLink getStaticPage(int pageId);
+    public SideBarLink getSideBarLink(int linkId);
 
-    public List<SideBarLink> listAllStaticPages();
+    public List<SideBarLink> getAllSideBarLinks();
 
-    public void removeStaticPage(int pageId);
+    public void removeSideBarLink(int linkId);
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate);
 
-    public SideBarLink updateStaticPage(SideBarLink pageId);
+    public SideBarLink updateSideBarLink(SideBarLink link);
 }
