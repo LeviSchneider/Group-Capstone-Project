@@ -52,7 +52,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     private static final String SQL_DELETE_BLOGPOST
             = "delete from blogPosts where postId = ?";
     private static final String SQL_UPDATE_BLOGPOST
-            = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?";
+            = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ? where postId = ?";
     private static final String SQL_SELECT_ALL_BLOGPOSTS
             = "select * from blogPosts ORDER BY postId DESC";
     private static final String SQL_SELECT_BLOGPOST_BY_ID
@@ -177,7 +177,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
                 blogPost.getPostBody(),
                 blogPost.getUserIdFK(),
                 blogPost.getTitleNumber(),
-                blogPost.getStatus().toString()
+                blogPost.getStatus().toString(),
+                blogPost.getPostId()
         );
 
         BlogPostContainer container = new BlogPostContainer();
