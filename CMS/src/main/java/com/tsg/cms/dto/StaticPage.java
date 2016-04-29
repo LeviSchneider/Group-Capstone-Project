@@ -26,7 +26,7 @@ public class StaticPage {
     private Integer categoryIdFK;
     private String titleNumber;
     private Status status;
-    
+    private int sideBarPosition;
   
     
     public int getPageId() {
@@ -117,16 +117,25 @@ public class StaticPage {
         this.status = status;
     }
 
+    public int getSideBarPosition() {
+        return sideBarPosition;
+    }
+
+    public void setSideBarPosition(int sideBarPosition) {
+        this.sideBarPosition = sideBarPosition;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + this.pageId;
-        hash = 43 * hash + Objects.hashCode(this.title);
-        hash = 43 * hash + Objects.hashCode(this.pageBody);
-        hash = 43 * hash + this.userIdFK;
-        hash = 43 * hash + Objects.hashCode(this.categoryIdFK);
-        hash = 43 * hash + Objects.hashCode(this.titleNumber);
-        hash = 43 * hash + Objects.hashCode(this.status);
+        int hash = 3;
+        hash = 83 * hash + this.pageId;
+        hash = 83 * hash + Objects.hashCode(this.title);
+        hash = 83 * hash + Objects.hashCode(this.pageBody);
+        hash = 83 * hash + this.userIdFK;
+        hash = 83 * hash + Objects.hashCode(this.categoryIdFK);
+        hash = 83 * hash + Objects.hashCode(this.titleNumber);
+        hash = 83 * hash + Objects.hashCode(this.status);
+        hash = 83 * hash + this.sideBarPosition;
         return hash;
     }
 
@@ -148,6 +157,9 @@ public class StaticPage {
         if (this.userIdFK != other.userIdFK) {
             return false;
         }
+        if (this.sideBarPosition != other.sideBarPosition) {
+            return false;
+        }
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
@@ -166,5 +178,6 @@ public class StaticPage {
         return true;
     }
 
-    
+
+
 }

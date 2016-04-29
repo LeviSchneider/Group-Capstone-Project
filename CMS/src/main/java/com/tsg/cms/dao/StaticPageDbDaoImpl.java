@@ -28,11 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
     private static final String SQL_INSERT_STATICPAGE
-            = "insert into staticPages (timeCreated, timeEdited, startDate, endDate, title, pageBody, userIdFK, titleNumber, status) value(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            = "insert into staticPages (timeCreated, timeEdited, startDate, endDate, title, pageBody, userIdFK, titleNumber, status, sideBarPosition) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE_STATICPAGE
             = "delete from staticPages where pageId = ?";
     private static final String SQL_UPDATE_STATICPAGE
-            = "update staticPages set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, pageBody = ?, userIdFK = ?, titleNumber = ?, status = ?";
+            = "update staticPages set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, pageBody = ?, userIdFK = ?, titleNumber = ?, status = ?, sideBarPosition = ?";
     private static final String SQL_SELECT_ALL_STATICPAGES
             = "select * from staticPages ORDER by pageId DESC";
     private static final String SQL_SELECT_STATICPAGE_BY_ID
@@ -67,16 +67,19 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
         staticPage.setTimeCreated(date);
         staticPage.setTimeEdited(date);
+        staticPage.setSideBarPosition(0);
         jdbcTemplate.update(SQL_INSERT_STATICPAGE,
-                datf.format(staticPage.getTimeCreated()),
-                datf.format(staticPage.getTimeEdited()),
-                datf.format(staticPage.getStartDate()),
-                datf.format(staticPage.getEndDate()),
-                staticPage.getTitle(),
-                staticPage.getPageBody(),
-                staticPage.getUserIdFK(),
-                staticPage.getTitleNumber(),
-                staticPage.getStatus().toString());
+                            staticPage.getTimeCreated(),
+                            staticPage.getTimeEdited(),
+                            staticPage.getStartDate(),
+                            staticPage.getEndDate(),
+                            staticPage.getTitle(),
+                            staticPage.getPageBody(),
+                            staticPage.getUserIdFK(),
+                            staticPage.getTitleNumber(),
+                            staticPage.getStatus().toString(),
+                            staticPage.getSideBarPosition()
+        );
 
         staticPage.setPageId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         return staticPage;
@@ -91,16 +94,19 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     public void updateStaticPage(StaticPage staticPage) {
 
         setTitleNumber(staticPage);
+        staticPage.setSideBarPosition(0);
+
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE,
-                staticPage.getTimeCreated(),
-                staticPage.getTimeEdited(),
-                staticPage.getStartDate(),
-                staticPage.getEndDate(),
-                staticPage.getTitle(),
-                staticPage.getPageBody(),
-                staticPage.getUserIdFK(),
-                staticPage.getTitleNumber(),
-                staticPage.getStatus().toString()
+                            staticPage.getTimeCreated(),
+                            staticPage.getTimeEdited(),
+                            staticPage.getStartDate(),
+                            staticPage.getEndDate(),
+                            staticPage.getTitle(),
+                            staticPage.getPageBody(),
+                            staticPage.getUserIdFK(),
+                            staticPage.getTitleNumber(),
+                            staticPage.getStatus().toString(),
+                            staticPage.getSideBarPosition()
         );
 
     }
@@ -186,6 +192,7 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             int value = rs.getInt("categoryIdFK");
             staticPage.setCategoryIdFK(rs.wasNull() ? null : value);
             staticPage.setStatus(Status.valueOf(rs.getString("status")));
+            staticPage.setSideBarPosition(rs.getInt("sideBarPosition"));
             return staticPage;
         }
 
