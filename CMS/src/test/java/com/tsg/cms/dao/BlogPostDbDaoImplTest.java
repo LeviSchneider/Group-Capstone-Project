@@ -150,7 +150,6 @@ public class BlogPostDbDaoImplTest {
         Assert.assertEquals(c2, fromDb);
 
         dao.removeBlogPost(c2.getPostId());
-        BlogPostContainer container = dao.getBlogPostById(c2.getPostId());
         fromDb = dao.getBlogPostById(c2.getPostId()).getBlogPost();
         assertNull(fromDb);
     }
@@ -168,7 +167,10 @@ public class BlogPostDbDaoImplTest {
         BlogPost fromDb = dao.getBlogPostById(c3.getPostId()).getBlogPost();
         c3.setPostId(fromDb.getPostId());
 
-        assertEquals(c3, fromDb);
+        Assert.assertEquals(c3.getTitle(), fromDb.getTitle());
+        Assert.assertEquals(c3.getPostBody(), fromDb.getPostBody());
+        Assert.assertEquals(c3.getStatus(), fromDb.getStatus());
+        Assert.assertEquals(c3.getCategoryIdFK(), fromDb.getCategoryIdFK());
     }
 
     /**
@@ -218,9 +220,6 @@ public class BlogPostDbDaoImplTest {
         c4.setTitle(c6.getTitle());
         c5.setTitle(c6.getTitle());
         //failsafe in case objects get changed in setup
-
-        Assert.assertEquals(c4.getTitle(), c5.getTitle());
-        Assert.assertEquals(c5.getTitle(), c6.getTitle());
         //titles are indeed the same
 
         dao.addBlogPost(c4);
@@ -233,7 +232,6 @@ public class BlogPostDbDaoImplTest {
         BlogPostContainer c4Container = dao.getBlogPostByTitleNumber(c4.getTitleNumber());
         BlogPostContainer c5Container = dao.getBlogPostByTitleNumber(c5.getTitleNumber());
         BlogPostContainer c6Container = dao.getBlogPostByTitleNumber(c6.getTitleNumber());
-
         Assert.assertEquals(c4, c4Container.getBlogPost());
         Assert.assertEquals(c5, c5Container.getBlogPost());
         Assert.assertEquals(c6, c6Container.getBlogPost());

@@ -45,7 +45,7 @@ public class HomeController {
     public String showArticles(Map<String, Object> model, HttpSession session) {
 
         session.setAttribute("page", "articles");
-        session.setAttribute("js_page", "blog.js");
+        session.setAttribute("js_page", "articles.js");
         
         return "home";
     }
