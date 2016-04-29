@@ -25,7 +25,7 @@ public class BlogPost {
     private String title;
     private String postBody;
     private int userIdFK;
-    private int categoryIdFK;
+    private Integer categoryIdFK;
     private String titleNumber;
     private Status status;
 
@@ -230,11 +230,11 @@ public class BlogPost {
         this.titleNumber = titleNumber;
     }
 
-    public int getCategoryIdFK() {
+    public Integer getCategoryIdFK() {
         return categoryIdFK;
     }
 
-    public void setCategoryIdFK(int categoryIdFK) {
+    public void setCategoryIdFK(Integer categoryIdFK) {
         this.categoryIdFK = categoryIdFK;
     }
 
