@@ -15,7 +15,7 @@
 
     $(document).ready(function () {
         loadTags();
-        //loadSideBarItems();
+        loadSideBarItems();
 
         $('[data-toggle=offcanvas]').click(function () {
             $('.row-offcanvas').toggleClass('active');
@@ -165,26 +165,27 @@
     }
     ;
 
-//
-//    function loadSideBarItems() {
-//
-//        var sideBar = $('#sidebar-list');
-//
-//        $.ajax({
-//            type: 'GET',
-//            url: '/CMS/sideBarLinks'
-//
-//        }).success(function (data, status) {
-//
-//            $.each(data, function (index, sideBarLink) {
-//
-//                
-//                sideBar.append($('<li>')
-//                        .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
-//                        );
-//            });
-//
-//        });
-//
-//    }
+
+    function loadSideBarItems() {
+
+        $('#custom-sidebar-list').empty();
+        var sideBar = $('#custom-sidebar-list');
+  
+        $.ajax({
+            type: 'GET',
+            url: '/CMS/sideBarLinks'
+
+        }).success(function (data, status) {
+            $('#custom-sidebar-list').val(data.length);
+            $.each(data, function (index, sideBarLink) {
+
+                //nextNavBarId++;
+                sideBar.append($('<li>')
+                        .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
+                        );
+            });
+
+        });
+
+    }
 </script>

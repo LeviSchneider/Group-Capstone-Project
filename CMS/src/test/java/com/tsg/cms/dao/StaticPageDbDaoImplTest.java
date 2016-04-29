@@ -77,6 +77,7 @@ public class StaticPageDbDaoImplTest {
         c1.setPageBody("Q");
         c1.setUserIdFK(1111);
         c1.setStatus(Status.PUBLISHED);
+        c1.setSideBarPosition(0);
 
         c2 = new StaticPage();
 
@@ -88,6 +89,7 @@ public class StaticPageDbDaoImplTest {
         c2.setPageBody("B");
         c2.setUserIdFK(2222);
         c2.setStatus(Status.READY_FOR_APPROVAL);
+        c2.setSideBarPosition(0);
 
         c3 = new StaticPage();
 
@@ -99,6 +101,7 @@ public class StaticPageDbDaoImplTest {
         c3.setPageBody("F");
         c3.setUserIdFK(3333);
         c3.setStatus(Status.DRAFT);
+        c3.setSideBarPosition(0);
 
         c4 = new StaticPage();
 
@@ -110,7 +113,8 @@ public class StaticPageDbDaoImplTest {
         c4.setPageBody("This is the first post with the same title.");
         c4.setUserIdFK(33);
         c4.setStatus(Status.DRAFT);
-
+        c4.setSideBarPosition(0);
+        
         c5 = new StaticPage();
 
         c5.setTimeCreated(date);
@@ -121,7 +125,8 @@ public class StaticPageDbDaoImplTest {
         c5.setPageBody("This is the second post with the same title.");
         c5.setUserIdFK(33);
         c5.setStatus(Status.DRAFT);
-
+        c5.setSideBarPosition(0);
+        
         c6 = new StaticPage();
 
         c6.setTimeCreated(date);
@@ -132,7 +137,7 @@ public class StaticPageDbDaoImplTest {
         c6.setPageBody("This is the third post with the same title.");
         c6.setUserIdFK(33);
         c6.setStatus(Status.DRAFT);
-
+        c6.setSideBarPosition(0);
     }
 
     @After

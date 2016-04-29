@@ -1,25 +1,31 @@
 
-
+<input type="hidden" id="sidebar-count">
 <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarLeft" role="navigation">
     <div class="well sidebar-nav">
         <ul class="nav" id="default-sidebar-list">
             <li>
-                <a href="home">Home</a>
+                <a href="/CMS/home">Home</a>
             </li>
             <li>
-                <a href="blog">Blog</a>
+                <a href="/CMS/blog">Blog</a>
             </li>
             <li>
-                <a href="articles">Articles</a>
+                <a href="/CMS/articles">Articles</a>
+            </li>
+        </ul>
+        <ul class="nav" id="custom-sidebar-list">
+
+        </ul>      
+        <ul class="nav" id="admin-sidebar-list">
+
+            <li>
+                <a href="/CMS/admin">Admin</a>
             </li>
             <li>
-                <a href="admin">Admin</a>
+                <a href="/CMS/tinymce">Create Blog Entry</a>
             </li>
             <li>
-                <a href="tinymce">Create Blog Entry</a>
-            </li>
-            <li>
-                <a href="pageTinyMCE">Create Article</a>
+                <a href="/CMS/pageTinyMCE">Create Article</a>
             </li>
         </ul>
     </div>

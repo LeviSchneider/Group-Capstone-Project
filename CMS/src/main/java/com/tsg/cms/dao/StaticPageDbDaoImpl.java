@@ -5,6 +5,7 @@
  */
 package com.tsg.cms.dao;
 
+import com.tsg.cms.dto.SideBarLink;
 import com.tsg.cms.dto.StaticPage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +33,7 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     private static final String SQL_DELETE_STATICPAGE
             = "delete from staticPages where pageId = ?";
     private static final String SQL_UPDATE_STATICPAGE
-            = "update staticPages set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, pageBody = ?, userIdFK = ?, titleNumber = ?, status = ?, sideBarPosition = ?";
+            = "update staticPages set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, pageBody = ?, userIdFK = ?, titleNumber = ?, status = ?, sideBarPosition = ? where pageId = ?";
     private static final String SQL_SELECT_ALL_STATICPAGES
             = "select * from staticPages ORDER by pageId DESC";
     private static final String SQL_SELECT_STATICPAGE_BY_ID
@@ -43,14 +44,10 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             = "select * from staticPages where title = ?";
     private static final String SQL_SELECT_TITLENUMBERS
             = "SELECT titleNumber FROM staticPages where titleNumber rlike ?";
-    private static final String SQL_SELECT_STATICPAGES_BY_HASHTAG_NAME
-            = "select staticPages.*, hashTags.hashTagName "
-            + "from staticPages "
-            + "join pageHashTagBridge "
-            + "on staticPages.pageId = pageHashTagBridge.pageIdFK "
-            + "join hashTags "
-            + "on pageHashTagBridge.HashTagIdFK = hashTags.hashTagId "
-            + "where hashTagName = ?";
+    private static final String SQL_SELECT_STATICPAGES_BY_SIDEBAR_POSITION
+            = "select title, titleNumber, sideBarPosition from staticPages where sideBarPosition > 0";
+    private static final String SQL_UPDATE_STATICPAGE_SIDEBAR_POSITION
+            = "update staticPages set sideBarPosition = ? where pageId = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -96,19 +93,19 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     public void updateStaticPage(StaticPage staticPage) {
 
         setTitleNumber(staticPage);
-        staticPage.setSideBarPosition(0);
 
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE,
-                staticPage.getTimeCreated(),
-                staticPage.getTimeEdited(),
-                staticPage.getStartDate(),
-                staticPage.getEndDate(),
-                staticPage.getTitle(),
-                staticPage.getPageBody(),
-                staticPage.getUserIdFK(),
-                staticPage.getTitleNumber(),
-                staticPage.getStatus().toString(),
-                staticPage.getSideBarPosition()
+                            staticPage.getTimeCreated(),
+                            staticPage.getTimeEdited(),
+                            staticPage.getStartDate(),
+                            staticPage.getEndDate(),
+                            staticPage.getTitle(),
+                            staticPage.getPageBody(),
+                            staticPage.getUserIdFK(),
+                            staticPage.getTitleNumber(),
+                            staticPage.getStatus().toString(),
+                            staticPage.getSideBarPosition(),
+                            staticPage.getPageId()
         );
 
     }
@@ -197,7 +194,23 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             staticPage.setSideBarPosition(rs.getInt("sideBarPosition"));
             return staticPage;
         }
+    }
 
+    private static final class SideBarLinkMapper implements RowMapper<SideBarLink> {
+
+        @Override
+        public SideBarLink mapRow(ResultSet rs, int i) throws SQLException {
+            //insert simpledateformat parser to maintain timestamp information
+            //currently stripped by mapper after it goes in the db
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            SideBarLink link = new SideBarLink();
+            link.setSideBarLinkName(rs.getString("title"));
+            link.setSideBarLinkPosition(rs.getInt("sideBarPosition"));
+            link.setSideBarLinkUrl(rs.getString("titleNumber"));
+
+            return link;
+        }
     }
 
     private List<String> getTitleNumbersLikeTitle(String title) {
@@ -226,4 +239,16 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         }
     }
 
+    @Override
+    public List<SideBarLink> getNavBarPages() {
+
+        return jdbcTemplate.query(SQL_SELECT_STATICPAGES_BY_SIDEBAR_POSITION, new SideBarLinkMapper());
+
+    }
+
+    @Override
+    public void updatePageNavBarPosition(int pageId, int position) {
+
+        jdbcTemplate.update(SQL_UPDATE_STATICPAGE_SIDEBAR_POSITION, position, pageId);
+    }
 }

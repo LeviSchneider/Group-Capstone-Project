@@ -161,13 +161,14 @@ public class BlogPostDbDaoImplTest {
     public void testUpdateBlogPost() {
         dao.addBlogPost(c3);
 
-        c3.setTitle("M");
+        c3.setPostBody("M");
         dao.updateBlogPost(c3);
 
         BlogPost fromDb = dao.getBlogPostById(c3.getPostId()).getBlogPost();
         c3.setPostId(fromDb.getPostId());
 
         Assert.assertEquals(c3.getTitle(), fromDb.getTitle());
+        Assert.assertEquals(c3.getTitleNumber(), fromDb.getTitleNumber());
         Assert.assertEquals(c3.getPostBody(), fromDb.getPostBody());
         Assert.assertEquals(c3.getStatus(), fromDb.getStatus());
         Assert.assertEquals(c3.getCategoryIdFK(), fromDb.getCategoryIdFK());

@@ -9,6 +9,7 @@ import com.tsg.cms.dao.CategoryDbDao;
 import com.tsg.cms.dao.StaticPageDbDao;
 import com.tsg.cms.dao.TagDbDao;
 import com.tsg.cms.dto.CategoryContainer;
+import com.tsg.cms.dto.SideBarLink;
 import com.tsg.cms.dto.StaticPage;
 import com.tsg.cms.dto.StaticPageContainer;
 import com.tsg.cms.dto.TagContainer;
@@ -65,7 +66,7 @@ public class StaticPageController {
         staticPageDao.removeStaticPage(id);
     }
 
-    @RequestMapping(value = "/staticPage/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/staticPage/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public StaticPage updateStaticPage(@PathVariable("id") int id, @RequestBody StaticPage staticPage) {
@@ -123,4 +124,19 @@ public class StaticPageController {
         return "home";
     }
 
+    @RequestMapping(value = "/staticPage/{id}/{position}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addPageToNavBar(@PathVariable("id") int id, @PathVariable("position") int position, Map<String, Object> model, HttpSession session) {
+
+        staticPageDao.updatePageNavBarPosition(id, position);
+
+    }
+
+    @RequestMapping(value = {"/sideBarLinks"}, method = RequestMethod.GET)
+    @ResponseBody
+    public List<SideBarLink> getSideBarLinks() {
+
+        return staticPageDao.getNavBarPages();
+
+    }
 }

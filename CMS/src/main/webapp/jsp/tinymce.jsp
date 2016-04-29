@@ -31,7 +31,7 @@
     <select id="post-status" name="post-status">
         <option value="DRAFT">Draft</option>
         <option value="READY_FOR_APPROVAL">Pending</option>
-        <option value="APPROVED">Unpublished</option>
+        <option value="APPROVED">Approved</option>
         <option value="UNPUBLISHED">Unpublished</option>
         <option value="PUBLISHED">Published</option>
     </select>
