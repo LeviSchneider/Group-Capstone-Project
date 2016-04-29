@@ -128,18 +128,14 @@ public class StaticPage {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 97 * hash + this.pageId;
-        hash = 97 * hash + Objects.hashCode(this.timeCreated);
-        hash = 97 * hash + Objects.hashCode(this.timeEdited);
-        hash = 97 * hash + Objects.hashCode(this.startDate);
-        hash = 97 * hash + Objects.hashCode(this.endDate);
-        hash = 97 * hash + Objects.hashCode(this.title);
-        hash = 97 * hash + Objects.hashCode(this.pageBody);
-        hash = 97 * hash + this.userIdFK;
-        hash = 97 * hash + Objects.hashCode(this.categoryIdFK);
-        hash = 97 * hash + Objects.hashCode(this.titleNumber);
-        hash = 97 * hash + Objects.hashCode(this.status);
-        hash = 97 * hash + this.sideBarPosition;
+        hash = 83 * hash + this.pageId;
+        hash = 83 * hash + Objects.hashCode(this.title);
+        hash = 83 * hash + Objects.hashCode(this.pageBody);
+        hash = 83 * hash + this.userIdFK;
+        hash = 83 * hash + Objects.hashCode(this.categoryIdFK);
+        hash = 83 * hash + Objects.hashCode(this.titleNumber);
+        hash = 83 * hash + Objects.hashCode(this.status);
+        hash = 83 * hash + this.sideBarPosition;
         return hash;
     }
 
@@ -173,18 +169,6 @@ public class StaticPage {
         if (!Objects.equals(this.titleNumber, other.titleNumber)) {
             return false;
         }
-        if (!Objects.equals(this.timeCreated, other.timeCreated)) {
-            return false;
-        }
-        if (!Objects.equals(this.timeEdited, other.timeEdited)) {
-            return false;
-        }
-        if (!Objects.equals(this.startDate, other.startDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.endDate, other.endDate)) {
-            return false;
-        }
         if (!Objects.equals(this.categoryIdFK, other.categoryIdFK)) {
             return false;
         }
@@ -194,5 +178,6 @@ public class StaticPage {
         return true;
     }
 
-   
+
+
 }
