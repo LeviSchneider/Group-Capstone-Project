@@ -210,29 +210,41 @@ public class StaticPageDbDaoImplTest {
 
     }
 
-    @Test
-    public void testTitleNumber() {
+    //simplify last test
+    private void resetAndTestTitles(String newTitle, 
+            StaticPage staticPage1, 
+            StaticPage staticPage2, 
+            StaticPage staticPage3) {
+        staticPage1.setTitle(newTitle);
+        staticPage2.setTitle(newTitle);
+        staticPage3.setTitle(newTitle);
 
-        c4.setTitle(c6.getTitle());
-        c5.setTitle(c6.getTitle());
-        //failsafe in case objects get changed in setup
-
-        Assert.assertEquals(c4.getTitle(), c5.getTitle());
-        Assert.assertEquals(c5.getTitle(), c6.getTitle());
+        Assert.assertEquals(staticPage1.getTitle(), staticPage2.getTitle());
+        Assert.assertEquals(staticPage2.getTitle(), staticPage3.getTitle());
         //titles are indeed the same
 
-        dao.addStaticPage(c4);
-        dao.addStaticPage(c5);
-        dao.addStaticPage(c6);
+        dao.addStaticPage(staticPage1);
+        dao.addStaticPage(staticPage2);
+        dao.addStaticPage(staticPage3);
 
-        List<StaticPage> sameTitle = dao.getStaticPageByTitle(c4.getTitle());
+        List<StaticPage> sameTitle = dao.getStaticPageByTitle(staticPage1.getTitle());
         Assert.assertEquals(3, sameTitle.size());
 
-        Assert.assertEquals(c4, dao.getStaticPageByTitleNumber(c4.getTitleNumber()));
-        Assert.assertEquals(c5, dao.getStaticPageByTitleNumber(c5.getTitleNumber()));
-        Assert.assertEquals(c6, dao.getStaticPageByTitleNumber(c6.getTitleNumber()));
+        Assert.assertEquals(staticPage1, dao.getStaticPageByTitleNumber(staticPage1.getTitleNumber()));
+        Assert.assertEquals(staticPage2, dao.getStaticPageByTitleNumber(staticPage2.getTitleNumber()));
+        Assert.assertEquals(staticPage3, dao.getStaticPageByTitleNumber(staticPage3.getTitleNumber()));
 
-        Assert.assertNotSame(c5, dao.getStaticPageByTitleNumber(c6.getTitleNumber()));
+        Assert.assertNotSame(staticPage1, dao.getStaticPageByTitleNumber(staticPage2.getTitleNumber()));
+    }
+
+    @Test
+    public void testTitleNumber() {
+        resetAndTestTitles("title", c4, c5, c6);
+        resetAndTestTitles("#title", c4, c5, c6);
+        resetAndTestTitles("title___", c4, c5, c6);
+        resetAndTestTitles("title...", c4, c5, c6);
+        resetAndTestTitles("#$%%^#$@%&(^@#$%title%^#*&)@#$!#@*", c4, c5, c6);
+        
     }
 
 }

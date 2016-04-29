@@ -61,8 +61,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             = "select * from blogPosts where titleNumber = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLE
             = "select * from blogPosts where title = ?";
-    private static final String SQL_SELECT_TITLENUMBER_BY_TITLE
-            = "select titleNumber from blogPosts where title = ?";
+    private static final String SQL_SELECT_TITLENUMBERS
+            = "SELECT titleNumber FROM blogPosts where titleNumber rlike ?";
     private static final String SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME
             = "select blogPosts.*, hashTags.hashTagName "
             + "from blogPosts "
@@ -293,34 +293,48 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //search for all posts with same title; if none exist, set titleNumber to title.
     //if the title already exists, extract titlenumbers from result.
     //loop through title numbers and find the lowest.
-    private void setTitleNumber(BlogPost blogPost) {
+//    private void setTitleNumber(BlogPost blogPost) {
 //        String title = blogPost.getTitle();
-//        title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
-//        int compareInt = 0;
-//        int idNum;
-//        List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
-//        for (BlogPost key : postsWithSameTitle) {
-//            idNum = Integer.parseInt(key.getTitleNumber().replaceAll("[^0-9]+", ""));
-//            if (idNum > compareInt) {
-//                compareInt = idNum;
+//        List<BlogPost> pagesWithSameTitle = getBlogPostsByTitle(title);
+//
+//        if (pagesWithSameTitle.isEmpty()) {
+//            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+//            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+//            blogPost.setTitleNumber(title);
+//        } else {
+//            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+//            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+//            List<String> titleNumbers = pagesWithSameTitle.stream()
+//                    .map(p -> p.getTitleNumber())
+//                    .collect(Collectors.toList());
+//            for (int i = 0; i <= titleNumbers.size() + 1; i++) {
+//                if (!titleNumbers.contains(title + i)) {
+//                    blogPost.setTitleNumber(title + i);
+//                }
 //            }
 //        }
-        String title = blogPost.getTitle();
-        List<BlogPost> pagesWithSameTitle = getBlogPostsByTitle(title);
+//    }
+    private List<String> getTitleNumbersLikeTitle(String title) {
+        title = title + "\\d*";
+        try {
+            return jdbcTemplate.queryForList(SQL_SELECT_TITLENUMBERS, String.class, new Object[]{title});
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 
-        if (pagesWithSameTitle.isEmpty()) {
-            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+    private void setTitleNumber(BlogPost blogPost) {
+        String title = blogPost.getTitle();
+        title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+        title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+        List<String> titleNumbers = getTitleNumbersLikeTitle(title);
+
+        if (titleNumbers.isEmpty()) {
             blogPost.setTitleNumber(title);
         } else {
-            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
-            List<String> titleNumbers = pagesWithSameTitle.stream()
-                    .map(p -> p.getTitleNumber())
-                    .collect(Collectors.toList());
-            for (int i = 0; i <= titleNumbers.size() + 1; i++) {
-                if (!titleNumbers.contains(title + i)) {
-                    blogPost.setTitleNumber(title + i);
+            for (Integer i = 0; i <= titleNumbers.size() + 1; i++) {
+                if (!titleNumbers.contains(title + i.toString())) {
+                    blogPost.setTitleNumber(title + i.toString());
                 }
             }
         }

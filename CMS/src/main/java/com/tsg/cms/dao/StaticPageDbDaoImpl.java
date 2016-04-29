@@ -41,6 +41,8 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             = "select * from staticPages where titleNumber = ?";
     private static final String SQL_SELECT_STATICPAGE_BY_TITLE
             = "select * from staticPages where title = ?";
+    private static final String SQL_SELECT_TITLENUMBERS
+            = "SELECT titleNumber FROM staticPages where titleNumber rlike ?";
     private static final String SQL_SELECT_STATICPAGES_BY_HASHTAG_NAME
             = "select staticPages.*, hashTags.hashTagName "
             + "from staticPages "
@@ -69,16 +71,16 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         staticPage.setTimeEdited(date);
         staticPage.setSideBarPosition(0);
         jdbcTemplate.update(SQL_INSERT_STATICPAGE,
-                            staticPage.getTimeCreated(),
-                            staticPage.getTimeEdited(),
-                            staticPage.getStartDate(),
-                            staticPage.getEndDate(),
-                            staticPage.getTitle(),
-                            staticPage.getPageBody(),
-                            staticPage.getUserIdFK(),
-                            staticPage.getTitleNumber(),
-                            staticPage.getStatus().toString(),
-                            staticPage.getSideBarPosition()
+                staticPage.getTimeCreated(),
+                staticPage.getTimeEdited(),
+                staticPage.getStartDate(),
+                staticPage.getEndDate(),
+                staticPage.getTitle(),
+                staticPage.getPageBody(),
+                staticPage.getUserIdFK(),
+                staticPage.getTitleNumber(),
+                staticPage.getStatus().toString(),
+                staticPage.getSideBarPosition()
         );
 
         staticPage.setPageId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
@@ -97,16 +99,16 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         staticPage.setSideBarPosition(0);
 
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE,
-                            staticPage.getTimeCreated(),
-                            staticPage.getTimeEdited(),
-                            staticPage.getStartDate(),
-                            staticPage.getEndDate(),
-                            staticPage.getTitle(),
-                            staticPage.getPageBody(),
-                            staticPage.getUserIdFK(),
-                            staticPage.getTitleNumber(),
-                            staticPage.getStatus().toString(),
-                            staticPage.getSideBarPosition()
+                staticPage.getTimeCreated(),
+                staticPage.getTimeEdited(),
+                staticPage.getStartDate(),
+                staticPage.getEndDate(),
+                staticPage.getTitle(),
+                staticPage.getPageBody(),
+                staticPage.getUserIdFK(),
+                staticPage.getTitleNumber(),
+                staticPage.getStatus().toString(),
+                staticPage.getSideBarPosition()
         );
 
     }
@@ -198,23 +200,27 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
     }
 
+    private List<String> getTitleNumbersLikeTitle(String title) {
+        title = title + "\\d*";
+        try {
+            return jdbcTemplate.queryForList(SQL_SELECT_TITLENUMBERS, String.class, new Object[]{title});
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     private void setTitleNumber(StaticPage staticPage) {
         String title = staticPage.getTitle();
-        List<StaticPage> pagesWithSameTitle = getStaticPageByTitle(title);
+        title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+        title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+        List<String> titleNumbers = getTitleNumbersLikeTitle(title);
 
-        if (pagesWithSameTitle.isEmpty()) {
-            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+        if (titleNumbers.isEmpty()) {
             staticPage.setTitleNumber(title);
         } else {
-            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
-            List<String> titleNumbers = pagesWithSameTitle.stream()
-                    .map(p -> p.getTitleNumber())
-                    .collect(Collectors.toList());
-            for (int i = 0; i <= titleNumbers.size() + 1; i++) {
-                if (!titleNumbers.contains(title + i)) {
-                    staticPage.setTitleNumber(title + i);
+            for (Integer i = 0; i <= titleNumbers.size() + 1; i++) {
+                if (!titleNumbers.contains(title + i.toString())) {
+                    staticPage.setTitleNumber(title + i.toString());
                 }
             }
         }
