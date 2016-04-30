@@ -25,9 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class TagDbDaoImpl implements TagDbDao {
 
-   
     private static final String SQL_ADD_HASHTAG
-            = "insert into hashTags (hashTagName) values(?)";
+            = "insert into hashTags (hashTagName) value(?)";
     private static final String SQL_DELETE_HASHTAG
             = "delete from hashTags where HashTagId = ?";
     private static final String SQL_SELECT_HASHTAG
@@ -37,7 +36,7 @@ public class TagDbDaoImpl implements TagDbDao {
     private static final String SQL_ALL_HASHTAGS
             = "select hashTagName from hashTags";
     private static final String SQL_ADD_TAG_POST_HASHTAG_BRIDGE
-            = "insert into postHashTagBridge (HashTagIdFK, postIdFK) values(?,?)";
+            = "insert into postHashTagBridge (HashTagIdFK, postIdFK) value(?,?)";
     private static final String SQL_DELETE_TAG_POST_HASHTAG_BRIDGE
             = "delete from postHashTagBridge where HashTagIdFK = ?";
     private static final String SQL_GET_HASHTAG_BRIDGE_ID
@@ -69,9 +68,10 @@ public class TagDbDaoImpl implements TagDbDao {
         try {
             jdbcTemplate.update(SQL_ADD_HASHTAG, tag);
         } catch (DuplicateKeyException e) {
-            //ignore attempts to add same hashtag and just update bridge table
+            // IGNORE: If already exists, no need to recreate
         }
-
+        int tagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{tag}, Integer.class);
+        jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE, tagId, postId);
         return tag;
     }
 
@@ -81,6 +81,15 @@ public class TagDbDaoImpl implements TagDbDao {
             int hashTagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{tag}, Integer.class);
             jdbcTemplate.update(SQL_DELETE_TAG_POST_HASHTAG_BRIDGE, hashTagId);
             jdbcTemplate.update(SQL_DELETE_HASHTAG, hashTagId);
+        } catch (EmptyResultDataAccessException e) {
+
+        }
+    }
+
+    @Override
+    public void removeTagByPostId(int postId) {
+        try {
+            jdbcTemplate.update(SQL_DELETE_TAG_POST_HASHTAG_BRIDGE_BY_POST_ID, postId);
         } catch (EmptyResultDataAccessException e) {
 
         }

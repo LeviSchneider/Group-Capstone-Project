@@ -294,17 +294,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //if the title already exists, extract titlenumbers from result.
     //loop through title numbers and find the lowest.
     private void setTitleNumber(BlogPost blogPost) {
-//        String title = blogPost.getTitle();
-//        title = title.replaceAll("([^a-zA-Z0-9]+)", "_");
-//        int compareInt = 0;
-//        int idNum;
-//        List<BlogPost> postsWithSameTitle = getBlogPostsByTitle(title);
-//        for (BlogPost key : postsWithSameTitle) {
-//            idNum = Integer.parseInt(key.getTitleNumber().replaceAll("[^0-9]+", ""));
-//            if (idNum > compareInt) {
-//                compareInt = idNum;
-//            }
-//        }
         String title = blogPost.getTitle();
         List<BlogPost> pagesWithSameTitle = getBlogPostsByTitle(title);
 

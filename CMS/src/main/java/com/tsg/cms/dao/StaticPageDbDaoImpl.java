@@ -41,14 +41,17 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             = "select * from staticPages where titleNumber = ?";
     private static final String SQL_SELECT_STATICPAGE_BY_TITLE
             = "select * from staticPages where title = ?";
-    private static final String SQL_SELECT_STATICPAGES_BY_HASHTAG_NAME
-            = "select staticPages.*, hashTags.hashTagName "
-            + "from staticPages "
-            + "join pageHashTagBridge "
-            + "on staticPages.pageId = pageHashTagBridge.pageIdFK "
-            + "join hashTags "
-            + "on pageHashTagBridge.HashTagIdFK = hashTags.hashTagId "
-            + "where hashTagName = ?";
+//**********************************************************************    
+//    Do we really need this?    
+//**********************************************************************    
+//    private static final String SQL_SELECT_STATICPAGES_BY_HASHTAG_NAME
+//            = "select staticPages.*, hashTags.hashTagName "
+//            + "from staticPages "
+//            + "join pageHashTagBridge "
+//            + "on staticPages.pageId = pageHashTagBridge.pageIdFK "
+//            + "join hashTags "
+//            + "on pageHashTagBridge.HashTagIdFK = hashTags.hashTagId "
+//            + "where hashTagName = ?";
 
     private JdbcTemplate jdbcTemplate;
 
