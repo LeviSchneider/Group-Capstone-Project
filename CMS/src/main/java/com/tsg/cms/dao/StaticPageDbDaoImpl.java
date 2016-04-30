@@ -77,7 +77,8 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
                             staticPage.getPageBody(),
                             staticPage.getUserIdFK(),
                             staticPage.getTitleNumber(),
-                            staticPage.getStatus().toString());
+                            staticPage.getStatus().toString(),
+                            staticPage.getSideBarPosition());
 
         staticPage.setPageId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
         return staticPage;
@@ -101,7 +102,8 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
                             staticPage.getPageBody(),
                             staticPage.getUserIdFK(),
                             staticPage.getTitleNumber(),
-                            staticPage.getStatus().toString()
+                            staticPage.getStatus().toString(),
+                            staticPage.getSideBarPosition()
         );
 
     }
