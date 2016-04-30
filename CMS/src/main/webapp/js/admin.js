@@ -47,14 +47,23 @@ function loadStaticPages(data, status) {
     }).success(function (data, status) {
 
         $.each(data, function (index, staticPage) {
+
+            var addOrRemoveSideBarButton = '';
+            if (staticPage.sideBarPosition > 0) {
+                addOrRemoveSideBarButton = '<a onclick="deletePageFromSideBar(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
+                        + '<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button></a>';
+            } else {
+                addOrRemoveSideBarButton = '<a onclick="addPageToSideBar(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
+                        + '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button></a>';
+            }
             staticPagePanel
                     .append($('<div>')
                             .addClass("panel panel-default")
+                            .append('<input type="hidden" id="page' + staticPage.pageId + 'isOnSideBar" value="' + staticPage.sideBarPosition + '"/>')
                             .append('<div>')
                             .addClass("panel-body")
                             .append('<span>')
-                            .append($('<a onclick="addPageToNavBar(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
-                                    + '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button></a>'))
+                            .append(addOrRemoveSideBarButton)
                             .append($('<a href="/CMS/pageTinyMCE/' + staticPage.pageId + '"><button type="button" class="btn btn-default btn-xs">'
                                     + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'))
 
@@ -65,11 +74,9 @@ function loadStaticPages(data, status) {
                                     }).text(staticPage.title))
 
 
-                            .append($('<a>')
-                                    .attr({
-                                        'onclick': 'deleteStaticPage(' + staticPage.pageId + ')'
-                                    })
-                                    .text(' |Delete'))
+                            .append($('<a onclick="deleteStaticPage(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
+                                    + '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></a>'))
+
 
                             );
         });
@@ -199,7 +206,7 @@ function loadSideBarItems() {
         $('#custom-sidebar-list').val(data.length);
         $.each(data, function (index, sideBarLink) {
 
-            //nextNavBarId++;
+            //nextSideBarId++;
             sideBar.append($('<li>')
                     .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
                     );
@@ -207,7 +214,7 @@ function loadSideBarItems() {
 
     });
 }
-function addPageToNavBar(pageId) {
+function addPageToSideBar(pageId) {
 
     var numberOfLinks = $('#custom-sidebar-list').val();
     numberOfLinks++;
@@ -218,7 +225,26 @@ function addPageToNavBar(pageId) {
     }).success(function (data, status) {
 
         loadSideBarItems();
+        loadStaticPages();
     });
+}
+
+function deletePageFromSideBar(pageId) {
+
+    var answer = confirm("Do you really want to remove this page from the side bar?");
+    if (answer === true) {
+        $.ajax({
+            type: 'PUT',
+            url: '/CMS/staticPage/' + pageId + '/0/'
+
+        }).success(function (data, status) {
+
+            loadSideBarItems();
+            loadStaticPages();
+
+        });
+    }
+
 }
 
 function populateBlogPosts(data, status) {
@@ -243,8 +269,8 @@ function populateBlogPosts(data, status) {
                                             + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'
                                             + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
                                             + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'
-                                    + blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')'
-                                    + ' (Status: ' + blogPostContainer.blogPost.status + ')'))
+                                            + blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')'
+                                            + ' (Status: ' + blogPostContainer.blogPost.status + ')'))
 
 
                             .append($('<div>')
@@ -266,5 +292,19 @@ function populateBlogPosts(data, status) {
 //            });
         });
     });
+}
 
+function deleteStaticPage(pageId) {
+
+    var answer = confirm("Do you really want to delete this static page?");
+    if (answer === true) {
+        $.ajax({
+            type: 'DELETE',
+            url: 'staticPage/' + pageId
+
+        }).success(function () {
+            loadStaticPages();
+            loadSideBarItems();
+        });
+    }
 }

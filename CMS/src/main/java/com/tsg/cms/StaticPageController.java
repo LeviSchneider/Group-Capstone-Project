@@ -126,8 +126,9 @@ public class StaticPageController {
 
     @RequestMapping(value = "/staticPage/{id}/{position}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addPageToNavBar(@PathVariable("id") int id, @PathVariable("position") int position, Map<String, Object> model, HttpSession session) {
+    public void updatePageSideBarPosition(@PathVariable("id") int id, @PathVariable("position") int position, Map<String, Object> model, HttpSession session) {
 
+        //can use position 0 to remove staticPage from sideBar
         staticPageDao.updatePageNavBarPosition(id, position);
 
     }
@@ -139,4 +140,6 @@ public class StaticPageController {
         return staticPageDao.getNavBarPages();
 
     }
+    
+    
 }
