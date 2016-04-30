@@ -57,6 +57,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             = "select * from blogPosts ORDER BY postId DESC";
     private static final String SQL_SELECT_BLOGPOST_BY_ID
             = "select * from blogPosts where postId = ?";
+    private static final String SQL_SELECT_BLOGPOST_TITLE_BY_ID
+            = "select title from blogPosts where postId = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLENUMBER
             = "select * from blogPosts where titleNumber = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLE
@@ -152,8 +154,12 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     @Override
     public BlogPostContainer updateBlogPost(BlogPost blogPost) {
 
-        //run setTitleNumber() again in case the title has changed
-        setTitleNumber(blogPost);
+        //could be made to fetch just the title, but probably better to reuse existing method
+        //Check to see if title has changed; if it has, set a new titlenumber
+        BlogPost oldPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), blogPost.getPostId());
+        if (!oldPost.getTitle().equals(blogPost.getTitle())) {
+            setTitleNumber(blogPost);
+        }
 
         //getting any new HashTags
         String body = blogPost.getPostBody();
@@ -166,8 +172,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         Date date = new Date();
         blogPost.setTimeEdited(date);
 
-        //            = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, 
-        //endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?";
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
                 blogPost.getTimeCreated(),
                 blogPost.getTimeEdited(),

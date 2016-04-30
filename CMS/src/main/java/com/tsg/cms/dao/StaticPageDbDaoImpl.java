@@ -92,22 +92,25 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     @Override
     public void updateStaticPage(StaticPage staticPage) {
 
-        setTitleNumber(staticPage);
+        //if title has changed set new titleNumber
+        StaticPage oldPage = jdbcTemplate.queryForObject(SQL_SELECT_STATICPAGE_BY_ID, new StaticPageMapper(), staticPage.getPageId());
+        if (!oldPage.getTitle().equals(staticPage.getTitle())) {
+            setTitleNumber(staticPage);
+        }
 
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE,
-                            staticPage.getTimeCreated(),
-                            staticPage.getTimeEdited(),
-                            staticPage.getStartDate(),
-                            staticPage.getEndDate(),
-                            staticPage.getTitle(),
-                            staticPage.getPageBody(),
-                            staticPage.getUserIdFK(),
-                            staticPage.getTitleNumber(),
-                            staticPage.getStatus().toString(),
-                            staticPage.getSideBarPosition(),
-                            staticPage.getPageId()
+                staticPage.getTimeCreated(),
+                staticPage.getTimeEdited(),
+                staticPage.getStartDate(),
+                staticPage.getEndDate(),
+                staticPage.getTitle(),
+                staticPage.getPageBody(),
+                staticPage.getUserIdFK(),
+                staticPage.getTitleNumber(),
+                staticPage.getStatus().toString(),
+                staticPage.getSideBarPosition(),
+                staticPage.getPageId()
         );
-
     }
 
     @Override
