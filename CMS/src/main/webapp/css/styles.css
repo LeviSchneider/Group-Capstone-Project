@@ -175,6 +175,10 @@ footer {
     text-align: center;
 }
 
+.well {
+    white-space: normal;
+        word-wrap: break-word;
+}
 
 /*
  * Off Canvas
