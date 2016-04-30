@@ -42,6 +42,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     private TagDbDao tagDao;
 
     private HashTagMatcher hashTagMatcher;
+    
+    private final int BLOG_POST_EXCERPT_LENGTH = 400;
 
     @Inject
     public BlogPostDbDaoImpl(TagDbDao tagDao, HashTagMatcher hashTagMatcher) {
@@ -245,6 +247,25 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         for (BlogPost b : blogPostList) {
 
             BlogPostContainer container = new BlogPostContainer();
+
+            if (b.getPostBody().length() > BLOG_POST_EXCERPT_LENGTH) {
+                
+                String b1 = b.getPostBody().substring(0, BLOG_POST_EXCERPT_LENGTH);
+                int index = b1.lastIndexOf(" ");
+                b1 = b1.substring(0, index);
+                
+                String pad = "";
+                for (int i = 0; i < (BLOG_POST_EXCERPT_LENGTH - b1.length()); i++) {
+                    
+                    pad += " ";
+                    
+                }
+                
+                b1 += pad;
+                b.setPostBody(b1);
+                System.out.println(b1.length());
+
+            }
             container.setBlogPost(b);
             TagContainer tagContainer = new TagContainer();
             tagContainer.setTagList(tagDao.getPostTags(b.getPostId()));
@@ -473,7 +494,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     @Override
     public void adminQuickChangeBlogPostStatus(int id, String status) {
 
-        System.out.println(id + ": " + status);
         jdbcTemplate.update(SQL_QUICK_PUBLISH_BLOGPOST, status, id);
 
     }

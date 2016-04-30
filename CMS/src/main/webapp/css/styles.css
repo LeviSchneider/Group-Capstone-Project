@@ -177,9 +177,14 @@ footer {
 
 .well {
     white-space: normal;
-        word-wrap: break-word;
+    word-wrap: break-word;
 }
 
+.panel-body {
+    white-space: normal;
+    word-wrap: break-word;
+
+}
 /*
  * Off Canvas
  * --------------------------------------------------

@@ -39,7 +39,6 @@ public class HomeController {
     public String displayHomePage(Model model, HttpSession session) {
 
         String homePage = staticPageDao.getHomePageLink();
-        System.out.println(homePage);
         if (homePage == null) {
 
             session.setAttribute("page", "blog");
