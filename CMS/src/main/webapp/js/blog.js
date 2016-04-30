@@ -32,8 +32,6 @@ function populateBlogPosts(data, status) {
                                     .addClass('panel-heading')
                                     .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')'
                                             + ' (Status: ' + blogPostContainer.blogPost.status + ')'
-                                            + '<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
-                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'
                                             + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
                                             + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'))
                             .append($('<div>')

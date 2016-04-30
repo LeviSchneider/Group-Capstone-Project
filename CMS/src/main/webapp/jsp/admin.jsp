@@ -10,7 +10,7 @@
     </head>
     <body>
     <center>
-        <h1>Category Admin Page</h1>
+        <h1>Admin Page</h1>
         <h5>Welcome Admin</h5>
     </center>
     <form class="navbar-form navbar-left">
@@ -27,6 +27,16 @@
         </tr>
         <tbody id="contentRows"></tbody>
     </table>
+    <h3>Blog Posts</h3>
+    <table id="blogPostsTable" class="table table-hover">
+        <tr>
+            <th width="100%">Blog Post Title</th>
+
+        </tr>
+        <tbody id="blog-post-display"></tbody>
+
+    </table>        
+
     <h3>Static Pages</h3>
     <table id="staticPageTable" class="table table-hover">
         <tr>
