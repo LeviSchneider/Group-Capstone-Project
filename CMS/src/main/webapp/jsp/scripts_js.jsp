@@ -43,7 +43,7 @@
         var counter = 0;
         $.ajax({
             type: 'GET',
-            url: '${pageContext.request.contextPath}/tags/10'
+            url: '${pageContext.request.contextPath}/tags/20'
         }).success(function (data, status) {
             $.each(data, function (index, tagMap) {
                 if (counter === 2)
@@ -66,29 +66,9 @@
                         }
                     }
 
-                    tagCloud.addClass("panel panel-default")
-                            .append('<div>')
-                            .addClass("panel-body")
-                            .append(tagString)
-                            .append($('<div>'));
+                    tagCloud.append(tagString);
                 }
                 counter++;
-            });
-        });
-    }
-
-    function readMap() {
-        $.ajax({
-            type: 'GET',
-            url: 'tag/3'
-        }).success(function (data, tagMap) {
-            var tagRanking = [];
-            for (var key in tag.rankedTags)
-            {
-                tagRanking.push(tag.rankedTags[key] + " :" + key);
-            }
-            $.each(tagRanking, function (index, tag) {
-                $.append();
             });
         });
     }
@@ -127,7 +107,6 @@
             $.each(data, function (index, blogPostContainer) {
 
                 var tagList = blogPostContainer.tagContainer.tagList;
-                var categoryList = blogPostContainer.categoryContainer.categoryList;
 
                 blogPanel
                         .append($('<div>')
@@ -147,18 +126,16 @@
                                         .addClass('panel-footer')
                                         .attr({'id': 'post' + blogPostContainer.blogPost.postId})
                                         ));
+                //$('#post' + blogPostContainer.blogPost.postId)
+                //        .append($('<span>')
+                //                .addClass('panel-body-blogcategories')
+                //                .append("(In category: " + blogPostContainer.blogPost. + ")"));
                 $.each(tagList, function (index, tag) {
 
                     $('#post' + blogPostContainer.blogPost.postId)
                             .append($('<span>')
                                     .addClass('panel-body-blogtags')
                                     .append(tag + " "));
-                });
-                $.each(categoryList, function (index, category) {
-                    $('#post' + blogPostContainer.blogPost.postId)
-                            .append($('<span>')
-                                    .addClass('panel-body-blogcategories')
-                                    .append("(In category: " + category.categoryName + ")"));
                 });
             });
         });
@@ -170,7 +147,7 @@
 
         $('#custom-sidebar-list').empty();
         var sideBar = $('#custom-sidebar-list');
-  
+
         $.ajax({
             type: 'GET',
             url: '/CMS/sideBarLinks'
