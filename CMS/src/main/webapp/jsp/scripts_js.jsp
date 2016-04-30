@@ -142,27 +142,65 @@
     }
     ;
 
-
     function loadSideBarItems() {
 
         $('#custom-sidebar-list').empty();
         var sideBar = $('#custom-sidebar-list');
-
+        var row = "";
+        var counter = 0;
         $.ajax({
             type: 'GET',
             url: '/CMS/sideBarLinks'
 
         }).success(function (data, status) {
             $('#custom-sidebar-list').val(data.length);
-            $.each(data, function (index, sideBarLink) {
+            $.each(data, function (index, sideBar) {
 
-                //nextNavBarId++;
-                sideBar.append($('<li>')
-                        .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
-                        );
+                if (counter !== sideBar.length) {
+                    row += "<div class='well span2 tile'>";
+                    row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "</div>";
+                } else if (counter === sideBar.length) {
+                    row += "<div class='well span4 tile'>";
+                    row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "</div>";
+                }
+
+                counter++;
             });
-
+            sideBar.append(row);
         });
-
     }
+    /*
+     function loadSideBarItems() {
+     
+     $('#custom-sidebar-list').empty();
+     var sideBar = $('#custom-sidebar-list');
+     
+     $.ajax({
+     type: 'GET',
+     url: '/CMS/sideBarLinks'
+     
+     }).success(function (data, status) {
+     $('#custom-sidebar-list').val(data.length);
+     $.each(data, function (index, sideBarLink) {
+     
+     //nextNavBarId++;
+     sideBar.append($('<li>')
+     .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
+     );
+     });
+     
+     });
+     
+     }*/
+
+    $(function () {
+        $(".grid").sortable({
+            tolerance: 'pointer',
+            revert: 'invalid',
+            placeholder: 'span2 well placeholder tile',
+            forceHelperSize: true
+        });
+    });
 </script>

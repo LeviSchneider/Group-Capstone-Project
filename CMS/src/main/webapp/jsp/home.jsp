@@ -37,11 +37,9 @@
                     </div>
 
                     <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
-
                         <div class="well sidebar-nav" >
                             <%@include file="tagCloudSidebar.jsp" %>
                         </div>
-
                     </div>
 
                 </div>

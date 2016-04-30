@@ -76,8 +76,6 @@ function loadStaticPages(data, status) {
 
                             .append($('<a onclick="deleteStaticPage(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
                                     + '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></a>'))
-
-
                             );
         });
     });
@@ -182,7 +180,6 @@ function editCategory(categoryId) {
             });
         });
     }
-
 }
 
 function clearCategoryTable() {
@@ -193,27 +190,38 @@ function clearStaticPageTable() {
     $('#staticPageContentRows').empty();
 }
 
+
+// SIDE_BAR_ITEMS: items to be populated through javascript.
 function loadSideBarItems() {
 
     $('#custom-sidebar-list').empty();
     var sideBar = $('#custom-sidebar-list');
-
+    var row;
     $.ajax({
         type: 'GET',
         url: '/CMS/sideBarLinks'
 
     }).success(function (data, status) {
         $('#custom-sidebar-list').val(data.length);
+        var count = 0;
         $.each(data, function (index, sideBarLink) {
-
             //nextSideBarId++;
-            sideBar.append($('<li>')
-                    .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
-                    );
+            if (count !== sideBarLink.length) {
+                row += '<div class="well span2 tile>';
+                row += '<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>';
+                row += '</div>';
+            } else if(count === sideBarLink.length){
+                row += '<div class="well span4 tile">';
+                row += '<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>';
+                row += '</div>';
+            }
+            sideBar.append(row);
+            count++;
         });
 
     });
 }
+
 function addPageToSideBar(pageId) {
 
     var numberOfLinks = $('#custom-sidebar-list').val();
@@ -277,19 +285,6 @@ function populateBlogPosts(data, status) {
                                     .addClass('panel-footer')
                                     .attr({'id': 'post' + blogPostContainer.blogPost.postId})
                                     ));
-//            $.each(tagList, function (index, tag) {
-//
-//                $('#post' + blogPostContainer.blogPost.postId)
-//                        .append($('<span>')
-//                                .addClass('panel-body-blogtags')
-//                                .append(tag + " "));
-//            });
-//            $.each(categoryList, function (index, category) {
-//                $('#post' + blogPostContainer.blogPost.postId)
-//                        .append($('<span>')
-//                                .addClass('panel-body-blogcategories')
-//                                .append("(In category: " + category.categoryName + ")"));
-//            });
         });
     });
 }

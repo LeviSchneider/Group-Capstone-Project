@@ -35,6 +35,7 @@
             <tbody id="contentRows"></tbody>
         </table>
     </div>
+    
     <div id="blogPostsCollapsible" data-collapse="accordion persist">
 
         <h3>Blog Posts</h3>
@@ -64,6 +65,18 @@
         </table>    
     </div>
 
+    <div id="tagCloudCollapsible" data-collapse="accordion persist">
+        <h3>HashTags</h3>
+
+        <table id="tagTable" class="table table-hover">
+            <tr>
+                <th width="30%">Tag Name</th>
+                <th width="10%"></th>
+            </tr>
+            <tbody id="tagContentRows"></tbody>
+        </table>
+    </div>
+    
     <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.collapse.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.collapse_cookie_storage.js"></script>
