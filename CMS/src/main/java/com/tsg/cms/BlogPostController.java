@@ -82,11 +82,11 @@ public class BlogPostController {
 
     }
 
-    @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
+    @RequestMapping(value = "/blogPosts/{startIndex}", method = RequestMethod.GET)
     @ResponseBody
-    public List<BlogPostContainer> getAllBlogPosts() {
+    public List<BlogPostContainer> getAllBlogPosts(@PathVariable("startIndex") int startIndex) {
 
-        return blogPostDao.getAllBlogPosts();
+        return blogPostDao.getAllBlogPosts(startIndex);
 
     }
 

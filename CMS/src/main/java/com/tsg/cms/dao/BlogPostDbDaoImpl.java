@@ -44,6 +44,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     private HashTagMatcher hashTagMatcher;
     
     private final int BLOG_POST_EXCERPT_LENGTH = 400;
+    private final int AMOUNT_OF_POSTS_TO_RETRIEVE = 10;
 
     @Inject
     public BlogPostDbDaoImpl(TagDbDao tagDao, HashTagMatcher hashTagMatcher) {
@@ -59,7 +60,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     private static final String SQL_UPDATE_BLOGPOST
             = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ? where postId = ?";
     private static final String SQL_SELECT_ALL_BLOGPOSTS
-            = "select * from blogPosts WHERE `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) AND `status` = 'PUBLISHED' ORDER BY postId DESC";
+            = "select * from blogPosts WHERE `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) AND `status` = 'PUBLISHED' ORDER BY postId DESC limit ? , ?";
     private static final String SQL_SELECT_ALL_BLOGPOSTS_ADMIN
             = "select * from blogPosts ORDER BY postId DESC";
     private static final String SQL_SELECT_BLOGPOST_BY_ID
@@ -238,11 +239,11 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     }
 
     @Override
-    public List<BlogPostContainer> getAllBlogPosts() {
+    public List<BlogPostContainer> getAllBlogPosts(int startIndex) {
 
         List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
 
-        List<BlogPost> blogPostList = jdbcTemplate.query(SQL_SELECT_ALL_BLOGPOSTS, new BlogPostMapper());
+        List<BlogPost> blogPostList = jdbcTemplate.query(SQL_SELECT_ALL_BLOGPOSTS, new BlogPostMapper(), startIndex, (startIndex + AMOUNT_OF_POSTS_TO_RETRIEVE));
 
         for (BlogPost b : blogPostList) {
 
@@ -263,7 +264,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
                 
                 b1 += pad;
                 b.setPostBody(b1);
-                System.out.println(b1.length());
 
             }
             container.setBlogPost(b);
@@ -302,7 +302,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     public List<BlogPostContainer> searchBlogPosts(Map<SearchTerm, String> criteria) {
         if (criteria.size() == 0) {
 
-            return getAllBlogPosts();
+            return getAllBlogPosts(10);
         } else {
             StringBuilder sQuery = new StringBuilder("select * from blogPosts where ");
             int numParams = criteria.size();

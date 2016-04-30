@@ -181,14 +181,13 @@ public class BlogPostDbDaoImplTest {
     @Test
     public void testGetAllBlogPost() {
 
-        System.out.println(c1.getStartDate());
-        System.out.println(c1.getEndDate());
         dao.addBlogPost(c1);
         dao.addBlogPost(c2);
         dao.addBlogPost(c3);
 
-        List<BlogPostContainer> cList = dao.getAllBlogPosts();
-        assertEquals(cList.size(), 3);
+        List<BlogPostContainer> cList = dao.getAllBlogPosts(0);
+        
+        assertEquals(3, cList.size());
 
     }
 
