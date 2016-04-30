@@ -83,6 +83,7 @@ function createStaticPage() {
 
         var category = $('#categories').val();
         if (category !== "none") {
+            alert($('#tiny-staticpage-id').val());
             $.ajax({
                 type: 'POST',
                 url: '/CMS/category/' + $('#tiny-staticpage-id').val(),

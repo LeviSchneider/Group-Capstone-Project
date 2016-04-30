@@ -22,7 +22,7 @@
 
 
 <form>
-    <input type="hidden" id="staticpage-to-edit-id" value="${editBlogPostId}"/>
+    <input type="hidden" id="staticpage-to-edit-id" value="${editStaticPageId}"/>
     <select id="categories" name="categories">
         <option value="none">Choose Existing Category</option>
     </select>
@@ -38,7 +38,7 @@
     <select id="staticpage-status" name="staticpage-status">
         <option value="DRAFT">Draft</option>
         <option value="READY_FOR_APPROVAL">Pending</option>
-        <option value="APPROVED">Unpublished</option>
+        <option value="APPROVED">Approved</option>
         <option value="UNPUBLISHED">Unpublished</option>
         <option value="PUBLISHED">Published</option>
     </select>

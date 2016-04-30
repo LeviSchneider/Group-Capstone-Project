@@ -70,8 +70,13 @@ public class TagDbDaoImpl implements TagDbDao {
         } catch (DuplicateKeyException e) {
             // IGNORE: If already exists, no need to recreate
         }
+        try {
         int tagId = jdbcTemplate.queryForObject(SQL_SELECT_HASHTAG, new Object[]{tag}, Integer.class);
         jdbcTemplate.update(SQL_ADD_TAG_POST_HASHTAG_BRIDGE, tagId, postId);
+        
+        } catch (DuplicateKeyException e) {
+            // IGNORE: If already exists, no need to recreate
+        }
         return tag;
     }
 

@@ -165,19 +165,21 @@
     }
     ;
 
+
     function loadSideBarItems() {
 
-        var sideBar = $('#sidebar-list');
-
+        $('#custom-sidebar-list').empty();
+        var sideBar = $('#custom-sidebar-list');
+  
         $.ajax({
             type: 'GET',
             url: '/CMS/sideBarLinks'
 
         }).success(function (data, status) {
-
+            $('#custom-sidebar-list').val(data.length);
             $.each(data, function (index, sideBarLink) {
 
-                
+                //nextNavBarId++;
                 sideBar.append($('<li>')
                         .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
                         );

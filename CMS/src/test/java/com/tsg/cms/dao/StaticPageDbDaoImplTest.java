@@ -89,7 +89,7 @@ public class StaticPageDbDaoImplTest {
         c2.setPageBody("B");
         c2.setUserIdFK(2222);
         c2.setStatus(Status.READY_FOR_APPROVAL);
-        c2.setSideBarPosition(1);
+        c2.setSideBarPosition(0);
 
         c3 = new StaticPage();
 
@@ -101,7 +101,7 @@ public class StaticPageDbDaoImplTest {
         c3.setPageBody("F");
         c3.setUserIdFK(3333);
         c3.setStatus(Status.DRAFT);
-        c3.setSideBarPosition(2);
+        c3.setSideBarPosition(0);
 
         c4 = new StaticPage();
 
@@ -113,8 +113,8 @@ public class StaticPageDbDaoImplTest {
         c4.setPageBody("This is the first post with the same title.");
         c4.setUserIdFK(33);
         c4.setStatus(Status.DRAFT);
-        c4.setSideBarPosition(3);
-
+        c4.setSideBarPosition(0);
+        
         c5 = new StaticPage();
 
         c5.setTimeCreated(date);
@@ -125,8 +125,8 @@ public class StaticPageDbDaoImplTest {
         c5.setPageBody("This is the second post with the same title.");
         c5.setUserIdFK(33);
         c5.setStatus(Status.DRAFT);
-        c5.setSideBarPosition(4);
-
+        c5.setSideBarPosition(0);
+        
         c6 = new StaticPage();
 
         c6.setTimeCreated(date);
@@ -137,8 +137,7 @@ public class StaticPageDbDaoImplTest {
         c6.setPageBody("This is the third post with the same title.");
         c6.setUserIdFK(33);
         c6.setStatus(Status.DRAFT);
-        c6.setSideBarPosition(5);
-
+        c6.setSideBarPosition(0);
     }
 
     @After
@@ -212,28 +211,46 @@ public class StaticPageDbDaoImplTest {
         criteria = new HashMap<>();
         criteria.put(SearchTerm.STATUS, "PUBLISHED");
         cList = dao.searchStaticPage(criteria);
+
         assertEquals(c1.getTitle(), cList.get(0).getTitle());
 
     }
 
-    @Test
-    public void testTitleNumber() {
+    //simplify last test
+    private void resetAndTestTitles(String newTitle, 
+            StaticPage staticPage1, 
+            StaticPage staticPage2, 
+            StaticPage staticPage3) {
+        staticPage1.setTitle(newTitle);
+        staticPage2.setTitle(newTitle);
+        staticPage3.setTitle(newTitle);
 
-        c4.setTitle(c6.getTitle());
-        c5.setTitle(c6.getTitle());
+        Assert.assertEquals(staticPage1.getTitle(), staticPage2.getTitle());
+        Assert.assertEquals(staticPage2.getTitle(), staticPage3.getTitle());
+        //titles are indeed the same
 
-        dao.addStaticPage(c4);
-        dao.addStaticPage(c5);
-        dao.addStaticPage(c6);
+        dao.addStaticPage(staticPage1);
+        dao.addStaticPage(staticPage2);
+        dao.addStaticPage(staticPage3);
 
-        List<StaticPage> sameTitle = dao.getStaticPageByTitle(c4.getTitle());
+        List<StaticPage> sameTitle = dao.getStaticPageByTitle(staticPage1.getTitle());
         Assert.assertEquals(3, sameTitle.size());
 
-        assertEquals(c5.getTitle(), dao.getStaticPageByTitleNumber(c5.getTitleNumber()).getTitle());
-        assertEquals(c4.getTitle(), dao.getStaticPageByTitleNumber(c4.getTitleNumber()).getTitle());
-        assertEquals(c6.getTitle(), dao.getStaticPageByTitleNumber(c6.getTitleNumber()).getTitle());
+        Assert.assertEquals(staticPage1.getTitle(), dao.getStaticPageByTitleNumber(staticPage1.getTitleNumber()).getTitle());
+        Assert.assertEquals(staticPage2.getTitle(), dao.getStaticPageByTitleNumber(staticPage2.getTitleNumber()).getTitle());
+        Assert.assertEquals(staticPage3.getTitle(), dao.getStaticPageByTitleNumber(staticPage3.getTitleNumber()).getTitle());
+
+        Assert.assertNotSame(staticPage1, dao.getStaticPageByTitleNumber(staticPage2.getTitleNumber()));
+    }
+
+    @Test
+    public void testTitleNumber() {
+        resetAndTestTitles("title", c4, c5, c6);
+        resetAndTestTitles("#title", c4, c5, c6);
+        resetAndTestTitles("title___", c4, c5, c6);
+        resetAndTestTitles("title...", c4, c5, c6);
+        resetAndTestTitles("#$%%^#$@%&(^@#$%title%^#*&)@#$!#@*", c4, c5, c6);
         
-        Assert.assertNotSame(c5.getTitle(), dao.getStaticPageByTitleNumber(c6.getTitleNumber()).getTitle());
     }
 
 }

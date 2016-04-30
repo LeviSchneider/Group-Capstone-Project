@@ -48,11 +48,11 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     }
 
     private static final String SQL_INSERT_BLOGPOST
-            = "insert into blogPosts (timeCreated, timeEdited, startDate, endDate, title, postBody, userIdFK, titleNumber, status, sideBarPosition) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            = "insert into blogPosts (timeCreated, timeEdited, startDate, endDate, title, postBody, userIdFK, titleNumber, status) value(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE_BLOGPOST
             = "delete from blogPosts where postId = ?";
     private static final String SQL_UPDATE_BLOGPOST
-            = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ?, sideBarPosition = ?";
+            = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ? where postId = ?";
     private static final String SQL_SELECT_ALL_BLOGPOSTS
             = "select * from blogPosts ORDER BY postId DESC";
     private static final String SQL_SELECT_BLOGPOST_BY_ID
@@ -61,8 +61,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             = "select * from blogPosts where titleNumber = ?";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLE
             = "select * from blogPosts where title = ?";
-    private static final String SQL_SELECT_TITLENUMBER_BY_TITLE
-            = "select titleNumber from blogPosts where title = ?";
+    private static final String SQL_SELECT_TITLENUMBERS
+            = "SELECT titleNumber FROM blogPosts where titleNumber rlike ?";
     private static final String SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME
             = "select blogPosts.*, hashTags.hashTagName "
             + "from blogPosts "
@@ -108,7 +108,6 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         blogPost.setTimeCreated(date);
         blogPost.setTimeEdited(date);
 
-        System.out.println(blogPost.getStatus());
         jdbcTemplate.update(SQL_INSERT_BLOGPOST,
                 blogPost.getTimeCreated(),
                 blogPost.getTimeEdited(),
@@ -178,7 +177,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
                 blogPost.getPostBody(),
                 blogPost.getUserIdFK(),
                 blogPost.getTitleNumber(),
-                blogPost.getStatus().toString()
+                blogPost.getStatus().toString(),
+                blogPost.getPostId()
         );
 
         BlogPostContainer container = new BlogPostContainer();
@@ -293,23 +293,48 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     //search for all posts with same title; if none exist, set titleNumber to title.
     //if the title already exists, extract titlenumbers from result.
     //loop through title numbers and find the lowest.
+//    private void setTitleNumber(BlogPost blogPost) {
+//        String title = blogPost.getTitle();
+//        List<BlogPost> pagesWithSameTitle = getBlogPostsByTitle(title);
+//
+//        if (pagesWithSameTitle.isEmpty()) {
+//            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+//            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+//            blogPost.setTitleNumber(title);
+//        } else {
+//            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+//            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+//            List<String> titleNumbers = pagesWithSameTitle.stream()
+//                    .map(p -> p.getTitleNumber())
+//                    .collect(Collectors.toList());
+//            for (int i = 0; i <= titleNumbers.size() + 1; i++) {
+//                if (!titleNumbers.contains(title + i)) {
+//                    blogPost.setTitleNumber(title + i);
+//                }
+//            }
+//        }
+//    }
+    private List<String> getTitleNumbersLikeTitle(String title) {
+        title = title + "\\d*";
+        try {
+            return jdbcTemplate.queryForList(SQL_SELECT_TITLENUMBERS, String.class, new Object[]{title});
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     private void setTitleNumber(BlogPost blogPost) {
         String title = blogPost.getTitle();
-        List<BlogPost> pagesWithSameTitle = getBlogPostsByTitle(title);
+        title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
+        title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+        List<String> titleNumbers = getTitleNumbersLikeTitle(title);
 
-        if (pagesWithSameTitle.isEmpty()) {
-            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
+        if (titleNumbers.isEmpty()) {
             blogPost.setTitleNumber(title);
         } else {
-            title = title.replaceAll("([^a-zA-Z0-9 _]|^\\s)", "");
-            title = title.replaceAll("([^a-zA-Z0-9]|^\\s)", "_");
-            List<String> titleNumbers = pagesWithSameTitle.stream()
-                    .map(p -> p.getTitleNumber())
-                    .collect(Collectors.toList());
-            for (int i = 0; i <= titleNumbers.size() + 1; i++) {
-                if (!titleNumbers.contains(title + i)) {
-                    blogPost.setTitleNumber(title + i);
+            for (Integer i = 0; i <= titleNumbers.size() + 1; i++) {
+                if (!titleNumbers.contains(title + i.toString())) {
+                    blogPost.setTitleNumber(title + i.toString());
                 }
             }
         }
@@ -362,6 +387,5 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             blogPost.setStatus((rs.getString("status")));
             return blogPost;
         }
-
     }
 }

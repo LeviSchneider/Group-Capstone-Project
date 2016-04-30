@@ -1,197 +1,273 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+-- phpMyAdmin SQL Dump
+-- version 4.0.10deb1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Apr 28, 2016 at 05:25 PM
+-- Server version: 5.5.49-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.16
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
--- Uncomment each drop / create statement pair to update both DBs
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
-/*
-DROP SCHEMA IF EXISTS `PaloAlto_Test` ;
-CREATE SCHEMA IF NOT EXISTS `PaloAlto_Test` DEFAULT CHARACTER SET utf8 ;
-USE `PaloAlto_Test` ;
-*/
+--
+-- Database: `PaloAlto`
+--
+CREATE DATABASE IF NOT EXISTS `PaloAlto` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `PaloAlto`;
 
-/*
-DROP SCHEMA IF EXISTS `PaloAlto` ;
-CREATE SCHEMA IF NOT EXISTS `PaloAlto` DEFAULT CHARACTER SET utf8 ;
-USE `PaloAlto` ;
-*/
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `categories`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `categories` ;
-
-CREATE TABLE IF NOT EXISTS `categories` (
-  `categoryId` INT(11) NOT NULL AUTO_INCREMENT,
-  `categoryName` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`categoryId`),
-  UNIQUE INDEX `categoryName` (`categoryName` ASC),
-  INDEX `categoryName_2` (`categoryName` ASC))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `blogPosts`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `blogPosts` ;
+--
+-- Table structure for table `blogPosts`
+--
 
 CREATE TABLE IF NOT EXISTS `blogPosts` (
-  `postId` INT(11) NOT NULL AUTO_INCREMENT,
-  `timeCreated` DATETIME NOT NULL,
-  `timeEdited` DATETIME NOT NULL,
-  `startDate` DATETIME NULL DEFAULT NULL,
-  `endDate` DATETIME NULL DEFAULT NULL,
-  `title` VARCHAR(100) NOT NULL,
-  `postBody` TEXT NOT NULL,
-  `userIdFK` INT(11) NOT NULL,
-  `titleNumber` VARCHAR(105) NOT NULL,
-  `categoryIdFK` INT(11) NULL DEFAULT NULL,
-  `status` VARCHAR(20) NOT NULL,
+  `postId` int(11) NOT NULL AUTO_INCREMENT,
+  `timeCreated` datetime NOT NULL,
+  `timeEdited` datetime NOT NULL,
+  `startDate` datetime DEFAULT NULL,
+  `endDate` datetime DEFAULT NULL,
+  `title` varchar(100) NOT NULL,
+  `postBody` text NOT NULL,
+  `userIdFK` int(11) NOT NULL,
+  `titleNumber` varchar(105) NOT NULL,
+  `categoryIdFK` int(11) DEFAULT NULL,
+  `status` varchar(20) NOT NULL,
   PRIMARY KEY (`postId`),
-  UNIQUE INDEX `readableUrl` (`titleNumber` ASC),
-  INDEX `fk_blogPosts_1_idx` (`categoryIdFK` ASC),
-  CONSTRAINT `fk_blogPosts_1`
-    FOREIGN KEY (`categoryIdFK`)
-    REFERENCES `categories` (`categoryId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 1191
-DEFAULT CHARACTER SET = utf8;
+  UNIQUE KEY `readableUrl` (`titleNumber`),
+  KEY `fk_blogPosts_1_idx` (`categoryIdFK`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1202 ;
 
+--
+-- Dumping data for table `blogPosts`
+--
 
--- -----------------------------------------------------
--- Table `hashTags`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `hashTags` ;
+INSERT INTO `blogPosts` (`postId`, `timeCreated`, `timeEdited`, `startDate`, `endDate`, `title`, `postBody`, `userIdFK`, `titleNumber`, `categoryIdFK`, `status`) VALUES
+(1191, '2016-04-26 17:36:02', '2016-04-26 17:36:02', NULL, NULL, 'test', '<p>test</p>', 999, 'test', NULL, 'DRAFT'),
+(1192, '2016-04-26 17:37:04', '2016-04-26 17:37:04', NULL, NULL, 'test2', '<p>test</p>', 999, 'test2', NULL, 'DRAFT'),
+(1194, '2016-04-26 17:38:11', '2016-04-26 17:38:11', NULL, NULL, 'test111', '<p>test111</p>', 999, 'test111', NULL, 'DRAFT'),
+(1195, '2016-04-26 17:42:30', '2016-04-26 17:42:30', NULL, NULL, 'asdf', '<p>asdf</p>', 999, 'asdf', NULL, 'DRAFT'),
+(1196, '2016-04-26 17:42:53', '2016-04-26 17:42:53', NULL, NULL, 'asdf', '<p>asdf</p>', 999, 'asdf2', NULL, 'DRAFT'),
+(1197, '2016-04-26 17:43:02', '2016-04-26 17:43:02', NULL, NULL, 'asdf', '<p>asdf</p>', 999, 'asdf3', NULL, 'PUBLISHED'),
+(1198, '2016-04-26 17:43:18', '2016-04-26 17:43:18', NULL, NULL, 'bbbbbbbbb', '<p>bbbbbbbbbbbbb</p>', 999, 'bbbbbbbbb', NULL, 'PUBLISHED'),
+(1199, '2016-04-26 17:43:38', '2016-04-26 17:43:38', NULL, NULL, 'vvvvvvvvv', '<p>vvvvvvv</p>', 999, 'vvvvvvvvv', NULL, 'PUBLISHED'),
+(1200, '2016-04-26 17:44:45', '2016-04-26 17:44:45', NULL, NULL, 'asdf', '<p>sadf #testing</p>', 999, 'asdf4', NULL, 'PUBLISHED'),
+(1201, '2016-04-27 10:40:27', '2016-04-27 10:40:27', NULL, NULL, 'asdf', '<p>sadf #testing</p>', 999, 'asdf5', NULL, 'PUBLISHED');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE IF NOT EXISTS `categories` (
+  `categoryId` int(11) NOT NULL AUTO_INCREMENT,
+  `categoryName` varchar(50) NOT NULL,
+  PRIMARY KEY (`categoryId`),
+  UNIQUE KEY `categoryName` (`categoryName`),
+  KEY `categoryName_2` (`categoryName`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`categoryId`, `categoryName`) VALUES
+(1, 'test');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hashTags`
+--
 
 CREATE TABLE IF NOT EXISTS `hashTags` (
-  `hashTagId` INT(11) NOT NULL AUTO_INCREMENT,
-  `hashTagName` VARCHAR(50) NOT NULL,
+  `hashTagId` int(11) NOT NULL AUTO_INCREMENT,
+  `hashTagName` varchar(50) NOT NULL,
   PRIMARY KEY (`hashTagId`),
-  UNIQUE INDEX `hashTagName_UNIQUE` (`hashTagName` ASC),
-  UNIQUE INDEX `hashTagId_UNIQUE` (`hashTagId` ASC))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+  UNIQUE KEY `hashTagName_UNIQUE` (`hashTagName`),
+  UNIQUE KEY `hashTagId_UNIQUE` (`hashTagId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
+--
+-- Dumping data for table `hashTags`
+--
 
--- -----------------------------------------------------
--- Table `staticPages`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `staticPages` ;
+INSERT INTO `hashTags` (`hashTagId`, `hashTagName`) VALUES
+(1, '#testing');
 
-CREATE TABLE IF NOT EXISTS `staticPages` (
-  `pageId` INT(11) NOT NULL AUTO_INCREMENT,
-  `timeCreated` DATETIME NOT NULL,
-  `timeEdited` DATETIME NOT NULL,
-  `startDate` DATETIME NULL DEFAULT NULL,
-  `endDate` DATETIME NULL DEFAULT NULL,
-  `title` VARCHAR(100) NOT NULL,
-  `pageBody` TEXT NOT NULL,
-  `userIdFK` INT(11) NOT NULL,
-  `categoryIdFK` INT(11) NULL DEFAULT NULL,
-  `status` VARCHAR(20) NULL DEFAULT NULL,
-  `pageLink` VARCHAR(150) NULL DEFAULT NULL,
-  PRIMARY KEY (`pageId`),
-  UNIQUE INDEX `pageHrid_UNIQUE` (`pageLink` ASC),
-  INDEX `fk_staticPages_1_idx` (`categoryIdFK` ASC),
-  CONSTRAINT `fk_staticPages_1`
-    FOREIGN KEY (`categoryIdFK`)
-    REFERENCES `categories` (`categoryId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+-- --------------------------------------------------------
 
-
--- -----------------------------------------------------
--- Table `pageHashTagBridge`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `pageHashTagBridge` ;
+--
+-- Table structure for table `pageHashTagBridge`
+--
 
 CREATE TABLE IF NOT EXISTS `pageHashTagBridge` (
-  `pageIdFK` INT(11) NULL DEFAULT NULL,
-  `HashTagIdFK` INT(11) NULL DEFAULT NULL,
-  INDEX `HashTagIdFK` (`HashTagIdFK` ASC),
-  INDEX `postHashTagBridge_ibfk_10_idx` (`pageIdFK` ASC),
-  UNIQUE INDEX `pageHashTagPK` (`pageIdFK` ASC, `HashTagIdFK` ASC),
-  CONSTRAINT `pageHashTagBridge_ibfk_1`
-    FOREIGN KEY (`pageIdFK`)
-    REFERENCES `staticPages` (`pageId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `pageHashTagBridge_ibfk_20`
-    FOREIGN KEY (`HashTagIdFK`)
-    REFERENCES `hashTags` (`hashTagId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+  `pageIdFK` int(11) DEFAULT NULL,
+  `HashTagIdFK` int(11) DEFAULT NULL,
+  UNIQUE KEY `pageHashTagPK` (`pageIdFK`,`HashTagIdFK`),
+  KEY `HashTagIdFK` (`HashTagIdFK`),
+  KEY `postHashTagBridge_ibfk_10_idx` (`pageIdFK`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `postHashTagBridge`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `postHashTagBridge` ;
+--
+-- Table structure for table `postHashTagBridge`
+--
 
 CREATE TABLE IF NOT EXISTS `postHashTagBridge` (
-  `postIdFK` INT(11) NULL DEFAULT NULL,
-  `HashTagIdFK` INT(11) NULL DEFAULT NULL,
-  INDEX `HashTagIdFK` (`HashTagIdFK` ASC),
-  INDEX `postHashTagBridge_ibfk_1_idx` (`postIdFK` ASC),
-  UNIQUE INDEX `postHashTagPK` (`postIdFK` ASC, `HashTagIdFK` ASC),
-  CONSTRAINT `postHashTagBridge_ibfk_1`
-    FOREIGN KEY (`postIdFK`)
-    REFERENCES `blogPosts` (`postId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `postHashTagBridge_ibfk_2`
-    FOREIGN KEY (`HashTagIdFK`)
-    REFERENCES `hashTags` (`hashTagId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+  `postIdFK` int(11) DEFAULT NULL,
+  `HashTagIdFK` int(11) DEFAULT NULL,
+  UNIQUE KEY `postHashTagPK` (`postIdFK`,`HashTagIdFK`),
+  KEY `HashTagIdFK` (`HashTagIdFK`),
+  KEY `postHashTagBridge_ibfk_1_idx` (`postIdFK`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `sideBarLinks`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sideBarLinks` ;
+--
+-- Table structure for table `sideBarLinks`
+--
 
 CREATE TABLE IF NOT EXISTS `sideBarLinks` (
-  `sideBarLinksId` INT(11) NOT NULL AUTO_INCREMENT,
-  `staticPageName` VARCHAR(100) NOT NULL,
-  `url` VARCHAR(150) NOT NULL,
-  `jspPage` VARCHAR(45) NULL DEFAULT NULL,
-  `javaScriptPage` VARCHAR(45) NULL DEFAULT NULL,
-  `position` INT(11) NOT NULL,
+  `sideBarLinksId` int(11) NOT NULL AUTO_INCREMENT,
+  `staticPageName` varchar(100) NOT NULL,
+  `url` varchar(150) NOT NULL,
+  `position` int(11) NOT NULL,
+  `isDefaultLink` tinyint(4) NOT NULL,
   PRIMARY KEY (`sideBarLinksId`),
-  UNIQUE INDEX `staticPageName_UNIQUE` (`staticPageName` ASC))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+  UNIQUE KEY `staticPageName_UNIQUE` (`staticPageName`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
+--
+-- Dumping data for table `sideBarLinks`
+--
 
--- -----------------------------------------------------
--- Table `users`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `users` ;
+INSERT INTO `sideBarLinks` (`sideBarLinksId`, `staticPageName`, `url`, `position`, `isDefaultLink`) VALUES
+(1, 'About Us', 'pagelink/a_big_old_test', 5, 0),
+(4, 'Home', 'home', 0, 1),
+(5, 'Blog', 'blog', 1, 1),
+(6, 'Admin', 'admin', 2, 1),
+(7, 'Create Blog Entry', 'tinymce', 3, 1),
+(8, 'Create Static Page', 'pageTinyMCE', 4, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `staticPages`
+--
+
+CREATE TABLE IF NOT EXISTS `staticPages` (
+  `pageId` int(11) NOT NULL AUTO_INCREMENT,
+  `timeCreated` datetime NOT NULL,
+  `timeEdited` datetime NOT NULL,
+  `startDate` datetime DEFAULT NULL,
+  `endDate` datetime DEFAULT NULL,
+  `title` varchar(100) NOT NULL,
+  `pageBody` text NOT NULL,
+  `userIdFK` int(11) NOT NULL,
+  `categoryIdFK` int(11) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  `titleNumber` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`pageId`),
+  UNIQUE KEY `pageHrid_UNIQUE` (`titleNumber`),
+  KEY `fk_staticPages_1_idx` (`categoryIdFK`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
+
+--
+-- Dumping data for table `staticPages`
+--
+
+INSERT INTO `staticPages` (`pageId`, `timeCreated`, `timeEdited`, `startDate`, `endDate`, `title`, `pageBody`, `userIdFK`, `categoryIdFK`, `status`, `titleNumber`) VALUES
+(1, '2013-12-11 19:00:00', '2013-12-11 19:00:00', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'bbbb', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', NULL),
+(2, '2013-12-11 19:00:00', '2013-12-11 19:00:00', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'bbbb', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', NULL),
+(3, '2013-12-11 19:00:00', '2013-12-11 19:00:00', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'bbbb', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', NULL),
+(4, '2013-12-11 19:00:00', '2013-12-11 19:00:00', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'bbbb', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', NULL),
+(5, '2013-12-11 19:00:00', '2013-12-11 19:00:00', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'bbbb', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', NULL),
+(6, '2013-12-11 19:00:00', '2013-12-11 19:00:00', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'bbbb', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', NULL),
+(7, '2016-04-27 10:56:13', '2016-04-27 10:56:13', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'bbbb', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', 'bbbb7'),
+(8, '2016-04-27 10:59:05', '2016-04-27 10:59:05', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'ddd', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', 'ddd'),
+(9, '2016-04-27 11:02:08', '2016-04-27 11:02:08', '2016-12-25 19:00:00', '2016-12-25 19:00:00', 'fff', 'aaaaaaaaaaa', 999, NULL, 'READY_FOR_APPROVAL', 'fff'),
+(10, '2016-04-27 14:02:18', '2016-04-27 14:02:18', NULL, NULL, 't4', '<p>test</p>', 999, NULL, 'DRAFT', 't4'),
+(11, '2016-04-27 14:19:39', '2016-04-27 14:19:39', NULL, NULL, 'test1', '<p>test1</p>', 999, NULL, 'DRAFT', 'test1'),
+(12, '2016-04-27 14:33:50', '2016-04-27 14:33:50', NULL, NULL, 'sdfsdf', '<p>fasdfasdfasdfasdf</p>', 999, NULL, 'PUBLISHED', 'sdfsdf');
+INSERT INTO `staticPages` (`pageId`, `timeCreated`, `timeEdited`, `startDate`, `endDate`, `title`, `pageBody`, `userIdFK`, `categoryIdFK`, `status`, `titleNumber`) VALUES
+(13, '2016-04-27 14:36:02', '2016-04-27 14:36:02', NULL, NULL, 'aaaa', '<p>asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;</p><p>asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;</p><p>asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;</p><p>asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;</p><p>asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;asfasdf&nbsp;</p>', 999, NULL, 'PUBLISHED', 'aaaa');
+INSERT INTO `staticPages` (`pageId`, `timeCreated`, `timeEdited`, `startDate`, `endDate`, `title`, `pageBody`, `userIdFK`, `categoryIdFK`, `status`, `titleNumber`) VALUES
+(14, '2016-04-27 14:51:26', '2016-04-27 14:51:26', NULL, NULL, '', '<h1><em><strong>asdfasdf&nbsp;</strong></em></h1>', 999, NULL, 'PUBLISHED', ''),
+(15, '2016-04-27 14:51:43', '2016-04-27 14:51:43', NULL, NULL, 'asdf', '<h1><strong>asfdadsf&nbsp;</strong></h1>', 999, NULL, 'PUBLISHED', 'asdf'),
+(16, '2016-04-27 14:54:10', '2016-04-27 14:54:10', NULL, NULL, 'qewr', '<p>wer</p>', 999, NULL, 'PUBLISHED', 'qewr'),
+(17, '2016-04-27 14:54:24', '2016-04-27 14:54:24', NULL, NULL, 'asdf', '<p>asdf</p>', 999, NULL, 'PUBLISHED', 'asdf2'),
+(18, '2016-04-27 14:55:25', '2016-04-27 14:55:25', NULL, NULL, 'adf', '<p>asdf</p>', 999, NULL, 'PUBLISHED', 'adf'),
+(19, '2016-04-27 14:56:58', '2016-04-27 14:56:58', NULL, NULL, 'aa', '<p>aaa</p>', 999, NULL, 'PUBLISHED', 'aa'),
+(20, '2016-04-27 14:57:55', '2016-04-27 14:57:55', NULL, NULL, 'asdfasdf', '<p>asdfasdf</p>', 999, NULL, 'PUBLISHED', 'asdfasdf'),
+(21, '2016-04-27 14:58:16', '2016-04-27 14:58:16', NULL, NULL, 'asdfasdf', '<p>asdfasdf</p>', 999, NULL, 'PUBLISHED', 'asdfasdf2'),
+(22, '2016-04-27 14:58:26', '2016-04-27 14:58:26', NULL, NULL, 'zzzzzzzzz', '<p>zzzzzzzzzzz</p>', 999, NULL, 'PUBLISHED', 'zzzzzzzzz'),
+(23, '2016-04-27 14:58:34', '2016-04-27 14:58:34', NULL, NULL, 'vvdvdvd', '<p>dvvdvdv</p>', 999, NULL, 'PUBLISHED', 'vvdvdvd'),
+(24, '2016-04-27 14:58:52', '2016-04-27 14:58:52', NULL, NULL, 'ayayayayyaa', '<p>ayayayayay</p>', 999, NULL, 'PUBLISHED', 'ayayayayyaa'),
+(25, '2016-04-27 14:59:24', '2016-04-27 14:59:24', NULL, NULL, 'asdfaf', '<p>asdfadsfa</p>', 999, NULL, 'PUBLISHED', 'asdfaf'),
+(26, '2016-04-27 14:59:59', '2016-04-27 14:59:59', NULL, NULL, 'sdfsdfsd', '<p>fsdfsdfs</p>', 999, NULL, 'PUBLISHED', 'sdfsdfsd'),
+(27, '2016-04-27 15:00:52', '2016-04-27 15:00:52', NULL, NULL, 'vvfvfv', '<p>fvfvfv</p>', 999, NULL, 'PUBLISHED', 'vvfvfv'),
+(28, '2016-04-27 15:02:24', '2016-04-27 15:02:24', NULL, NULL, 'gbgbgbg', '<p>gbgbgbgb</p>', 999, NULL, 'PUBLISHED', 'gbgbgbg'),
+(29, '2016-04-27 15:03:20', '2016-04-27 15:03:20', NULL, NULL, 'hnhnhnhn', '<p>hnhnhnhn</p>', 999, NULL, 'PUBLISHED', 'hnhnhnhn'),
+(30, '2016-04-27 15:04:37', '2016-04-27 15:04:37', NULL, NULL, 'nhnhnh', '<p>nhnhn</p>', 999, NULL, 'PUBLISHED', 'nhnhnh'),
+(31, '2016-04-27 15:05:38', '2016-04-27 15:05:38', NULL, NULL, 'a big old test', '<h1>asdfasdfadsf</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>asdfasdfadsf&nbsp;</h1>\n<h1>&nbsp;</h1>', 999, NULL, 'PUBLISHED', 'a_big_old_test'),
+(32, '2016-04-28 16:33:53', '2016-04-28 16:33:53', NULL, NULL, 'zxcvzxcvz', '<p>zxcvzxcv</p>', 999, NULL, 'APPROVED', 'zxcvzxcvz');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `userId` INT(11) NOT NULL AUTO_INCREMENT,
-  `displayName` VARCHAR(100) NOT NULL,
-  `passwordSalt` CHAR(64) NOT NULL,
-  `passwordHash` CHAR(64) NOT NULL,
-  `siteRole` ENUM('user','admin','owner','developer') NOT NULL,
-  `username` VARCHAR(25) NOT NULL,
-  PRIMARY KEY (`userId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+  `userId` int(11) NOT NULL AUTO_INCREMENT,
+  `displayName` varchar(100) NOT NULL,
+  `passwordSalt` char(64) NOT NULL,
+  `passwordHash` char(64) NOT NULL,
+  `siteRole` enum('user','admin','owner','developer') NOT NULL,
+  `username` varchar(25) NOT NULL,
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+--
+-- Constraints for dumped tables
+--
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+--
+-- Constraints for table `blogPosts`
+--
+ALTER TABLE `blogPosts`
+  ADD CONSTRAINT `fk_blogPosts_1` FOREIGN KEY (`categoryIdFK`) REFERENCES `categories` (`categoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+--
+-- Constraints for table `pageHashTagBridge`
+--
+ALTER TABLE `pageHashTagBridge`
+  ADD CONSTRAINT `pageHashTagBridge_ibfk_1` FOREIGN KEY (`pageIdFK`) REFERENCES `staticPages` (`pageId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `pageHashTagBridge_ibfk_20` FOREIGN KEY (`HashTagIdFK`) REFERENCES `hashTags` (`hashTagId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `postHashTagBridge`
+--
+ALTER TABLE `postHashTagBridge`
+  ADD CONSTRAINT `postHashTagBridge_ibfk_1` FOREIGN KEY (`postIdFK`) REFERENCES `blogPosts` (`postId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `postHashTagBridge_ibfk_2` FOREIGN KEY (`HashTagIdFK`) REFERENCES `hashTags` (`hashTagId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `staticPages`
+--
+ALTER TABLE `staticPages`
+  ADD CONSTRAINT `fk_staticPages_1` FOREIGN KEY (`categoryIdFK`) REFERENCES `categories` (`categoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

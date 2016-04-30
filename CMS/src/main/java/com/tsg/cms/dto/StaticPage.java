@@ -27,8 +27,7 @@ public class StaticPage {
     private String titleNumber;
     private Status status;
     private int sideBarPosition;
-
-    @Override
+    
     public int hashCode() {
         int hash = 7;
         hash = 43 * hash + this.pageId;
