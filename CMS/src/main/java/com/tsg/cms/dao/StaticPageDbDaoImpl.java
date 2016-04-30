@@ -48,6 +48,8 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             = "select title, titleNumber, sideBarPosition from staticPages where sideBarPosition > 0";
     private static final String SQL_UPDATE_STATICPAGE_SIDEBAR_POSITION
             = "update staticPages set sideBarPosition = ? where pageId = ?";
+    private static final String SQL_SELECT_HOMEPAGE_LINK
+            = "SELECT titleNumber FROM `staticPages` WHERE `title` = 'Home' OR `title` = 'home'";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -62,22 +64,20 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         setTitleNumber(staticPage);
         Date date = new Date();
 
-        SimpleDateFormat datf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         staticPage.setTimeCreated(date);
         staticPage.setTimeEdited(date);
         staticPage.setSideBarPosition(0);
         jdbcTemplate.update(SQL_INSERT_STATICPAGE,
-                staticPage.getTimeCreated(),
-                staticPage.getTimeEdited(),
-                staticPage.getStartDate(),
-                staticPage.getEndDate(),
-                staticPage.getTitle(),
-                staticPage.getPageBody(),
-                staticPage.getUserIdFK(),
-                staticPage.getTitleNumber(),
-                staticPage.getStatus().toString(),
-                staticPage.getSideBarPosition()
+                            staticPage.getTimeCreated(),
+                            staticPage.getTimeEdited(),
+                            staticPage.getStartDate(),
+                            staticPage.getEndDate(),
+                            staticPage.getTitle(),
+                            staticPage.getPageBody(),
+                            staticPage.getUserIdFK(),
+                            staticPage.getTitleNumber(),
+                            staticPage.getStatus().toString(),
+                            staticPage.getSideBarPosition()
         );
 
         staticPage.setPageId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
@@ -104,17 +104,17 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         updatedPage.setUserIdFK(oldPage.getUserIdFK());
 
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE,
-                updatedPage.getTimeCreated(),
-                updatedPage.getTimeEdited(),
-                updatedPage.getStartDate(),
-                updatedPage.getEndDate(),
-                updatedPage.getTitle(),
-                updatedPage.getPageBody(),
-                updatedPage.getUserIdFK(),
-                updatedPage.getTitleNumber(),
-                updatedPage.getStatus().toString(),
-                updatedPage.getSideBarPosition(),
-                updatedPage.getPageId()
+                            updatedPage.getTimeCreated(),
+                            updatedPage.getTimeEdited(),
+                            updatedPage.getStartDate(),
+                            updatedPage.getEndDate(),
+                            updatedPage.getTitle(),
+                            updatedPage.getPageBody(),
+                            updatedPage.getUserIdFK(),
+                            updatedPage.getTitleNumber(),
+                            updatedPage.getStatus().toString(),
+                            updatedPage.getSideBarPosition(),
+                            updatedPage.getPageId()
         );
     }
 
@@ -173,6 +173,15 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     public List<StaticPage> getStaticPageByTitle(String title) {
         try {
             return jdbcTemplate.query(SQL_SELECT_STATICPAGE_BY_TITLE, new StaticPageMapper(), title);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public String getHomePageLink() {
+        try {
+            return jdbcTemplate.queryForObject(SQL_SELECT_HOMEPAGE_LINK, String.class);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -259,6 +268,5 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE_SIDEBAR_POSITION, position, pageId);
     }
-    
-    
+
 }

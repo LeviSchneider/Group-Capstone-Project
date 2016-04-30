@@ -36,4 +36,6 @@ public interface StaticPageDbDao {
     public List<SideBarLink> getNavBarPages();
     
     public void updatePageNavBarPosition(int pageId, int position);
+
+    public String getHomePageLink();
 }
