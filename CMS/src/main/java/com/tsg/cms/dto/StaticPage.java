@@ -27,6 +27,75 @@ public class StaticPage {
     private String titleNumber;
     private Status status;
     private int sideBarPosition;
+    
+    public int hashCode() {
+        int hash = 7;
+        hash = 43 * hash + this.pageId;
+        hash = 43 * hash + Objects.hashCode(this.timeCreated);
+        hash = 43 * hash + Objects.hashCode(this.timeEdited);
+        hash = 43 * hash + Objects.hashCode(this.startDate);
+        hash = 43 * hash + Objects.hashCode(this.endDate);
+        hash = 43 * hash + Objects.hashCode(this.title);
+        hash = 43 * hash + Objects.hashCode(this.pageBody);
+        hash = 43 * hash + this.userIdFK;
+        hash = 43 * hash + Objects.hashCode(this.categoryIdFK);
+        hash = 43 * hash + Objects.hashCode(this.titleNumber);
+        hash = 43 * hash + Objects.hashCode(this.status);
+        hash = 43 * hash + this.sideBarPosition;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final StaticPage other = (StaticPage) obj;
+        if (this.pageId != other.pageId) {
+            return false;
+        }
+        if (this.userIdFK != other.userIdFK) {
+            return false;
+        }
+        if (this.sideBarPosition != other.sideBarPosition) {
+            return false;
+        }
+        if (!Objects.equals(this.title, other.title)) {
+            return false;
+        }
+        if (!Objects.equals(this.pageBody, other.pageBody)) {
+            return false;
+        }
+        if (!Objects.equals(this.titleNumber, other.titleNumber)) {
+            return false;
+        }
+        if (!Objects.equals(this.timeCreated, other.timeCreated)) {
+            return false;
+        }
+        if (!Objects.equals(this.timeEdited, other.timeEdited)) {
+            return false;
+        }
+        if (!Objects.equals(this.startDate, other.startDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.endDate, other.endDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.categoryIdFK, other.categoryIdFK)) {
+            return false;
+        }
+        if (this.status != other.status) {
+            return false;
+        }
+        return true;
+    }
+    
   
     
     public int getPageId() {
@@ -124,60 +193,5 @@ public class StaticPage {
     public void setSideBarPosition(int sideBarPosition) {
         this.sideBarPosition = sideBarPosition;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 83 * hash + this.pageId;
-        hash = 83 * hash + Objects.hashCode(this.title);
-        hash = 83 * hash + Objects.hashCode(this.pageBody);
-        hash = 83 * hash + this.userIdFK;
-        hash = 83 * hash + Objects.hashCode(this.categoryIdFK);
-        hash = 83 * hash + Objects.hashCode(this.titleNumber);
-        hash = 83 * hash + Objects.hashCode(this.status);
-        hash = 83 * hash + this.sideBarPosition;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final StaticPage other = (StaticPage) obj;
-        if (this.pageId != other.pageId) {
-            return false;
-        }
-        if (this.userIdFK != other.userIdFK) {
-            return false;
-        }
-        if (this.sideBarPosition != other.sideBarPosition) {
-            return false;
-        }
-        if (!Objects.equals(this.title, other.title)) {
-            return false;
-        }
-        if (!Objects.equals(this.pageBody, other.pageBody)) {
-            return false;
-        }
-        if (!Objects.equals(this.titleNumber, other.titleNumber)) {
-            return false;
-        }
-        if (!Objects.equals(this.categoryIdFK, other.categoryIdFK)) {
-            return false;
-        }
-        if (this.status != other.status) {
-            return false;
-        }
-        return true;
-    }
-
-
 
 }

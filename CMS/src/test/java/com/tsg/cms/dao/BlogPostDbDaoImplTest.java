@@ -239,9 +239,9 @@ public class BlogPostDbDaoImplTest {
         BlogPostContainer bp2Container = dao.getBlogPostByTitleNumber(blogPost2.getTitleNumber());
         BlogPostContainer bp3Container = dao.getBlogPostByTitleNumber(blogPost3.getTitleNumber());
 
-        Assert.assertEquals(blogPost1, bp1Container.getBlogPost());
-        Assert.assertEquals(blogPost2, bp2Container.getBlogPost());
-        Assert.assertEquals(blogPost3, bp3Container.getBlogPost());
+        Assert.assertEquals(blogPost1.getTitle(), bp1Container.getBlogPost().getTitle());
+        Assert.assertEquals(blogPost2.getTitle(), bp2Container.getBlogPost().getTitle());
+        Assert.assertEquals(blogPost3.getTitle(), bp3Container.getBlogPost().getTitle());
 
         Assert.assertNotSame(blogPost1, dao.getBlogPostByTitleNumber(blogPost2.getTitleNumber()).getBlogPost());
     }

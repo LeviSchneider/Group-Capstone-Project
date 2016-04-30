@@ -400,6 +400,5 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             blogPost.setStatus((rs.getString("status")));
             return blogPost;
         }
-
     }
 }
