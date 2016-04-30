@@ -164,9 +164,12 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         
         //could be made to fetch just the title, but probably better to reuse existing method
         //Check to see if title has changed; if it has, set a new titlenumber
+        //if not, reuse the old title number since we aren't passing it in
         BlogPost oldPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), updatedPost.getPostId());
         if (!oldPost.getTitle().equals(updatedPost.getTitle())) {
             setTitleNumber(updatedPost);
+        } else {
+            updatedPost.setTitleNumber(oldPost.getTitleNumber());
         }
         updatedPost.setUserIdFK(oldPost.getUserIdFK());
 

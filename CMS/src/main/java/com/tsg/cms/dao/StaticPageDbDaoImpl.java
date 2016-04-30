@@ -96,6 +96,8 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         StaticPage oldPage = jdbcTemplate.queryForObject(SQL_SELECT_STATICPAGE_BY_ID, new StaticPageMapper(), updatedPage.getPageId());
         if (!oldPage.getTitle().equals(updatedPage.getTitle())) {
             setTitleNumber(updatedPage);
+        } else {
+            updatedPage.setTitleNumber(oldPage.getTitleNumber());
         }
         updatedPage.setCategoryIdFK(oldPage.getCategoryIdFK());
         updatedPage.setSideBarPosition(oldPage.getSideBarPosition());
