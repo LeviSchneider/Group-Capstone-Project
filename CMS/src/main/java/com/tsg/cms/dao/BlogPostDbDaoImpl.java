@@ -152,46 +152,55 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     }
 
     @Override
-    public BlogPostContainer updateBlogPost(BlogPost blogPost) {
+    public BlogPostContainer updateBlogPost(BlogPost updatedPost) {
 
+//                    timeCreated: "2016-04-27",
+//            timeEdited: "2016-04-27",
+//            startDate: $('#start-date').val(),
+//            endDate: $('#end-date').val(),
+//            title: $('#post-title').val(),
+//            postBody: tinyMCE.activeEditor.getContent(),
+//            status: $('#post-status').val()
+        
         //could be made to fetch just the title, but probably better to reuse existing method
         //Check to see if title has changed; if it has, set a new titlenumber
-        BlogPost oldPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), blogPost.getPostId());
-        if (!oldPost.getTitle().equals(blogPost.getTitle())) {
-            setTitleNumber(blogPost);
+        BlogPost oldPost = jdbcTemplate.queryForObject(SQL_SELECT_BLOGPOST_BY_ID, new BlogPostMapper(), updatedPost.getPostId());
+        if (!oldPost.getTitle().equals(updatedPost.getTitle())) {
+            setTitleNumber(updatedPost);
         }
+        updatedPost.setUserIdFK(oldPost.getUserIdFK());
 
+        //TODO: make sure removed hashTags are properly deleted
+        
         //getting any new HashTags
-        String body = blogPost.getPostBody();
+        String body = updatedPost.getPostBody();
         List<String> tags = hashTagMatcher.findHashTags(body);
-
         for (String tag : tags) {
-            tagDao.addTag(tag, blogPost.getPostId());
+            tagDao.addTag(tag, updatedPost.getPostId());
         }
-
         Date date = new Date();
-        blogPost.setTimeEdited(date);
+        updatedPost.setTimeEdited(date);
 
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
-                blogPost.getTimeCreated(),
-                blogPost.getTimeEdited(),
-                blogPost.getStartDate(),
-                blogPost.getEndDate(),
-                blogPost.getTitle(),
-                blogPost.getPostBody(),
-                blogPost.getUserIdFK(),
-                blogPost.getTitleNumber(),
-                blogPost.getStatus().toString(),
-                blogPost.getPostId()
+                updatedPost.getTimeCreated(),
+                updatedPost.getTimeEdited(),
+                updatedPost.getStartDate(),
+                updatedPost.getEndDate(),
+                updatedPost.getTitle(),
+                updatedPost.getPostBody(),
+                updatedPost.getUserIdFK(),
+                updatedPost.getTitleNumber(),
+                updatedPost.getStatus().toString(),
+                updatedPost.getPostId()
         );
 
         BlogPostContainer container = new BlogPostContainer();
-        container.setBlogPost(blogPost);
+        container.setBlogPost(updatedPost);
 
         TagContainer tagContainer = new TagContainer();
         //we are not re-getting the list of hashTags so we can make sure we
         //have valid tags (ie, the tags have been processed)
-        tagContainer.setTagList(tagDao.getPostTags(blogPost.getPostId()));
+        tagContainer.setTagList(tagDao.getPostTags(updatedPost.getPostId()));
         container.setTagContainer(tagContainer);
 
         return container;
