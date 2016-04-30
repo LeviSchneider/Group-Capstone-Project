@@ -35,7 +35,7 @@ function addCategoryButton() {
         });
     });
 }
-
+var staticPageCategory;
 function loadStaticPages(data, status) {
 
     var staticPagePanel = $('#staticPageContentRows');
@@ -56,29 +56,54 @@ function loadStaticPages(data, status) {
                 addOrRemoveSideBarButton = '<a onclick="addPageToSideBar(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
                         + '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button></a>';
             }
+
+
+
+
+
             staticPagePanel
-                    .append($('<div>')
-                            .addClass("panel panel-default")
-                            .append('<input type="hidden" id="page' + staticPage.pageId + 'isOnSideBar" value="' + staticPage.sideBarPosition + '"/>')
-                            .append('<div>')
-                            .addClass("panel-body")
-                            .append('<span>')
-                            .append(addOrRemoveSideBarButton)
-                            .append($('<a href="/CMS/pageTinyMCE/' + staticPage.pageId + '"><button type="button" class="btn btn-default btn-xs">'
-                                    + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'))
+                    .append($('<tr>')
+                            .append($('<td>')
+                                    .append($('<div>')
+                                            .addClass("panel panel-default")
+                                            .append('<input type="hidden" id="page' + staticPage.pageId + 'isOnSideBar" value="' + staticPage.sideBarPosition + '"/>')
+                                            .append('<div>')
+                                            .addClass("panel-body")
+                                            .append('<span>')
+                                            .append(addOrRemoveSideBarButton)
+                                            .append($('<a href="/CMS/pageTinyMCE/' + staticPage.pageId + '"><button type="button" class="btn btn-default btn-xs">'
+                                                    + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'))
 
 
-                            .append($('<a>')
-                                    .attr({
-                                        'href': '/CMS/pagelink/' + staticPage.titleNumber
-                                    }).text(staticPage.title))
+                                            .append($('<a>')
+                                                    .attr({
+                                                        'href': '/CMS/pagelink/' + staticPage.titleNumber
+                                                    }).text(staticPage.title))
 
 
-                            .append($('<a onclick="deleteStaticPage(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
-                                    + '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></a>'))
+                                            .append($('<a onclick="deleteStaticPage(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
+                                                    + '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></a>'))
 
 
-                            );
+                                            ))
+                            .append($('<td>')
+                                    .append($('<div>')
+                                            .addClass("panel panel-default")
+                                            .append('<div>')
+                                            .addClass("panel-body")
+                                            .append('<span id="category' + staticPage.pageId + '">')
+
+                                            )
+                                    ));
+            $.ajax({
+                type: 'GET',
+                url: '/CMS/category/' + staticPage.categoryIdFK
+
+            }).success(function (category, status) {
+                
+                $('#category' + staticPage.pageId).text(category.categoryName);
+                
+            });
         });
     });
 
@@ -208,7 +233,7 @@ function loadSideBarItems() {
 
             //nextSideBarId++;
             sideBar.append($('<li>')
-                    .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
+                    .append('<a href="/CMS/pagelink' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
                     );
         });
 
