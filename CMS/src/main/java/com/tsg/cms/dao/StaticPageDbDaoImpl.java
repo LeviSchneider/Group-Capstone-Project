@@ -251,4 +251,6 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE_SIDEBAR_POSITION, position, pageId);
     }
+    
+    
 }
