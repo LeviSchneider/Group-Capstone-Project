@@ -49,6 +49,14 @@ public class BlogPostController {
 
     }
 
+    @RequestMapping(value = "/blogPostAdmin/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public BlogPostContainer getBlogPostAdmin(@PathVariable("id") int id) {
+
+        return blogPostDao.getBlogPostByIdAdmin(id);
+
+    }
+
     @RequestMapping(value = "/blogPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -80,6 +88,14 @@ public class BlogPostController {
     public List<BlogPostContainer> getAllBlogPost() {
 
         return blogPostDao.getAllBlogPosts();
+
+    }
+
+    @RequestMapping(value = "/blogPostsAdmin", method = RequestMethod.GET)
+    @ResponseBody
+    public List<BlogPostContainer> getAllBlogPostAdmin() {
+
+        return blogPostDao.getAllBlogPostsAdmin();
 
     }
 

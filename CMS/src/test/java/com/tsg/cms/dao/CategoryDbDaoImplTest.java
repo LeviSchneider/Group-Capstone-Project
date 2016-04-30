@@ -67,13 +67,14 @@ public class CategoryDbDaoImplTest {
         cleaner.execute("delete from categories");
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = format.parse("12-25-2016 00:00:00");
+        Date date = format.parse("2015-12-25 00:00:00");
+        Date endDate = format.parse("2017-12-25 00:00:00");
 
         blogPost1 = new BlogPost();
         blogPost1.setTimeCreated(date);
         blogPost1.setTimeEdited(date);
         blogPost1.setStartDate(date);
-        blogPost1.setEndDate(date);
+        blogPost1.setEndDate(endDate);
         blogPost1.setTitle("News");
         blogPost1.setPostBody("Q");
         blogPost1.setUserIdFK(1111);
@@ -83,7 +84,7 @@ public class CategoryDbDaoImplTest {
         blogPost2.setTimeCreated(date);
         blogPost2.setTimeEdited(date);
         blogPost2.setStartDate(date);
-        blogPost2.setEndDate(date);
+        blogPost2.setEndDate(endDate);
         blogPost2.setTitle("Ads");
         blogPost2.setPostBody("B");
         blogPost2.setUserIdFK(2222);
@@ -93,7 +94,7 @@ public class CategoryDbDaoImplTest {
         blogPost3.setTimeCreated(date);
         blogPost3.setTimeEdited(date);
         blogPost3.setStartDate(date);
-        blogPost3.setEndDate(date);
+        blogPost3.setEndDate(endDate);
         blogPost3.setTitle("News");
         blogPost3.setPostBody("F");
         blogPost3.setUserIdFK(3333);
@@ -187,7 +188,6 @@ public class CategoryDbDaoImplTest {
 
         } catch (DuplicateKeyException e) {
             Boolean thrown = true;
-            System.out.println("Duplicate Key");
             Assert.assertTrue(thrown);
         }
 

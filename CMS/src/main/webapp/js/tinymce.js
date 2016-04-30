@@ -104,7 +104,7 @@ function populateEditPostData() {
 
     $.ajax({
         type: 'GET',
-        url: '/CMS/blogPost/' + $('#post-to-edit-id').val()
+        url: '/CMS/blogPostAdmin/' + $('#post-to-edit-id').val()
 
     }).success(function (blogPostContainer, status) {
 

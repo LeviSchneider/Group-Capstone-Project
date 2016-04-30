@@ -251,7 +251,7 @@ function populateBlogPosts(data, status) {
     var blogPanel = $('#blog-post-display');
     $.ajax({
         type: 'GET',
-        url: 'blogPosts'
+        url: 'blogPostsAdmin'
 
     }).success(function (data, status) {
 

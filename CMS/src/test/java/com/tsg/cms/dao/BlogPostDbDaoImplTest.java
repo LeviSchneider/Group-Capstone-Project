@@ -9,6 +9,7 @@ import com.tsg.cms.dto.BlogPost;
 import com.tsg.cms.dto.BlogPostContainer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ public class BlogPostDbDaoImplTest {
     private BlogPost c4;
     private BlogPost c5;
     private BlogPost c6;
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public BlogPostDbDaoImplTest() {
     }
@@ -64,15 +66,14 @@ public class BlogPostDbDaoImplTest {
         cleaner.execute("delete from hashTags");
         cleaner.execute("delete from blogPosts");
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = format.parse("12-25-2016 00:00:00");
-
+        Date date = format.parse("2015-12-25 00:00:00");
+        Date endDate = format.parse("2017-12-25 00:00:00");
         c1 = new BlogPost();
 
         c1.setTimeCreated(date);
         c1.setTimeEdited(date);
         c1.setStartDate(date);
-        c1.setEndDate(date);
+        c1.setEndDate(endDate);
         c1.setTitle("News");
         c1.setPostBody("Q");
         c1.setUserIdFK(1111);
@@ -83,7 +84,7 @@ public class BlogPostDbDaoImplTest {
         c2.setTimeCreated(date);
         c2.setTimeEdited(date);
         c2.setStartDate(date);
-        c2.setEndDate(date);
+        c2.setEndDate(endDate);
         c2.setTitle("Ads");
         c2.setPostBody("B");
         c2.setUserIdFK(2222);
@@ -94,7 +95,7 @@ public class BlogPostDbDaoImplTest {
         c3.setTimeCreated(date);
         c3.setTimeEdited(date);
         c3.setStartDate(date);
-        c3.setEndDate(date);
+        c3.setEndDate(endDate);
         c3.setTitle("News");
         c3.setPostBody("F");
         c3.setUserIdFK(3333);
@@ -105,18 +106,18 @@ public class BlogPostDbDaoImplTest {
         c4.setTimeCreated(date);
         c4.setTimeEdited(date);
         c4.setStartDate(date);
-        c4.setEndDate(date);
+        c4.setEndDate(endDate);
         c4.setTitle("Sale!");
         c4.setPostBody("This is the first post with the same title.");
         c4.setUserIdFK(33);
         c4.setStatus("DRAFT");
-
+        
         c5 = new BlogPost();
 
         c5.setTimeCreated(date);
         c5.setTimeEdited(date);
         c5.setStartDate(date);
-        c5.setEndDate(date);
+        c5.setEndDate(endDate);
         c5.setTitle("Sale!");
         c5.setPostBody("This is the second post with the same title.");
         c5.setUserIdFK(33);
@@ -127,7 +128,7 @@ public class BlogPostDbDaoImplTest {
         c6.setTimeCreated(date);
         c6.setTimeEdited(date);
         c6.setStartDate(date);
-        c6.setEndDate(date);
+        c6.setEndDate(endDate);
         c6.setTitle("Sale!");
         c6.setPostBody("This is the third post with the same title.");
         c6.setUserIdFK(33);
@@ -158,7 +159,7 @@ public class BlogPostDbDaoImplTest {
      * Test of updateBlogPost method, of class BlogPostDbDaoImpl.
      */
     @Test
-    public void testUpdateBlogPost() {
+    public void testUpdateBlogPost() throws ParseException {
         dao.addBlogPost(c3);
 
         c3.setPostBody("M");
@@ -179,6 +180,9 @@ public class BlogPostDbDaoImplTest {
      */
     @Test
     public void testGetAllBlogPost() {
+
+        System.out.println(c1.getStartDate());
+        System.out.println(c1.getEndDate());
         dao.addBlogPost(c1);
         dao.addBlogPost(c2);
         dao.addBlogPost(c3);
@@ -217,9 +221,9 @@ public class BlogPostDbDaoImplTest {
 
     //simplify last test
     private void resetAndTestTitles(String newTitle,
-            BlogPost blogPost1,
-            BlogPost blogPost2,
-            BlogPost blogPost3) {
+                                    BlogPost blogPost1,
+                                    BlogPost blogPost2,
+                                    BlogPost blogPost3) {
         blogPost1.setTitle(newTitle);
         blogPost2.setTitle(newTitle);
         blogPost3.setTitle(newTitle);

@@ -24,5 +24,9 @@ public interface BlogPostDbDao {
     public BlogPostContainer getBlogPostByTitleNumber(String titleNumber);
     public List<BlogPost> getBlogPostsByTitle(String title);
     public List<BlogPostContainer> getBlogPostsByTag(String tag);
+
+    public BlogPostContainer getBlogPostByIdAdmin(int id);
+
+    public List<BlogPostContainer> getAllBlogPostsAdmin();
     
 }
