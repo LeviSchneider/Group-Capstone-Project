@@ -4,13 +4,13 @@
     <div class="well sidebar-nav">
         <div class="nav row grid span8" id="default-sidebar-list">
             <div class="well span2 tile">
-                <a href="/CMS/home">Home</a>
+                <li><a href="/CMS/home">Home</a></li>
             </div>
             <div class="well span2 tile">
-                <a href="/CMS/blog">Blog</a>
+                <li><a href="/CMS/blog">Blog</a></li>
             </div>
             <div class="well span4 tile">
-                <a href="/CMS/articles">Articles</a>
+                <li><a href="/CMS/articles">Articles</a></li>
             </div>
         </div>
         
