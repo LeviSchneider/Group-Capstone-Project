@@ -28,5 +28,9 @@ public interface BlogPostDbDao {
     public BlogPostContainer getBlogPostByIdAdmin(int id);
 
     public List<BlogPostContainer> getAllBlogPostsAdmin();
+
+    public List<BlogPostContainer> getAllBlogPostsAdminUnpublished();
+
+    public void adminQuickChangeBlogPostStatus(int id, String status);
     
 }

@@ -9,7 +9,7 @@ $(document).ready(function () {
     loadCategories();
     loadStaticPages();
     populateBlogPosts();
-
+    populateUnpublishedBlogPosts();
 });
 
 
@@ -104,13 +104,13 @@ function loadCategories(data, status) {
                                     .attr({
                                         'onclick': 'showEditCategoryField($(\'#edit-category-span' + category.categoryId + '\'))'
                                     })
-                                    .text('|Edit '))
+                                    .html('<button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>'))
 
                             .append($('<a>')
                                     .attr({
                                         'onclick': 'deleteCategory(' + category.categoryId + ')'
                                     })
-                                    .text(' |Delete'))
+                                    .html('<button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>'))
                             .append($('<span>')
                                     .attr({
                                         'id': 'edit-category-span' + category.categoryId
@@ -292,6 +292,76 @@ function populateBlogPosts(data, status) {
 //            });
         });
     });
+}
+
+function populateUnpublishedBlogPosts(data, status) {
+    var blogPanel = $('#unpublished-blog-post-display');
+    $('#unpublished-blog-post-display').empty();
+    $.ajax({
+        type: 'GET',
+        url: 'blogPostsAdminUnpublished'
+
+    }).success(function (data, status) {
+
+        $.each(data, function (index, blogPostContainer) {
+
+            //var tagList = blogPostContainer.tagContainer.tagList;
+            //var categoryList = blogPostContainer.categoryContainer.categoryList;
+
+            var statusDropDownFields = $('<select/>');
+
+            statusDropDownFields.attr({id: "post-status" + blogPostContainer.blogPost.postId,
+                name: "post-status" + blogPostContainer.blogPost.postId});
+            var options = ["DRAFT", "READY_FOR_APPROVAL", "APPROVED", "UNPUBLISHED", "PUBLISHED"];
+            for (var i in options) {
+                statusDropDownFields.append($('<option/>').html(options[i]));
+                if (options[i] === blogPostContainer.blogPost.status) {
+                    statusDropDownFields.val(options[i]);
+
+                }
+            }
+
+
+            blogPanel
+                    .append($('<div>')
+                            .addClass("panel panel-default")
+                            .append($('<div>')
+                                    .addClass('panel-heading')
+                                    .append('<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
+                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'
+                                            + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
+                                            + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'
+                                            + blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')')
+                                    .append(statusDropDownFields).attr({onchange: 'quickChangeBlogPostStatus("' + blogPostContainer.blogPost.postId + '")'}
+                            )));
+//            $.each(tagList, function (index, tag) {
+//
+//                $('#post' + blogPostContainer.blogPost.postId)
+//                        .append($('<span>')
+//                                .addClass('panel-body-blogtags')
+//                                .append(tag + " "));
+//            });
+//            $.each(categoryList, function (index, category) {
+//                $('#post' + blogPostContainer.blogPost.postId)
+//                        .append($('<span>')
+//                                .addClass('panel-body-blogcategories')
+//                                .append("(In category: " + category.categoryName + ")"));
+//            });
+        });
+    });
+}
+
+function quickChangeBlogPostStatus(postId) {
+
+
+    $.ajax({
+        type: 'PUT',
+        url: 'adminQuickChangeBlogPostStatus/' + postId + '/' + $('#post-status' + postId).val()
+
+    }).success(function () {
+        populateUnpublishedBlogPosts();
+    });
+
 }
 
 function deleteStaticPage(pageId) {
