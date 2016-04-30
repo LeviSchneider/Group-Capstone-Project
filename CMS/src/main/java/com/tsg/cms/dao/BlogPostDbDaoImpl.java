@@ -406,7 +406,7 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     public List<BlogPostContainer> getBlogPostsByTag(String tag) {
         try {
 
-            List<BlogPost> blogPostList = jdbcTemplate.query(SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME, new BlogPostMapper(), '#' + tag);
+            List<BlogPost> blogPostList = jdbcTemplate.query(SQL_SELECT_BLOGPOSTS_BY_HASHTAG_NAME, new BlogPostMapper(),  tag);
             List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
 
             for (BlogPost b : blogPostList) {

@@ -36,6 +36,18 @@
         </table>
     </div>
 
+    <div id="tagCollapsible" data-collapse="accordion persist">
+        <h3>HashTags</h3>
+
+        <table id="categoryTable" class="table table-hover">
+            <tr>
+                <th width="30%">Tag Name</th>
+                <th width="10%"></th>
+            </tr>
+            <tbody id="tag-display"></tbody>
+        </table>
+    </div>
+
     <div id="blogPostsCollapsible" data-collapse="accordion persist">
 
         <h3>Unpublished Blog Posts</h3>
@@ -51,7 +63,7 @@
     </div>
     <div id="blogPostsCollapsible" data-collapse="accordion persist">
 
-        <h3>Blog Posts</h3>
+        <h3>All Blog Posts - All Statuses</h3>
         <table id="blogPostsTable" class="table table-hover">
             <tr>
                 <th width="100%">Blog Post Title</th>
