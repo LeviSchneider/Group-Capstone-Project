@@ -5,6 +5,7 @@ $(document).ready(function () {
 function loadStaticPages(data, status) {
 
     var staticPagePanel = $('#staticPageContentRows');
+
     clearStaticPageTable();
     $.ajax({
         type: 'GET',
@@ -14,32 +15,50 @@ function loadStaticPages(data, status) {
 
         $.each(data, function (index, staticPage) {
             staticPagePanel
-                    .append($('<div>')
-                            .addClass("panel panel-default")
-                            .append('<div>')
-                            .addClass("panel-body")
-                            .append('<span>')
+                    .append($('<tr>')
+                            .append($('<td>')
+                                    .append($('<div>')
+                                            .addClass("panel panel-default")
+                                            .append('<div>')
+                                            .addClass("panel-body")
+                                            .append('<span>')
 
-                            .append($('<a>')
-                                    .attr({
-                                        'href': '/CMS/pagelink/' + staticPage.titleNumber
-                                    }).text(staticPage.title))
+                                            .append($('<a>')
+                                                    .attr({
+                                                        'href': '/CMS/pagelink/' + staticPage.titleNumber
+                                                    }).text(staticPage.title))
 
-                            .append($('<a>')
-                                    .attr({
-                                        'onclick': 'editStaticPage(' + staticPage.pageId + ')'
-                                    })
-                                    .text(' |Edit'))
 
-                            .append($('<a>')
-                                    .attr({
-                                        'onclick': 'deleteStaticPage(' + staticPage.pageId + ')'
-                                    })
-                                    .text(' |Delete'))
 
-                            );
+                                            ))
+
+
+                            .append($('<td>')
+                                    .append($('<div>')
+                                            .addClass("panel panel-default")
+                                            .append('<div>')
+                                            .addClass("panel-body")
+                                            .append('<span id="category' + staticPage.pageId + '">')
+
+                                            )
+                                    ));
+                            
+            if (staticPage.categoryIdFK) {
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/CMS/category/' + staticPage.categoryIdFK
+
+                }).success(function (category, status) {
+
+
+                    $('#category' + staticPage.pageId).text(category.categoryName);
+
+                });
+
+            }
         });
-        
+
     });
 
 }
@@ -48,3 +67,4 @@ function loadStaticPages(data, status) {
 function clearStaticPageTable() {
     $('#staticPageContentRows').empty();
 }
+

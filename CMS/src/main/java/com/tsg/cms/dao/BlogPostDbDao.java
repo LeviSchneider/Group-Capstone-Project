@@ -18,11 +18,19 @@ public interface BlogPostDbDao {
     public BlogPostContainer addBlogPost(BlogPost blogPost);
     public void removeBlogPost(Integer postId);
     public BlogPostContainer updateBlogPost(BlogPost blogPost);
-    public List<BlogPostContainer> getAllBlogPosts();
+    public List<BlogPostContainer> getAllBlogPosts(int startIndex);
     public BlogPostContainer getBlogPostById(Integer postId);
     public List<BlogPostContainer> searchBlogPosts(Map<SearchTerm, String> criteria);
     public BlogPostContainer getBlogPostByTitleNumber(String titleNumber);
     public List<BlogPost> getBlogPostsByTitle(String title);
     public List<BlogPostContainer> getBlogPostsByTag(String tag);
+
+    public BlogPostContainer getBlogPostByIdAdmin(int id);
+
+    public List<BlogPostContainer> getAllBlogPostsAdmin();
+
+    public List<BlogPostContainer> getAllBlogPostsAdminUnpublished();
+
+    public void adminQuickChangeBlogPostStatus(int id, String status);
     
 }

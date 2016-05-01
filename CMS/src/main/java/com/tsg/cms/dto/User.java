@@ -13,8 +13,7 @@ import java.util.Objects;
  */
 public class User {
     private String displayName;
-    private String passwordSalt;
-    private String passwordHash;
+    private String password;
     private String siteRole;
     private String userName;
     private int userId;
@@ -23,8 +22,7 @@ public class User {
     public int hashCode() {
         int hash = 7;
         hash = 59 * hash + Objects.hashCode(this.displayName);
-        hash = 59 * hash + Objects.hashCode(this.passwordSalt);
-        hash = 59 * hash + Objects.hashCode(this.passwordHash);
+        hash = 59 * hash + Objects.hashCode(this.password);
         hash = 59 * hash + Objects.hashCode(this.siteRole);
         hash = 59 * hash + Objects.hashCode(this.userName);
         hash = 59 * hash + this.userId;
@@ -49,10 +47,7 @@ public class User {
         if (!Objects.equals(this.displayName, other.displayName)) {
             return false;
         }
-        if (!Objects.equals(this.passwordSalt, other.passwordSalt)) {
-            return false;
-        }
-        if (!Objects.equals(this.passwordHash, other.passwordHash)) {
+        if (!Objects.equals(this.password, other.password)) {
             return false;
         }
         if (!Objects.equals(this.siteRole, other.siteRole)) {
@@ -72,20 +67,12 @@ public class User {
         this.displayName = displayName;
     }
 
-    public String getPasswordSalt() {
-        return passwordSalt;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getSiteRole() {

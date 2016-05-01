@@ -1,4 +1,7 @@
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 <script type="text/javascript">
     tinymce.init({
@@ -22,9 +25,9 @@
 
 
 <form>
-    <input type="hidden" id="staticpage-to-edit-id" value="${editBlogPostId}"/>
+    <input type="hidden" id="staticpage-to-edit-id" value="${editStaticPageId}"/>
     <select id="categories" name="categories">
-        <option value="none">Choose Existing Category</option>
+        <option value="-1">Choose Existing Category</option>
     </select>
 
     <input id="add-category" type="text" placeholder="Add a NEW category...">
@@ -36,11 +39,14 @@
     <textarea id="htmlOutput"></textarea>
 
     <select id="staticpage-status" name="staticpage-status">
-        <option value="DRAFT">Draft</option>
-        <option value="READY_FOR_APPROVAL">Pending</option>
-        <option value="APPROVED">Unpublished</option>
-        <option value="UNPUBLISHED">Unpublished</option>
-        <option value="PUBLISHED">Published</option>
+        <option value="DRAFT">DRAFT</option>
+        <option value="READY_FOR_APPROVAL">READY_FOR_APPROVAL</option>
+
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <option value="APPROVED">APPROVED</option>
+            <option value="UNPUBLISHED">UNPUBLISHED</option>
+            <option value="PUBLISHED">PUBLISHED</option>
+        </sec:authorize>
     </select>
     <button id="tiny-save" type="button">Save</button>
     <input type="hidden" id="tiny-staticpage-id"/>

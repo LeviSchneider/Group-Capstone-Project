@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.tsg.cms;
+package com.tsg.cms.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class HashTagMatcher {
     public List<String> findHashTags(String post) {
         List<String> matches = new ArrayList<>();
         
-        Matcher hashTagMatcher = Pattern.compile("#\\w+").matcher(post);
+        Matcher hashTagMatcher = Pattern.compile("#\\w{1,34}").matcher(post);
         while (hashTagMatcher.find()) {
             matches.add(hashTagMatcher.group());
         }

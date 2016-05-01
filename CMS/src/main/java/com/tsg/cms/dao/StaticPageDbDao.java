@@ -5,6 +5,7 @@
  */
 package com.tsg.cms.dao;
 
+import com.tsg.cms.dto.SideBarLink;
 import com.tsg.cms.dto.StaticPage;
 import com.tsg.cms.dto.StaticPageContainer;
 import java.util.List;
@@ -32,4 +33,13 @@ public interface StaticPageDbDao {
 
     public List<StaticPage> getStaticPageByTitle(String title);
 
+    public List<SideBarLink> getNavBarPages();
+    
+    public void updatePageNavBarPosition(int pageId, int position);
+
+    public String getHomePageLink();
+
+    public List<StaticPage> getAllStaticPagesAdminUnpublished();
+
+    public void adminQuickChangeStaticPageStatus(int id, String status);
 }

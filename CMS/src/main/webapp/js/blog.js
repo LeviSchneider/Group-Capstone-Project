@@ -5,18 +5,28 @@
  */
 
 
-
+var limit = 0;
+var amount = 10;
 $(document).ready(function () {
 
-    populateBlogPosts();
+    populateBlogPosts(limit);
+    $(window).scroll(function () {
+        if ($(window).scrollTop() === $(document).height() - $(window).height()) {
+            limit = limit + amount;
+            populateBlogPosts(limit);
+        }
+    });
+
 });
 
 
-function populateBlogPosts(data, status) {
+function populateBlogPosts(limit) {
+
+
     var blogPanel = $('#blog-post-display');
     $.ajax({
         type: 'GET',
-        url: 'blogPosts'
+        url: 'blogPosts/' + limit
 
     }).success(function (data, status) {
 
@@ -24,21 +34,22 @@ function populateBlogPosts(data, status) {
 
             var tagList = blogPostContainer.tagContainer.tagList;
             //var categoryList = blogPostContainer.categoryContainer.categoryList;
+            var readMoreLink = "";
+            if ((blogPostContainer.blogPost.postBody).length === 400) {
 
+                readMoreLink = '<br/><br/><a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '">Read More...</a>';
+            }
             blogPanel
                     .append($('<div>')
                             .addClass("panel panel-default")
                             .append($('<div>')
                                     .addClass('panel-heading')
-                                    .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.dateSubmitted + ')'
-                                            + ' (Status: ' + blogPostContainer.blogPost.status + ')'
-                                            + '<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
-                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'
+                                    .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')'
                                             + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
                                             + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'))
                             .append($('<div>')
-                                    .addClass('panel-body')
-                                    .append(blogPostContainer.blogPost.postBody))
+                                    .addClass('panel-body')        
+                                    .append(blogPostContainer.blogPost.postBody + readMoreLink))
                             .append($('<div>')
                                     .addClass('panel-footer')
                                     .attr({'id': 'post' + blogPostContainer.blogPost.postId})
@@ -60,4 +71,3 @@ function populateBlogPosts(data, status) {
     });
 
 }
-

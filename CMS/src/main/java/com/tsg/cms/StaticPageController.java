@@ -7,12 +7,9 @@ package com.tsg.cms;
 
 import com.tsg.cms.dao.CategoryDbDao;
 import com.tsg.cms.dao.StaticPageDbDao;
-import com.tsg.cms.dao.TagDbDao;
-import com.tsg.cms.dto.CategoryContainer;
+import com.tsg.cms.dao.Status;
+import com.tsg.cms.dto.SideBarLink;
 import com.tsg.cms.dto.StaticPage;
-import com.tsg.cms.dto.StaticPageContainer;
-import com.tsg.cms.dto.TagContainer;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -54,6 +51,13 @@ public class StaticPageController {
     @ResponseBody
     public StaticPage createStaticPage(@RequestBody StaticPage staticPage) {
 
+        if (staticPage.getCategoryIdFK() == -1) {
+            staticPage.setCategoryIdFK(null);
+        }
+        if (staticPage.getStatus() == null) {
+            staticPage.setStatus(Status.DRAFT);
+        }
+
         staticPage.setUserIdFK(999);
         return staticPageDao.addStaticPage(staticPage);
 
@@ -65,11 +69,17 @@ public class StaticPageController {
         staticPageDao.removeStaticPage(id);
     }
 
-    @RequestMapping(value = "/staticPage/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/staticPage/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public StaticPage updateStaticPage(@PathVariable("id") int id, @RequestBody StaticPage staticPage) {
 
+        if (staticPage.getCategoryIdFK() == -1) {
+            staticPage.setCategoryIdFK(null);
+        }
+        if (staticPage.getStatus() == null) {
+            staticPage.setStatus(Status.DRAFT);
+        }
         staticPage.setPageId(id);
         staticPageDao.updateStaticPage(staticPage);
         return staticPage;
@@ -123,4 +133,38 @@ public class StaticPageController {
         return "home";
     }
 
+    @RequestMapping(value = "/staticPage/{id}/{position}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void updatePageSideBarPosition(@PathVariable("id") int id, @PathVariable("position") int position, Map<String, Object> model, HttpSession session) {
+
+        //can use position 0 to remove staticPage from sideBar
+        staticPageDao.updatePageNavBarPosition(id, position);
+
+    }
+
+    @RequestMapping(value = {"/sideBarLinks"}, method = RequestMethod.GET)
+    @ResponseBody
+    public List<SideBarLink> getSideBarLinks() {
+
+        return staticPageDao.getNavBarPages();
+
+    }
+
+    
+    @RequestMapping(value = "/staticPagesAdminUnpublished", method = RequestMethod.GET)
+    @ResponseBody
+    public List<StaticPage> getAllStaticPagesAdminUnpublished() {
+
+        return staticPageDao.getAllStaticPagesAdminUnpublished();
+
+    }
+    
+    @RequestMapping(value = "/adminQuickChangeStaticPageStatus/{id}/{status}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void adminQuickChangeStaticPageStatus(@PathVariable("id") int id, @PathVariable("status") String status) {
+
+        staticPageDao.adminQuickChangeStaticPageStatus(id, status);
+
+    }   
 }

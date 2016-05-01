@@ -6,7 +6,7 @@
 var validationError = "";
 
 $(document).ready(function () {
-    loadCategories();
+
 
 
     if ($('#post-to-edit-id').val().length !== 0) {
@@ -32,10 +32,19 @@ $(document).ready(function () {
     $('#tiny-publish').click(function (event) {
 
         event.preventDefault();
-        
+
         $('#post-status').val('PUBLISHED');
-  
-        createPost();
+
+        if ($('#post-status').val()) {
+
+            createPost();
+
+        } else {
+
+            $('#post-status').val('DRAFT');
+            createPost();
+
+        } 
 
         window.location = '/CMS/blog';
     });
@@ -57,19 +66,18 @@ function createPost() {
         putOrPost = 'PUT';
         url = '/CMS/blogPost/' + postId;
     }
-    
+
     $.ajax({
-        
         type: putOrPost,
         url: url,
         data: JSON.stringify({
-            dateSubmitted: '2016-12-28',
+            timeCreated: "2016-04-27",
+            timeEdited: "2016-04-27",
             startDate: $('#start-date').val(),
             endDate: $('#end-date').val(),
             title: $('#post-title').val(),
             postBody: tinyMCE.activeEditor.getContent(),
-            status: $('#post-status').val(),
-            postType: 'blogPost'
+            status: $('#post-status').val()
         }),
         headers: {
             'Accept': 'application/json',
@@ -100,60 +108,12 @@ function createPost() {
     });
 }
 
-function loadCategories() {
-    var contentDiv = $('#categories');
-    $.ajax({
-        type: 'GET',
-        url: '/CMS/categories'
-    }).success(function (data, status) {
-
-        $.each(data, function (index, category) {
-
-            contentDiv
-                    .append($('<option>')
-                            .attr({'value': category.categoryId})
-                            .text(category.categoryName));
-        });
-    });
-}
-
-function addCategoryButton() {
-    event.preventDefault();
-    $.ajax({
-        type: 'POST',
-        url: '/CMS/category',
-        data: JSON.stringify({
-            categoryName: $('#add-category').val()
-        }),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        'dataType': 'json'
-    }).success(function (data, status) {
-        $('#add-category').val('');
-        var contentDiv = $('#categories');
-        var categoryIdForDropDown;
-        contentDiv
-                .append($('<option>')
-                        .attr({'value': data.category.categoryId})
-                        .text(data.category.categoryName));
-        categoryIdForDropDown = data.category.categoryId;
-        $('#categories').effect("highlight");
-        $('#categories').val(categoryIdForDropDown);
-    }).error(function (data, status) {
-        $.each(data.responseJSON.fieldErrors, function (index, validationError) {
-
-            alert(validationError.message);
-        });
-    });
-}
 
 function populateEditPostData() {
 
     $.ajax({
         type: 'GET',
-        url: '/CMS/blogPost/' + $('#post-to-edit-id').val()
+        url: '/CMS/blogPostAdmin/' + $('#post-to-edit-id').val()
 
     }).success(function (blogPostContainer, status) {
 
@@ -164,9 +124,6 @@ function populateEditPostData() {
         $('#tiny-blogpost-id').val(blogPostContainer.blogPost.postId);
         $('select[name="post-status"]').find('option:contains("' + blogPostContainer.blogPost.status + '")').attr("selected", true);
 
-        if (blogPostContainer.categoryContainer.categoryList.length !== 0) {
-            $('select[name="categories"]').find('option:contains("' + blogPostContainer.categoryContainer.categoryList[0].categoryName + '")').attr("selected", true);
-        }
     });
 
 

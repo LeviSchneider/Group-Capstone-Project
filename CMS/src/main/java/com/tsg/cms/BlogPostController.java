@@ -21,7 +21,6 @@ import com.tsg.cms.dao.BlogPostDbDao;
 import com.tsg.cms.dto.BlogPostContainer;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -49,6 +48,14 @@ public class BlogPostController {
 
     }
 
+    @RequestMapping(value = "/blogPostAdmin/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public BlogPostContainer getBlogPostAdmin(@PathVariable("id") int id) {
+
+        return blogPostDao.getBlogPostByIdAdmin(id);
+
+    }
+
     @RequestMapping(value = "/blogPost", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -65,7 +72,7 @@ public class BlogPostController {
         blogPostDao.removeBlogPost(id);
     }
 
-    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/blogPost/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public BlogPostContainer updateBlogPost(@PathVariable("id") int id, @RequestBody BlogPost blogPost) {
@@ -75,11 +82,19 @@ public class BlogPostController {
 
     }
 
-    @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
+    @RequestMapping(value = "/blogPosts/{startIndex}", method = RequestMethod.GET)
     @ResponseBody
-    public List<BlogPostContainer> getAllBlogPost() {
+    public List<BlogPostContainer> getAllBlogPosts(@PathVariable("startIndex") int startIndex) {
 
-        return blogPostDao.getAllBlogPosts();
+        return blogPostDao.getAllBlogPosts(startIndex);
+
+    }
+
+    @RequestMapping(value = "/blogPostsAdmin", method = RequestMethod.GET)
+    @ResponseBody
+    public List<BlogPostContainer> getAllBlogPostsAdmin() {
+
+        return blogPostDao.getAllBlogPostsAdmin();
 
     }
 
@@ -102,4 +117,20 @@ public class BlogPostController {
 
     }
 
+    @RequestMapping(value = "/blogPostsAdminUnpublished", method = RequestMethod.GET)
+    @ResponseBody
+    public List<BlogPostContainer> getAllBlogPostsAdminUnpublished() {
+
+        return blogPostDao.getAllBlogPostsAdminUnpublished();
+
+    }
+    
+    @RequestMapping(value = "/adminQuickChangeBlogPostStatus/{id}/{status}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void adminQuickChangeBlogPostStatus(@PathVariable("id") int id, @PathVariable("status") String status) {
+
+        blogPostDao.adminQuickChangeBlogPostStatus(id, status);
+
+    }   
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import com.tsg.cms.dao.CategoryDbDao;
+import com.tsg.cms.dao.StaticPageDbDao;
 import javax.validation.Valid;
 
 /**
@@ -31,11 +32,13 @@ import javax.validation.Valid;
 public class CategoryController {
 
     private final CategoryDbDao dao;
-  
+    private final StaticPageDbDao staticPageDao;
 
     @Inject
-    public CategoryController(CategoryDbDao dao) {
+    public CategoryController(CategoryDbDao dao, StaticPageDbDao staticPageDao) {
+        
         this.dao = dao;
+        this.staticPageDao = staticPageDao;
         
     }
 
@@ -83,16 +86,16 @@ public class CategoryController {
         return dao.getAllCategories();
     }
     
-    @RequestMapping(value = "/category/{postId}", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public CategoryContainer putCategoryPost(@PathVariable("postId") int postId, @RequestBody Category category) {
-
-        CategoryContainer categoryContainer = new CategoryContainer();
-
-        //dao.addCategoryAndPostToBridge(category, postId);
-
-        return categoryContainer;
-
-    } 
+//    @RequestMapping(value = "/category/{postId}", method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public CategoryContainer putCategoryPost(@PathVariable("postId") int postId, @RequestBody Category category) {
+//
+//        CategoryContainer categoryContainer = new CategoryContainer();
+//
+//        staticPageDao.updatePageCategory(postId, category.getCategoryId());
+//       
+//        return categoryContainer;
+//
+//    } 
 }

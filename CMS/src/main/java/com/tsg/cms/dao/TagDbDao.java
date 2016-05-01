@@ -16,6 +16,7 @@ import java.util.Map;
 public interface TagDbDao {
     public String addTag(String tag, int postId);
     public void removeTag(String tag);
+    public void removeTagByPostId(int postId);
     public String updateTag(String newTag, String oldTag);
     //public List<String> getRelatedTags(String categories);
     public List<String> getPostTags(int postId);

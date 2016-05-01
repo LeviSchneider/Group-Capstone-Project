@@ -43,7 +43,11 @@
     <bean id="TagDbDao" class="com.tsg.cms.dao.TagDbDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
-    
+        
+    <bean id="UserDbDao" class="com.tsg.cms.dao.UserDbDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+  
     <bean id="BlogPostDbDao" class="com.tsg.cms.dao.BlogPostDbDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
         <constructor-arg ref="TagDbDao"/>
@@ -53,10 +57,6 @@
     <bean id="StaticPageDbDao" class="com.tsg.cms.dao.StaticPageDbDaoImpl">
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
-    
-    <bean id="SideBarLinksDbDao" class="com.tsg.cms.dao.SideBarLinksDbDaoImpl">
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
                 
-    <bean id="HashTagMatcher" class="com.tsg.cms.HashTagMatcher"/>    
+    <bean id="HashTagMatcher" class="com.tsg.cms.dao.HashTagMatcher"/>    
 </beans>

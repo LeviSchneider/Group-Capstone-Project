@@ -15,19 +15,26 @@
 
     $(document).ready(function () {
         loadTags();
-        //loadSideBarItems();
+        loadSideBarItems();
 
-        $('[data-toggle=offcanvas]').click(function () {
-            $('.row-offcanvas').toggleClass('active');
+        $('#toggle-left').click(function () {
+            if (!$('.row-offcanvas-left').hasClass('active')) {
+                $('.row-offcanvas-left').addClass('active');
+                $('.row-offcanvas-right').removeClass('active');
+                $('#toggle-left').addClass('active');
+            } else {
+                $('.row-offcanvas-left').removeClass('active');
+            }
         });
-        $('[data-toggle=offcanvas]').click(function () {
-            $('.row-offcanvas-left').toggleClass('active');
+        $('#toggle-right').click(function () {
+            if (!$('.row-offcanvas-right').hasClass('active')) {
+                $('.row-offcanvas-right').addClass('active');
+                $('.row-offcanvas-left').removeClass('active');
+                $('#toggle-right').addClass('active');
+            } else {
+                $('.row-offcanvas-right').removeClass('active');
+            }
         });
-
-        $('[data-toggle=offcanvasright]').click(function () {
-            $('.row-offcanvas-right').toggleClass('active');
-        });
-
 
         $('#click-me').click(function () {
 
@@ -43,7 +50,7 @@
         var counter = 0;
         $.ajax({
             type: 'GET',
-            url: '${pageContext.request.contextPath}/tags/10'
+            url: '${pageContext.request.contextPath}/tags/20'
         }).success(function (data, status) {
             $.each(data, function (index, tagMap) {
                 if (counter === 2)
@@ -55,7 +62,7 @@
                             tagString += "<a style='font-size:75%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
-                        } else if (tagMap[key] <= 3) {
+                        } else if (tagMap[key] <= 7) {
                             tagString += "<a style='font-size:121%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
@@ -66,29 +73,9 @@
                         }
                     }
 
-                    tagCloud.addClass("panel panel-default")
-                            .append('<div>')
-                            .addClass("panel-body")
-                            .append(tagString)
-                            .append($('<div>'));
+                    tagCloud.append(tagString);
                 }
                 counter++;
-            });
-        });
-    }
-
-    function readMap() {
-        $.ajax({
-            type: 'GET',
-            url: 'tag/3'
-        }).success(function (data, tagMap) {
-            var tagRanking = [];
-            for (var key in tag.rankedTags)
-            {
-                tagRanking.push(tag.rankedTags[key] + " :" + key);
-            }
-            $.each(tagRanking, function (index, tag) {
-                $.append();
             });
         });
     }
@@ -118,6 +105,7 @@
     }
 
     function populatedTagPosts(data) {
+
         clearPopulatedPosts();
         var blogPanel = $('#blog-post-display');
         $.ajax({
@@ -127,7 +115,6 @@
             $.each(data, function (index, blogPostContainer) {
 
                 var tagList = blogPostContainer.tagContainer.tagList;
-                var categoryList = blogPostContainer.categoryContainer.categoryList;
 
                 blogPanel
                         .append($('<div>')
@@ -154,37 +141,91 @@
                                     .addClass('panel-body-blogtags')
                                     .append(tag + " "));
                 });
-                $.each(categoryList, function (index, category) {
-                    $('#post' + blogPostContainer.blogPost.postId)
-                            .append($('<span>')
-                                    .addClass('panel-body-blogcategories')
-                                    .append("(In category: " + category.categoryName + ")"));
-                });
             });
         });
     }
     ;
 
-//
-//    function loadSideBarItems() {
-//
-//        var sideBar = $('#sidebar-list');
-//
-//        $.ajax({
-//            type: 'GET',
-//            url: '/CMS/sideBarLinks'
-//
-//        }).success(function (data, status) {
-//
-//            $.each(data, function (index, sideBarLink) {
-//
-//                
-//                sideBar.append($('<li>')
-//                        .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
-//                        );
-//            });
-//
-//        });
-//
-//    }
+    function loadSideBarItems() {
+
+        $('#custom-sidebar-list').empty();
+        var sideBar = $('#custom-sidebar-list');
+        var row = "";
+        var counter = 0;
+        $.ajax({
+            type: 'GET',
+            url: '/CMS/sideBarLinks'
+
+        }).success(function (data, status) {
+            $('#custom-sidebar-list').val(data.length);
+            $.each(data, function (index, sideBar) {
+
+                if (counter !== sideBar.length) {
+                    row += "<div class='well-sm span2'>";
+                    row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "<input id='sideBarPosition" + sideBar.sideBarLinkUrl + "' type='hidden' value='" + sideBar.sideBarLinkPosition + "'/></div>";
+                } else if (counter === sideBar.length) {
+                    row += "<div class='well-sm span4'>";
+                    row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "</div>";
+                }
+                counter++;
+            });
+            sideBar.append(row);
+        });
+    }
+    /*
+     function loadSideBarItems() {
+     
+     $('#custom-sidebar-list').empty();
+     var sideBar = $('#custom-sidebar-list');
+     
+     $.ajax({
+     type: 'GET',
+     url: '/CMS/sideBarLinks'
+     
+     }).success(function (data, status) {
+     $('#custom-sidebar-list').val(data.length);
+     $.each(data, function (index, sideBarLink) {
+     
+     //nextNavBarId++;
+     sideBar.append($('<li>')
+     .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
+     );
+     });
+     
+     });
+     
+     }*/
+
+var sideBarPositionList = [];
+var sideBarUrlList = [];
+
+
+
+    $(function () {
+        $(".droppable").sortable({
+            tolerance: 'pointer',
+            revert: 'invalid',
+            placeholder: 'span2 well placeholder tile',
+            forceHelperSize: true,
+            update: function (event, ui) {
+                Dropped();
+            }
+        });
+    });
+
+    function Dropped(event, ui) {
+        sideBarPositionList = [];
+        sideBarUrlList = [];
+        $(".droppable").children().each(function () {
+            //var p = $(this).position();
+            sideBarPositionList[sideBarPositionList.length] = $(this).find('input').val();
+            sideBarUrlList[sideBarUrlList.length] = $(this).find('a').html();
+        });
+       
+      // ajax post to /sideBarLinks/{positionList}/{sideBarUrlList}
+       
+        refresh();
+    }
 </script>

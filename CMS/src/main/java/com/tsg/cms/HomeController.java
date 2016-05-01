@@ -5,7 +5,9 @@
  */
 package com.tsg.cms;
 
+import com.tsg.cms.dao.StaticPageDbDao;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -21,14 +23,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 
+    private final StaticPageDbDao staticPageDao;
+
+    @Inject
+    public HomeController(StaticPageDbDao staticPageDao) {
+
+        this.staticPageDao = staticPageDao;
+
+    }
+
     //we are including HttpSession here so we can set variables across the entire user 
     //session, without having to pass them between models over and over
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String displayHomePage(Model model, HttpSession session) {
 
-        session.setAttribute("page", "blog");
-        session.setAttribute("js_page", "blog.js");
-        return "home";
+        String homePage = staticPageDao.getHomePageLink();
+        if (homePage == null) {
+
+            session.setAttribute("page", "blog");
+
+            session.setAttribute("js_page", "blog.js");
+            return "home";
+
+        } else {
+
+            return "redirect:/pagelink/" + homePage;
+        }
 
     }
 
@@ -37,22 +57,22 @@ public class HomeController {
 
         session.setAttribute("page", "blog");
         session.setAttribute("js_page", "blog.js");
-        
+
         return "home";
     }
-    
+
     @RequestMapping(value = "/articles", method = RequestMethod.GET)
     public String showArticles(Map<String, Object> model, HttpSession session) {
 
         session.setAttribute("page", "articles");
         session.setAttribute("js_page", "articles.js");
-        
+
         return "home";
     }
-    
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String showAdminPage(HttpServletRequest req, Model model, HttpSession session) {
-       
+
         String htmlOutput = req.getParameter("htmlOutput");
         model.addAttribute("htmlOutput", htmlOutput);
         session.setAttribute("page", "admin");
@@ -60,7 +80,7 @@ public class HomeController {
 
         return "home";
     }
-    
+
     @RequestMapping(value = "/tinymce", method = RequestMethod.GET)
     public String showEditor(Map<String, Object> model, HttpSession session) {
 
@@ -75,8 +95,16 @@ public class HomeController {
         session.setAttribute("page", "tinymce");
         session.setAttribute("js_page", "tinymce.js");
         model.put("editBlogPostId", id);
-        
+
         return "home";
     }
-    
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String showLoginPage(Map<String, Object> model, HttpSession session) {
+
+        session.setAttribute("page", "login");
+        session.setAttribute("js_page", "login.js");
+
+        return "home";
+    }
 }
