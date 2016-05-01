@@ -55,7 +55,7 @@
                             tagString += "<a style='font-size:75%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
-                        } else if (tagMap[key] <= 3) {
+                        } else if (tagMap[key] <= 7) {
                             tagString += "<a style='font-size:121%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
@@ -127,10 +127,6 @@
                                         .addClass('panel-footer')
                                         .attr({'id': 'post' + blogPostContainer.blogPost.postId})
                                         ));
-                //$('#post' + blogPostContainer.blogPost.postId)
-                //        .append($('<span>')
-                //                .addClass('panel-body-blogcategories')
-                //                .append("(In category: " + blogPostContainer.blogPost. + ")"));
                 $.each(tagList, function (index, tag) {
 
                     $('#post' + blogPostContainer.blogPost.postId)
@@ -143,27 +139,64 @@
     }
     ;
 
-
     function loadSideBarItems() {
 
         $('#custom-sidebar-list').empty();
         var sideBar = $('#custom-sidebar-list');
-
+        var row = "";
+        var counter = 0;
         $.ajax({
             type: 'GET',
             url: '/CMS/sideBarLinks'
 
         }).success(function (data, status) {
             $('#custom-sidebar-list').val(data.length);
-            $.each(data, function (index, sideBarLink) {
+            $.each(data, function (index, sideBar) {
 
-                //nextNavBarId++;
-                sideBar.append($('<li>')
-                        .append('<a href="/CMS/pagelink/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
-                        );
+                if (counter !== sideBar.length) {
+                    row += "<div class='well-sm span2'>";
+                    row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "</div>";
+                } else if (counter === sideBar.length) {
+                    row += "<div class='well-sm span4'>";
+                    row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "</div>";
+                }
+                counter++;
             });
-
+            sideBar.append(row);
         });
-
     }
+    /*
+     function loadSideBarItems() {
+     
+     $('#custom-sidebar-list').empty();
+     var sideBar = $('#custom-sidebar-list');
+     
+     $.ajax({
+     type: 'GET',
+     url: '/CMS/sideBarLinks'
+     
+     }).success(function (data, status) {
+     $('#custom-sidebar-list').val(data.length);
+     $.each(data, function (index, sideBarLink) {
+     
+     //nextNavBarId++;
+     sideBar.append($('<li>')
+     .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
+     );
+     });
+     
+     });
+     
+     }*/
+
+    $(function () {
+        $(".grid").sortable({
+            tolerance: 'pointer',
+            revert: 'invalid',
+            placeholder: 'span2 well placeholder tile',
+            forceHelperSize: true
+        });
+    });
 </script>

@@ -29,10 +29,21 @@ footer {
     word-wrap: break-word;
 }
 
+.placeholder {
+    border: 1px solid green;
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 10px #888;
+    -moz-box-shadow: 0px 0px 10px #888;
+    box-shadow: 0px 0px 10px #888;
+}
+.tile {
+    height: 10px;
+}
+.grid {
+    margin-top: 1em;
 .panel-body {
     white-space: normal;
     word-wrap: break-word;
-
 }
 
 /*
