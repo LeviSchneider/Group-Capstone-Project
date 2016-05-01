@@ -24,7 +24,6 @@
         <button onclick="addCategoryButton()" class="btn btn-primary">Submit</button>
     </form><br/><br/><br/>
 
-<<<<<<< HEAD
     <sec:authorize access="hasRole('ROLE_ADMIN')">
 
         <div id="categoryCollapsible" data-collapse="accordion persist">
@@ -53,7 +52,7 @@
             </table>
         </div>
     </sec:authorize>
-=======
+
     <div id="categoryCollapsible" data-collapse="accordion persist">
         <h3>Categories</h3>
 
@@ -78,7 +77,6 @@
             <tbody id="tag-display"></tbody>
         </table>
     </div>
->>>>>>> f071af5a9b3d898b9a66cb9860938566469d5eea
 
     <div id="blogPostsCollapsible" data-collapse="accordion persist">
 

@@ -34,9 +34,6 @@ $(document).ready(function () {
         event.preventDefault();
 
 
-
-        createStaticPage();
-
         $('#staticpage-status').val('PUBLISHED');
 
         if ($('#staticpage-status').val()) {
