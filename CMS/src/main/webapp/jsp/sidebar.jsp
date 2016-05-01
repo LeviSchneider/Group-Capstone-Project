@@ -6,63 +6,48 @@
         <div class="nav grid span8" id="default-sidebar-list">
 
             <div class="well-sm span2">
-                <a href="/CMS/home">Home</a>
+                <a href="/CMS/home" id="position1" value="1">Home</a>
             </div>
             <div class="well-sm span2">
-                <a href="/CMS/blog">Blog</a>
+                <a href="/CMS/blog" id="position2" value="2">Blog</a>
             </div>
             <div class="well-sm span4">
-                <a href="/CMS/articles">Articles</a>
+                <a href="/CMS/articles" id="position3" value="3">Articles</a>
             </div>
         </div>
         <h4>Blog Page</h4>
         <div class="nav grid span8" id="custom-sidebar-list"></div>
         <h4>Admin</h4>
         <div class="nav grid span8" id="admin-sidebar-list">
-                <a href="/CMS/admin">Admin</a>
-            </div>
-            <div class="well-sm span2">
-                <a href="/CMS/tinymce">Create Blog Entry</a>
-            </div>
-            <div class="well-sm span4">
-                <a href="/CMS/pageTinyMCE">Create Article</a>
-            </div>
-        </div>
-            </li>
-            
-            <!-- uncomment this to lock down the sidebar -->
-            <!--
             <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <li>
-                    <a href="/CMS/admin">Admin</a>
-                </li>
+                <div class="well-sm span2">
+                    <a href="/CMS/admin" id="adminPosition1" value="1">Admin</a>
+                </div>
             </sec:authorize>
 
             <sec:authorize access="hasRole('ROLE_EDITOR')">
-                <li>
-                    <a href="/CMS/tinymce">Create Blog Entry</a>
-                </li>
-                <li>
-                    <a href="/CMS/pageTinyMCE">Create Article</a>
-                </li>
+                <div class="well-sm span2">
+                    <a href="/CMS/tinymce" id="adminPosition2" value="2">Create Blog Entry</a>
+                </div>
+                <div class="well-sm span2">
+                    <a href="/CMS/pageTinyMCE" id="adminPosition3" value="3">Create Article</a>
+                </div>
             </sec:authorize>
 
             <sec:authorize access="isAuthenticated()">
-                <li>
-                    <a href="${pageContext.request.contextPath}/j_spring_security_logout">
+                <div class="well-sm span2">
+                    <a href="${pageContext.request.contextPath}/j_spring_security_logout" id="adminPosition4" value="4">
                         Log Out
                     </a>
-                </li>
+                </div>
             </sec:authorize>
 
             <sec:authorize access="isAnonymous()">
-                <li>
-                    <a href="/CMS/login">Login</a>
-                </li>
-
+                <div class="well-sm span4">
+                    <a href="/CMS/login" id="adminPosition5" value="5">Login</a>
+                </div>
             </sec:authorize>
-            -->
-        </ul>
+        </div>
     </div>
 </div>
 

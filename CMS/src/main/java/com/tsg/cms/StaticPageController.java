@@ -86,6 +86,17 @@ public class StaticPageController {
         return staticPages;
 
     }
+    
+    @RequestMapping(value = "/staticPageOrder/{id}", method=RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public List<StaticPage> updatePageOrder(@PathVariable("id") int id, @RequestBody StaticPage staticPage)
+    {
+        staticPage.setSideBarPosition(id);
+        staticPageDao.updateStaticPage(staticPage);
+        
+        return staticPageDao.getAllStaticPages();
+    }
 
     @RequestMapping(value = "/pageTinyMCE", method = RequestMethod.GET)
     public String showEditor(Map<String, Object> model, HttpSession session) {
