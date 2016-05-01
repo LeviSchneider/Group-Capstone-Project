@@ -18,9 +18,9 @@
         <div class="nav grid span8" id="custom-sidebar-list"></div>
         <h4>Admin</h4>
         <div class="nav grid span8" id="admin-sidebar-list">
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <sec:authorize access="hasRole('ROLE_EDITOR')">
                 <div class="well-sm span2">
-                    <a href="/CMS/admin">Admin</a>
+                    <a href="/CMS/admin">Tools</a>
                 </div>
             </sec:authorize>
 

@@ -50,7 +50,10 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             = "update staticPages set sideBarPosition = ? where pageId = ?";
     private static final String SQL_SELECT_HOMEPAGE_LINK
             = "SELECT titleNumber FROM `staticPages` WHERE `title` = 'Home' OR `title` = 'home'";
-
+    private static final String SQL_QUICK_PUBLISH_STATICPAGE
+            = "update staticPages set status = ? where pageId = ?";
+    private static final String SQL_SELECT_STATICPAGE_BY_ID_ADMIN_UNPUBLISHED
+            = "select * from staticPages WHERE `status` != 'PUBLISHED' ORDER BY pageId DESC";
     
     private JdbcTemplate jdbcTemplate;
 
@@ -188,6 +191,20 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<StaticPage> getAllStaticPagesAdminUnpublished() {
+
+        return jdbcTemplate.query(SQL_SELECT_STATICPAGE_BY_ID_ADMIN_UNPUBLISHED, new StaticPageMapper());
+
+    }
+
+    @Override
+    public void adminQuickChangeStaticPageStatus(int id, String status) {
+
+        jdbcTemplate.update(SQL_QUICK_PUBLISH_STATICPAGE, status, id);
+
     }
 
     private static final class StaticPageMapper implements RowMapper<StaticPage> {

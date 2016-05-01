@@ -38,4 +38,8 @@ public interface StaticPageDbDao {
     public void updatePageNavBarPosition(int pageId, int position);
 
     public String getHomePageLink();
+
+    public List<StaticPage> getAllStaticPagesAdminUnpublished();
+
+    public void adminQuickChangeStaticPageStatus(int id, String status);
 }

@@ -46,7 +46,7 @@ $(document).ready(function () {
             createStaticPage();
 
         }
-
+        window.location = '/CMS/articles';
     });
 
     //autosaves every 1 minute

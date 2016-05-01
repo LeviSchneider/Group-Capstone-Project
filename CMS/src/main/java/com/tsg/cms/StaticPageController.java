@@ -150,4 +150,21 @@ public class StaticPageController {
 
     }
 
+    
+    @RequestMapping(value = "/staticPagesAdminUnpublished", method = RequestMethod.GET)
+    @ResponseBody
+    public List<StaticPage> getAllStaticPagesAdminUnpublished() {
+
+        return staticPageDao.getAllStaticPagesAdminUnpublished();
+
+    }
+    
+    @RequestMapping(value = "/adminQuickChangeStaticPageStatus/{id}/{status}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void adminQuickChangeStaticPageStatus(@PathVariable("id") int id, @PathVariable("status") String status) {
+
+        staticPageDao.adminQuickChangeStaticPageStatus(id, status);
+
+    }   
 }
