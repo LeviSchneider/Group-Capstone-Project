@@ -18,16 +18,40 @@
         </ul>      
         <ul class="nav" id="admin-sidebar-list">
 
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <li>
+                    <a href="/CMS/admin">Admin</a>
+                </li>
+            </sec:authorize>
+            
+            <sec:authorize access="hasRole('ROLE_EDITOR')">
+                <li>
+                    <a href="/CMS/tinymce">Create Blog Entry</a>
+                </li>
+                <li>
+                    <a href="/CMS/pageTinyMCE">Create Article</a>
+                </li>
+            </sec:authorize>
+            
+            <sec:authorize access="isAuthenticated()">
             <li>
-                <a href="/CMS/admin">Admin</a>
+                <a href="${pageContext.request.contextPath}/j_spring_security_logout">
+                    Log Out
+                </a>
             </li>
-            <li>
-                <a href="/CMS/tinymce">Create Blog Entry</a>
-            </li>
-            <li>
-                <a href="/CMS/pageTinyMCE">Create Article</a>
-            </li>
+            </sec:authorize>
+
+            <sec:authorize access="isAnonymous()">
+                <li>
+                    <a href="/CMS/login">Login</a>
+                </li>
+
+            </sec:authorize>
+
         </ul>
+
+
+
     </div>
 </div>
 

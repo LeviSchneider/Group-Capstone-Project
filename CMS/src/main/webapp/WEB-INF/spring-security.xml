@@ -31,9 +31,9 @@
         
         
         <!-- MOST strict to LEAST strict -->
-<!-- Once we uncomment this we will have to login to access admin -->
-        <!-- <intercept-url pattern="/admin/**" access="ROLE_ADMIN" /> -->
-        
+<!-- Once we uncomment this we will have to login to access admin/editor functions -->
+         <!--<intercept-url pattern="/admin/**" access="ROLE_ADMIN" /> -->
+
         <!-- If we uncomment this, we will have to login (have a ROLE_USER) to access ANYTHING -->
         <!-- We probably don't want to do this since we don't have any users/commenters-->
         <!--<intercept-url pattern="/**" access="ROLE_USER" />-->
@@ -78,6 +78,7 @@
 /tags                                           PUBLIC	GET
 /tags/{num}                                     PUBLIC	GET
 /postTags/{postId}                              PUBLIC	GET
+/login                                          PUBLIC  GET
 
  -->
     </http>

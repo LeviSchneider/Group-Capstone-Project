@@ -100,4 +100,12 @@ public class HomeController {
         return "home";
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String showLoginPage(Map<String, Object> model, HttpSession session) {
+
+        session.setAttribute("page", "login");
+        session.setAttribute("js_page", "login.js");
+
+        return "home";
+    }
 }
