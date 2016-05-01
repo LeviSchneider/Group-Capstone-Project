@@ -155,11 +155,11 @@
 
                 if (counter !== sideBar.length) {
                     row += "<div class='well-sm span2'>";
-                    row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
                     row += "</div>";
                 } else if (counter === sideBar.length) {
                     row += "<div class='well-sm span4'>";
-                    row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
                     row += "</div>";
                 }
                 counter++;
