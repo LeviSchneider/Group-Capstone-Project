@@ -23,7 +23,7 @@
         </div>
         <button onclick="addCategoryButton()" class="btn btn-primary">Submit</button>
     </form><br/><br/><br/>
-    
+
     <div id="categoryCollapsible" data-collapse="accordion persist">
         <h3>Categories</h3>
 
@@ -36,6 +36,21 @@
         </table>
     </div>
     
+
+    <div id="blogPostsCollapsible" data-collapse="accordion persist">
+
+        <h3>Unpublished Blog Posts</h3>
+        <table id="UnpublishedBlogPostsTable" class="table table-hover">
+            <tr>
+                <th width="100%">Blog Post Title</th>
+
+            </tr>
+            <tbody id="unpublished-blog-post-display"></tbody>
+
+        </table>        
+
+    </div>
+
     <div id="blogPostsCollapsible" data-collapse="accordion persist">
 
         <h3>Blog Posts</h3>
@@ -82,6 +97,6 @@
     <script src="${pageContext.request.contextPath}/js/jquery.collapse_cookie_storage.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.collapse_storage.js"></script>
 
-    
+
 </body>
 </html>

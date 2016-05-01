@@ -36,7 +36,7 @@ $(document).ready(function () {
         $('#staticpage-status').val('PUBLISHED');
 
         createStaticPage();
-  
+
     });
 
     //autosaves every 1 minute
@@ -76,8 +76,8 @@ function createStaticPage() {
         },
         'dataType': 'json'
     }).success(function (data, status) {
-        
-   
+
+
         $('#tiny-staticpage-id').val(data.pageId);
 
 
@@ -166,8 +166,15 @@ function populateEditStaticPageData() {
         $('#end-date').val(staticPage.endDate);
         $('#tiny-staticpage-id').val(staticPage.pageId);
         $('select[name="staticpage-status"]').find('option:contains("' + staticPage.status + '")').attr("selected", true);
+        $.ajax({
+            type: 'GET',
+            url: '/CMS/category/' + staticPage.categoryIdFK
 
-        $('select[name="categories"]').find('option:contains("' + staticPage.categoryList[0].categoryName + '")').attr("selected", true);
+        }).success(function (category, status) {
+
+            $('select[name="categories"]').find('option:contains("' + category.categoryName + '")').attr("selected", true);
+
+        });
 
     });
 

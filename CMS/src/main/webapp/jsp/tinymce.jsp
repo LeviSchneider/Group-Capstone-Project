@@ -29,11 +29,11 @@
     <textarea id="htmlOutput"></textarea>
 
     <select id="post-status" name="post-status">
-        <option value="DRAFT">Draft</option>
-        <option value="READY_FOR_APPROVAL">Pending</option>
-        <option value="APPROVED">Approved</option>
-        <option value="UNPUBLISHED">Unpublished</option>
-        <option value="PUBLISHED">Published</option>
+        <option value="DRAFT">DRAFT</option>
+        <option value="READY_FOR_APPROVAL">READY_FOR_APPROVAL</option>
+        <option value="APPROVED">APPROVED</option>
+        <option value="UNPUBLISHED">UNPUBLISHED</option>
+        <option value="PUBLISHED">PUBLISHED</option>
     </select>
     <button id="tiny-save" type="button">Save</button>
     <input type="hidden" id="tiny-blogpost-id"/>

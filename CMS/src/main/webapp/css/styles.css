@@ -177,7 +177,7 @@ footer {
 
 .well {
     white-space: normal;
-        word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .placeholder {
@@ -188,10 +188,13 @@ footer {
     box-shadow: 0px 0px 10px #888;
 }
 .tile {
-    height: 25px;
+    height: 10px;
 }
 .grid {
     margin-top: 1em;
+.panel-body {
+    white-space: normal;
+    word-wrap: break-word;
 }
 /*
  * Off Canvas

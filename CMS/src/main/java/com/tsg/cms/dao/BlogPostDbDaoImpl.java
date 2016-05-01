@@ -42,6 +42,8 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     private TagDbDao tagDao;
 
     private HashTagMatcher hashTagMatcher;
+    
+    private final int BLOG_POST_EXCERPT_LENGTH = 400;
 
     @Inject
     public BlogPostDbDaoImpl(TagDbDao tagDao, HashTagMatcher hashTagMatcher) {
@@ -57,15 +59,17 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
     private static final String SQL_UPDATE_BLOGPOST
             = "update blogPosts set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, postBody = ?, userIdFK = ?, titleNumber = ?, status = ? where postId = ?";
     private static final String SQL_SELECT_ALL_BLOGPOSTS
-            = "select * from blogPosts WHERE `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) ORDER BY postId DESC";
+            = "select * from blogPosts WHERE `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) AND `status` = 'PUBLISHED' ORDER BY postId DESC";
     private static final String SQL_SELECT_ALL_BLOGPOSTS_ADMIN
             = "select * from blogPosts ORDER BY postId DESC";
     private static final String SQL_SELECT_BLOGPOST_BY_ID
             = "select * from blogPosts WHERE postId = ? AND `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) ";
     private static final String SQL_SELECT_BLOGPOST_BY_ID_ADMIN
             = "select * from blogPosts WHERE postId = ?";
+    private static final String SQL_SELECT_BLOGPOST_BY_ID_ADMIN_UNPUBLISHED
+            = "select * from blogPosts WHERE `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) AND `status` != 'PUBLISHED' ORDER BY postId DESC";
     private static final String SQL_SELECT_BLOGPOST_TITLE_BY_ID
-            = "select title from blogPosts where postId = ?";
+            = "select title from blogPosts where postId = ? AND `status` = 'PUBLISHED'";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLENUMBER
             = "select * from blogPosts where titleNumber = ? AND `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) ";
     private static final String SQL_SELECT_BLOGPOST_BY_TITLE
@@ -79,7 +83,9 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
             + "on blogPosts.postId = postHashTagBridge.postIdFK "
             + "join hashTags "
             + "on postHashTagBridge.HashTagIdFK = hashTags.hashTagId "
-            + "where hashTagName = ? AND `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) ";
+            + "where hashTagName = ? AND `startDate` <= cast((now()) as datetime) AND `endDate` >=  cast((now()) as datetime) AND `status` = 'PUBLISHED'";
+    private static final String SQL_QUICK_PUBLISH_BLOGPOST
+            = "update blogPosts set status = ? where postId = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -241,6 +247,25 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         for (BlogPost b : blogPostList) {
 
             BlogPostContainer container = new BlogPostContainer();
+
+            if (b.getPostBody().length() > BLOG_POST_EXCERPT_LENGTH) {
+                
+                String b1 = b.getPostBody().substring(0, BLOG_POST_EXCERPT_LENGTH);
+                int index = b1.lastIndexOf(" ");
+                b1 = b1.substring(0, index);
+                
+                String pad = "";
+                for (int i = 0; i < (BLOG_POST_EXCERPT_LENGTH - b1.length()); i++) {
+                    
+                    pad += " ";
+                    
+                }
+                
+                b1 += pad;
+                b.setPostBody(b1);
+                System.out.println(b1.length());
+
+            }
             container.setBlogPost(b);
             TagContainer tagContainer = new TagContainer();
             tagContainer.setTagList(tagDao.getPostTags(b.getPostId()));
@@ -442,6 +467,34 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
 
         return blogPostContainerList;
 
+    }
+
+    @Override
+    public List<BlogPostContainer> getAllBlogPostsAdminUnpublished() {
+
+        List<BlogPostContainer> blogPostContainerList = new ArrayList<>();
+
+        List<BlogPost> blogPostList = jdbcTemplate.query(SQL_SELECT_BLOGPOST_BY_ID_ADMIN_UNPUBLISHED, new BlogPostMapper());
+
+        for (BlogPost b : blogPostList) {
+
+            BlogPostContainer container = new BlogPostContainer();
+            container.setBlogPost(b);
+            TagContainer tagContainer = new TagContainer();
+            tagContainer.setTagList(tagDao.getPostTags(b.getPostId()));
+            container.setTagContainer(tagContainer);
+            blogPostContainerList.add(container);
+
+        }
+
+        return blogPostContainerList;
+
+    }
+
+    @Override
+    public void adminQuickChangeBlogPostStatus(int id, String status) {
+
+        jdbcTemplate.update(SQL_QUICK_PUBLISH_BLOGPOST, status, id);
 
     }
 

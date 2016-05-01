@@ -1,29 +1,32 @@
 
 <input type="hidden" id="sidebar-count">
-<div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarLeft" role="navigation">
-    <div class="well sidebar-nav">
-        <div class="nav row grid span8" id="default-sidebar-list">
-            <div class="well span2 tile">
-                <li><a href="/CMS/home">Home</a></li>
+<div class="col-sm-2 sidebar-offcanvas-left" id="sidebarLeft">
+    <div class="well sidebar-nav" role="navigation">
+        <h4>User</h4>
+        <div class="nav grid span8" id="default-sidebar-list">
+
+            <div class="well-sm span2">
+                <a href="/CMS/home">Home</a>
             </div>
-            <div class="well span2 tile">
-                <li><a href="/CMS/blog">Blog</a></li>
+            <div class="well-sm span2">
+                <a href="/CMS/blog">Blog</a>
             </div>
-            <div class="well span4 tile">
-                <li><a href="/CMS/articles">Articles</a></li>
+            <div class="well-sm span4">
+                <a href="/CMS/articles">Articles</a>
             </div>
         </div>
-        
-        <div class="nav row grid span8" id="custom-sidebar-list"></div>
-        
-        <div class="nav row grid span8" id="admin-sidebar-list">
-            <div class="well span2 tile">
+        <h4>Blog Page</h4>
+        <div class="nav grid span8" id="custom-sidebar-list"></div>
+        <h4>Admin</h4>
+        <div class="nav grid span8" id="admin-sidebar-list">
+
+            <div class="well-sm span2">
                 <a href="/CMS/admin">Admin</a>
             </div>
-            <div class="well span2 tile">
+            <div class="well-sm span2">
                 <a href="/CMS/tinymce">Create Blog Entry</a>
             </div>
-            <div class="well span4 tile">
+            <div class="well-sm span4">
                 <a href="/CMS/pageTinyMCE">Create Article</a>
             </div>
         </div>

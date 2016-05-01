@@ -24,19 +24,22 @@ function populateBlogPosts(data, status) {
 
             var tagList = blogPostContainer.tagContainer.tagList;
             //var categoryList = blogPostContainer.categoryContainer.categoryList;
+            var readMoreLink = "";
+            if ((blogPostContainer.blogPost.postBody).length === 400) {
 
+                readMoreLink = '<br/><br/><a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '">Read More...</a>';
+            }
             blogPanel
                     .append($('<div>')
                             .addClass("panel panel-default")
                             .append($('<div>')
                                     .addClass('panel-heading')
                                     .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')'
-                                            + ' (Status: ' + blogPostContainer.blogPost.status + ')'
                                             + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
                                             + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'))
                             .append($('<div>')
                                     .addClass('panel-body')
-                                    .append(blogPostContainer.blogPost.postBody))
+                                    .append(blogPostContainer.blogPost.postBody + readMoreLink))
                             .append($('<div>')
                                     .addClass('panel-footer')
                                     .attr({'id': 'post' + blogPostContainer.blogPost.postId})

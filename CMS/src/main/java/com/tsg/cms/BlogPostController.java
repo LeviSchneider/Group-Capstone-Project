@@ -21,7 +21,6 @@ import com.tsg.cms.dao.BlogPostDbDao;
 import com.tsg.cms.dto.BlogPostContainer;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -85,7 +84,7 @@ public class BlogPostController {
 
     @RequestMapping(value = "/blogPosts", method = RequestMethod.GET)
     @ResponseBody
-    public List<BlogPostContainer> getAllBlogPost() {
+    public List<BlogPostContainer> getAllBlogPosts() {
 
         return blogPostDao.getAllBlogPosts();
 
@@ -93,7 +92,7 @@ public class BlogPostController {
 
     @RequestMapping(value = "/blogPostsAdmin", method = RequestMethod.GET)
     @ResponseBody
-    public List<BlogPostContainer> getAllBlogPostAdmin() {
+    public List<BlogPostContainer> getAllBlogPostsAdmin() {
 
         return blogPostDao.getAllBlogPostsAdmin();
 
@@ -118,4 +117,20 @@ public class BlogPostController {
 
     }
 
+    @RequestMapping(value = "/blogPostsAdminUnpublished", method = RequestMethod.GET)
+    @ResponseBody
+    public List<BlogPostContainer> getAllBlogPostsAdminUnpublished() {
+
+        return blogPostDao.getAllBlogPostsAdminUnpublished();
+
+    }
+    
+    @RequestMapping(value = "/adminQuickChangeBlogPostStatus/{id}/{status}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void adminQuickChangeBlogPostStatus(@PathVariable("id") int id, @PathVariable("status") String status) {
+
+        blogPostDao.adminQuickChangeBlogPostStatus(id, status);
+
+    }   
 }

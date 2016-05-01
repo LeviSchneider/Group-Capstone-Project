@@ -55,7 +55,7 @@
                             tagString += "<a style='font-size:75%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
-                        } else if (tagMap[key] <= 3) {
+                        } else if (tagMap[key] <= 7) {
                             tagString += "<a style='font-size:121%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
                             tagString += " " + key;
                             tagString += "</a>";
@@ -126,10 +126,6 @@
                                         .addClass('panel-footer')
                                         .attr({'id': 'post' + blogPostContainer.blogPost.postId})
                                         ));
-                //$('#post' + blogPostContainer.blogPost.postId)
-                //        .append($('<span>')
-                //                .addClass('panel-body-blogcategories')
-                //                .append("(In category: " + blogPostContainer.blogPost. + ")"));
                 $.each(tagList, function (index, tag) {
 
                     $('#post' + blogPostContainer.blogPost.postId)
@@ -157,15 +153,14 @@
             $.each(data, function (index, sideBar) {
 
                 if (counter !== sideBar.length) {
-                    row += "<div class='well span2 tile'>";
+                    row += "<div class='well-sm span2'>";
                     row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
                     row += "</div>";
                 } else if (counter === sideBar.length) {
-                    row += "<div class='well span4 tile'>";
+                    row += "<div class='well-sm span4'>";
                     row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
                     row += "</div>";
                 }
-
                 counter++;
             });
             sideBar.append(row);
