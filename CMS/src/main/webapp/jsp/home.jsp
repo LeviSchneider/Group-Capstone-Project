@@ -24,11 +24,12 @@
         <div class="container-fluid">
             <div class="row-offcanvas row-offcanvas-left">
                 <%@include file="sidebar.jsp"%>
+                
+            </div>
                 <div class="col-xs-12 col-sm-8">
                     <%@ include file="header.jsp"%>
                     <jsp:include page="${page}.jsp"/>
                 </div>
-            </div>
                 <div class="row-offcanvas row-offcanvas-right">
                     <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
                         <div class="well sidebar-nav" >
