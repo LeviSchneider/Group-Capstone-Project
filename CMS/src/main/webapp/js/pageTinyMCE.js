@@ -5,9 +5,9 @@
  */
 var validationError = "";
 
+
 $(document).ready(function () {
     loadCategories();
-
 
     if ($('#staticpage-to-edit-id').val().length !== 0) {
 
@@ -22,7 +22,7 @@ $(document).ready(function () {
             $('#tiny-save').effect("highlight");
             createStaticPage();
         } else {
-            alert(validationError);
+            $('#tiny-save').attr('data-content', validationError);
             validationError = "";
         }
 

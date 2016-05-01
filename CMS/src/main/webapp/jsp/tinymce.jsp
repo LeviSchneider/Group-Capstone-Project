@@ -9,10 +9,11 @@
             "insertdatetime media table contextmenu paste youtube",
             "autoresize"],
         autoresize_bottom_margin: 50,
-        external_plugins: {"youtube": "${pageContext.request.contextPath}/js/tiny_mce/plugins/youtube/plugin.min.js"},
+        external_plugins: {"youtube": "${pageContext.request.contextPath}/js/tiny_mce/plugins/youtube/plugin.min.js",
+                            "respanner": "${pageContext.request.contextPath}/js/tiny_mce/plugins/respanner/respanner.js"},
         // menubar: "insert",
         //toolbar: "image styleselect fontsizeselect hr link preview",
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image| youtube",
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | youtube | respanner",
         contextmenu: "link image inserttable | cell row column deletetable",
         inline: false
     });
