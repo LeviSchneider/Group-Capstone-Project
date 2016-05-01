@@ -98,7 +98,7 @@
     }
 
     function populatedTagPosts(data) {
-        
+
         clearPopulatedPosts();
         var blogPanel = $('#blog-post-display');
         $.ajax({
@@ -156,7 +156,7 @@
                 if (counter !== sideBar.length) {
                     row += "<div class='well-sm span2'>";
                     row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
-                    row += "</div>";
+                    row += "<input id='sideBarPosition" + sideBar.sideBarLinkUrl + "' type='hidden' value='" + sideBar.sideBarLinkPosition + "'/></div>";
                 } else if (counter === sideBar.length) {
                     row += "<div class='well-sm span4'>";
                     row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
@@ -191,12 +191,34 @@
      
      }*/
 
+var sideBarPositionList = [];
+var sideBarUrlList = [];
+
+
+
     $(function () {
-        $(".grid").sortable({
+        $(".droppable").sortable({
             tolerance: 'pointer',
             revert: 'invalid',
             placeholder: 'span2 well placeholder tile',
-            forceHelperSize: true
+            forceHelperSize: true,
+            update: function (event, ui) {
+                Dropped();
+            }
         });
     });
+
+    function Dropped(event, ui) {
+        sideBarPositionList = [];
+        sideBarUrlList = [];
+        $(".droppable").children().each(function () {
+            //var p = $(this).position();
+            sideBarPositionList[sideBarPositionList.length] = $(this).find('input').val();
+            sideBarUrlList[sideBarUrlList.length] = $(this).find('a').html();
+        });
+       
+      // ajax post to /sideBarLinks/{positionList}/{sideBarUrlList}
+       
+        refresh();
+    }
 </script>
