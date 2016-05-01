@@ -5,18 +5,28 @@
  */
 
 
-
+var limit = 0;
+var amount = 10;
 $(document).ready(function () {
 
-    populateBlogPosts();
+    populateBlogPosts(limit);
+    $(window).scroll(function () {
+        if ($(window).scrollTop() === $(document).height() - $(window).height()) {
+            limit = limit + amount;
+            populateBlogPosts(limit);
+        }
+    });
+
 });
 
 
-function populateBlogPosts(data, status) {
+function populateBlogPosts(limit) {
+
+
     var blogPanel = $('#blog-post-display');
     $.ajax({
         type: 'GET',
-        url: 'blogPosts'
+        url: 'blogPosts/' + limit
 
     }).success(function (data, status) {
 
@@ -61,4 +71,3 @@ function populateBlogPosts(data, status) {
     });
 
 }
-

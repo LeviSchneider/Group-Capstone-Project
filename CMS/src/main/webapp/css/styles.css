@@ -196,6 +196,15 @@ footer {
     white-space: normal;
     word-wrap: break-word;
 }
+
+.panel-body img{
+
+    max-width: 600px; 
+    height: auto;
+
+}
+
+
 /*
  * Off Canvas
  * --------------------------------------------------

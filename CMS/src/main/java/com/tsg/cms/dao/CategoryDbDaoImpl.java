@@ -49,6 +49,8 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
             = "update staticPages set categoryIdFK = null where staticPages.pageId = ?";
     private static final String SQL_REMOVE_CATEGORY_FROM_POST
             = "update blogPosts set categoryIdFK = null where postId = ?";
+    private static final String SQL_REMOVE_DELETED_CATEGORY_FROM_ALL_PAGES
+            = "update staticPages set categoryIdFK = null where categoryIdFK = ?";
 
     private JdbcTemplate jdbcTemplate;
 
@@ -61,7 +63,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     public Category addCategory(Category category) throws DuplicateKeyException {
 
         jdbcTemplate.update(SQL_INSERT_CATEGORY,
-                category.getCategoryName());
+                            category.getCategoryName());
         category.setCategoryId(jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class));
 
         return category;
@@ -75,13 +77,15 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
 
     @Override
     public void removeCategory(int categoryId) {
+        
+        jdbcTemplate.update(SQL_REMOVE_DELETED_CATEGORY_FROM_ALL_PAGES, categoryId);
         jdbcTemplate.update(SQL_DELETE_CATEGORY, categoryId);
     }
 
     @Override
     public Category updateCategory(Category category) {
         jdbcTemplate.update(SQL_UPDATE_CATEGORY,
-                category.getCategoryName(), category.getCategoryId());
+                            category.getCategoryName(), category.getCategoryId());
         return category;
     }
 
@@ -131,15 +135,15 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     @Override
     public void updatePageCategory(Category category, StaticPage staticPage) {
         staticPage.setCategoryIdFK(jdbcTemplate.update(SQL_ADD_CATEGORY_TO_PAGE,
-                category.getCategoryId(),
-                staticPage.getPageId()));
+                                                       category.getCategoryId(),
+                                                       staticPage.getPageId()));
     }
-    
+
     @Override
     public void updateBlogPostCategory(Category category, BlogPost blogPost) {
         jdbcTemplate.update(SQL_ADD_CATEGORY_TO_POST,
-                category.getCategoryId(),
-                blogPost.getPostId());
+                            category.getCategoryId(),
+                            blogPost.getPostId());
         blogPost.setCategoryIdFK(category.getCategoryId());
     }
 
@@ -147,7 +151,7 @@ public class CategoryDbDaoImpl implements CategoryDbDao {
     public void removePageCategory(int pageId) {
         jdbcTemplate.update(SQL_REMOVE_CATEGORY_FROM_PAGE, pageId);
     }
-    
+
     @Override
     public void removeBlogPostCategory(int postId) {
         jdbcTemplate.update(SQL_REMOVE_CATEGORY_FROM_POST, postId);

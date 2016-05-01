@@ -98,6 +98,7 @@
     }
 
     function populatedTagPosts(data) {
+        
         clearPopulatedPosts();
         var blogPanel = $('#blog-post-display');
         $.ajax({

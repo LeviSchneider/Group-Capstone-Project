@@ -66,6 +66,11 @@ public class TagDbDaoImpl implements TagDbDao {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public String addTag(String tag, int postId) {
         try {
+            
+            if (tag.substring(0, 1).equals("#")) {
+                tag = tag.substring(1, tag.length());
+            }
+            
             jdbcTemplate.update(SQL_ADD_HASHTAG, tag);
         } catch (DuplicateKeyException e) {
             // IGNORE: If already exists, no need to recreate

@@ -7,6 +7,7 @@
 
 $(document).ready(function () {
     loadCategories();
+    loadAdminTags();
     loadStaticPages();
     populateBlogPosts();
     populateUnpublishedBlogPosts();
@@ -96,9 +97,9 @@ function loadStaticPages(data, status) {
                 url: '/CMS/category/' + staticPage.categoryIdFK
 
             }).success(function (category, status) {
-                
+
                 $('#category' + staticPage.pageId).text(category.categoryName);
-                
+
             });
         });
     });
@@ -175,7 +176,10 @@ function deleteCategory(categoryId) {
             url: 'category/' + categoryId
 
         }).success(function () {
+
             loadCategories();
+            loadStaticPages();
+
         });
     }
 }
@@ -380,6 +384,50 @@ function deleteStaticPage(pageId) {
         }).success(function () {
             loadStaticPages();
             loadSideBarItems();
+        });
+    }
+}
+
+function loadAdminTags() {
+
+
+    var tagPanel = $('#tag-display');
+    tagPanel.empty();
+    $.ajax({
+        type: 'GET',
+        url: 'tags'
+
+    }).success(function (data, status) {
+
+        var tagList = data.tagList;
+        $.each(tagList, function (index, tag) {
+
+//var tagList = blogPostContainer.tagContainer.tagList;
+//var categoryList = blogPostContainer.categoryContainer.categoryList;
+
+            tagPanel
+                    .append($('<div>')
+                            .addClass("panel panel-default")
+                            .append('<div>')
+                            .addClass("panel-body")
+                            .append('<span>')
+                            .text(tag)
+                            .append('<a onclick="deleteTag(\'' + tag + '\')"><button type="button" class="btn btn-default btn-xs">'
+                                    + '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></a>'));
+        });
+    });
+}
+
+function deleteTag(tag) {
+
+    var answer = confirm("Do you really want to delete this tag?");
+    if (answer === true) {
+        $.ajax({
+            type: 'DELETE',
+            url: 'tag/' + tag
+
+        }).success(function () {
+            loadAdminTags();
         });
     }
 }
