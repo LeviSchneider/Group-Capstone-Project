@@ -48,13 +48,12 @@ function populateBlogPosts(limit) {
                                             + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
                                             + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'))
                             .append($('<div>')
-                                    .addClass('panel-body')
-                                   .append($('<div>').addClass('row')
+                                    .addClass('panel-body')        
                                     .append(blogPostContainer.blogPost.postBody + readMoreLink))
                             .append($('<div>')
                                     .addClass('panel-footer')
                                     .attr({'id': 'post' + blogPostContainer.blogPost.postId})
-                                    )));
+                                    ));
             $.each(tagList, function (index, tag) {
 
                 $('#post' + blogPostContainer.blogPost.postId)
