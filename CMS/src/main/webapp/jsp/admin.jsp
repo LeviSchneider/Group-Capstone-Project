@@ -24,6 +24,7 @@
         <button onclick="addCategoryButton()" class="btn btn-primary">Submit</button>
     </form><br/><br/><br/>
 
+<<<<<<< HEAD
     <sec:authorize access="hasRole('ROLE_ADMIN')">
 
         <div id="categoryCollapsible" data-collapse="accordion persist">
@@ -52,6 +53,32 @@
             </table>
         </div>
     </sec:authorize>
+=======
+    <div id="categoryCollapsible" data-collapse="accordion persist">
+        <h3>Categories</h3>
+
+        <table id="categoryTable" class="table table-hover">
+            <tr>
+                <th width="30%">Category Name</th>
+                <th width="10%"></th>
+            </tr>
+            <tbody id="contentRows"></tbody>
+        </table>
+    </div>
+    
+
+    <div id="tagCollapsible" data-collapse="accordion persist">
+        <h3>HashTags</h3>
+
+        <table id="categoryTable" class="table table-hover">
+            <tr>
+                <th width="30%">Tag Name</th>
+                <th width="10%"></th>
+            </tr>
+            <tbody id="tag-display"></tbody>
+        </table>
+    </div>
+>>>>>>> f071af5a9b3d898b9a66cb9860938566469d5eea
 
     <div id="blogPostsCollapsible" data-collapse="accordion persist">
 
@@ -66,6 +93,7 @@
         </table>        
 
     </div>
+
     <div id="blogPostsCollapsible" data-collapse="accordion persist">
 
         <h3>All Blog Posts - All Statuses</h3>
@@ -95,6 +123,18 @@
         </table>    
     </div>
 
+    <div id="tagCloudCollapsible" data-collapse="accordion persist">
+        <h3>HashTags</h3>
+
+        <table id="tagTable" class="table table-hover">
+            <tr>
+                <th width="30%">Tag Name</th>
+                <th width="10%"></th>
+            </tr>
+            <tbody id="tagContentRows"></tbody>
+        </table>
+    </div>
+    
     <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.collapse.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.collapse_cookie_storage.js"></script>
