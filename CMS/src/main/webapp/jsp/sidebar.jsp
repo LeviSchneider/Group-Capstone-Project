@@ -13,7 +13,7 @@
             </div>
             <div class="well-sm span4">
                 <a href="/CMS/articles">Articles</a>
-<<<<<<< HEAD
+
             </li>
         </ul>
         <ul class="nav" id="custom-sidebar-list">
@@ -23,14 +23,13 @@
 
             <!-- recomment this to lock down the sidebar -->
             <!--  <li>
-=======
+
             </div>
         </div>
         <h4>Blog Page</h4>
         <div class="nav grid span8" id="custom-sidebar-list"></div>
         <h4>Admin</h4>
         <div class="nav grid span8" id="admin-sidebar-list">
->>>>>>> f071af5a9b3d898b9a66cb9860938566469d5eea
                 <a href="/CMS/admin">Admin</a>
             </div>
             <div class="well-sm span2">
@@ -43,7 +42,7 @@
             </li>
              -->
             <!-- uncomment this to lock down the sidebar -->
-           
+          <!-- 
             <sec:authorize access="hasRole('ROLE_EDITOR')">
                 <li>
                     <a href="/CMS/admin">Tools</a>
@@ -73,7 +72,7 @@
                 </li>
 
             </sec:authorize>
-            
+            -->
         </ul>
     </div>
 </div>
