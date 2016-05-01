@@ -6,7 +6,7 @@
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
         <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
-        <title>Category Admin</title>
+        <title>Admin</title>
     </head>
     <body>
     <center>
@@ -16,13 +16,34 @@
 
 
 
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
 
-    <form class="navbar-form navbar-left">
-        <div class="form-group">
-            <input id="add-category" type="text" class="form-control" placeholder="Add Category Name">
+        <div id="usersCollapsible" data-collapse="accordion persist">
+            <h3>Users</h3>
+
+            <table id="userTable" class="table table-hover">
+                <tr>
+                    <th width="50%">Username</th>
+                    <th width="50%">Role</th>
+                </tr>
+                <tbody id="userContentRows"></tbody>
+            </table>
+
         </div>
-        <button onclick="addCategoryButton()" class="btn btn-primary">Submit</button>
-    </form><br/><br/><br/>
+    </sec:authorize>
+
+    <div id="addCategoryCollapsible" data-collapse="accordion persist">
+        <h3>Add Category</h3>
+
+        <form class="navbar-form navbar-left">
+            <div class="form-group">
+                <input id="add-category" type="text" class="form-control" placeholder="Add Category Name">
+            </div>
+            <button onclick="addCategoryButton()" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+
 
     <sec:authorize access="hasRole('ROLE_ADMIN')">
 
@@ -94,7 +115,7 @@
 
         </table>    
     </div>
-    
+
     <div id="staticPagesCollapsible" data-collapse="accordion persist">
         <h3>All Static Pages - All Statuses</h3>
         <table id="staticPageTable" class="table table-hover" >
@@ -108,19 +129,19 @@
 
         </table>    
     </div>
-<!--
-    <div id="tagCloudCollapsible" data-collapse="accordion persist">
-        <h3>HashTags</h3>
-
-        <table id="tagTable" class="table table-hover">
-            <tr>
-                <th width="30%">Tag Name</th>
-                <th width="10%"></th>
-            </tr>
-            <tbody id="tagContentRows"></tbody>
-        </table>
-    </div>-->
+    <!--
+        <div id="tagCloudCollapsible" data-collapse="accordion persist">
+            <h3>HashTags</h3>
     
+            <table id="tagTable" class="table table-hover">
+                <tr>
+                    <th width="30%">Tag Name</th>
+                    <th width="10%"></th>
+                </tr>
+                <tbody id="tagContentRows"></tbody>
+            </table>
+        </div>-->
+
     <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.collapse.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.collapse_cookie_storage.js"></script>

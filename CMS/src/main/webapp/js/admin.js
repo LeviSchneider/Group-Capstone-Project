@@ -12,8 +12,78 @@ $(document).ready(function () {
     populateBlogPosts();
     populateUnpublishedBlogPosts();
     populateUnpublishedStaticPages();
+    populateUsers();
+
 });
 
+function populateUsers() {
+
+    var userPanel = $('#userContentRows');
+    $('#userContentRows').empty();
+    $.ajax({
+        type: 'GET',
+        url: 'users'
+
+    }).success(function (data, status) {
+
+
+        $.each(data, function (index, user) {
+
+            var roleText = "";
+
+            $.ajax({
+                //this is not working because the data is parsed before the ajax call is done
+                type: 'GET',
+                url: 'userRoles/' + user.userId
+
+            }).success(function (data, status) {
+
+                $.each(data, function (index, role) {
+
+
+                    roleText += role + "&nbsp;&nbsp;&nbsp;&nbsp;";
+
+                });
+            });
+
+            userPanel
+                    .append($('<tr>')
+                            .append($('<td>')
+                                    .append($('<div>')
+                                            .addClass("panel panel-default")
+                                            .append('<div>')
+                                            .addClass("panel-body")
+                                            .append('<span>')
+                                            .text(user.userName)
+                                            .append($('<a>')
+
+                                                    .append($('<a>')
+                                                            .attr({
+                                                                'onclick': 'deleteUser(' + user.userId + ')'
+                                                            })
+                                                            .html('<button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>'))
+
+
+                                                    )))
+
+                            .append($('<td>')
+                                    .append($('<div>')
+                                            .addClass("panel panel-default")
+                                            .append('<div>')
+                                            .addClass("panel-body")
+                                            .append('<span>')
+                                            .html(roleText))
+
+                                    )
+
+                            );
+
+
+
+
+        });
+    });
+}
 
 function addCategoryButton() {
     $.ajax({
@@ -437,9 +507,9 @@ function populateUnpublishedStaticPages(data, status) {
                                             + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'
                                             + staticPage.title + ' by: Mayor McCheese ')
                                     .append(statusDropDownFields).attr({onchange: 'quickChangeStaticPageStatus("' + staticPage.pageId + '")'})));
-                            
-                            
-                
+
+
+
         });
     });
 }
