@@ -5,7 +5,6 @@
  */
 package com.tsg.cms.dao;
 
-import com.tsg.cms.HashTagMatcher;
 import com.tsg.cms.dto.BlogPost;
 import com.tsg.cms.dto.BlogPostContainer;
 import com.tsg.cms.dto.CategoryContainer;
