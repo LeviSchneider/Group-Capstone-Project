@@ -58,10 +58,6 @@ function loadStaticPages(data, status) {
                         + '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button></a>';
             }
 
-
-
-
-
             staticPagePanel
                     .append($('<tr>')
                             .append($('<td>')
@@ -96,15 +92,21 @@ function loadStaticPages(data, status) {
 
                                             )
                                     ));
-            $.ajax({
-                type: 'GET',
-                url: '/CMS/category/' + staticPage.categoryIdFK
 
-            }).success(function (category, status) {
+            if (staticPage.categoryIdFK) {
 
-                $('#category' + staticPage.pageId).text(category.categoryName);
+                    $.ajax({
+                        type: 'GET',
+                        url: '/CMS/category/' + staticPage.categoryIdFK
 
-            });
+                    }).success(function (category, status) {
+
+
+                        $('#category' + staticPage.pageId).text(category.categoryName);
+
+                    });
+                
+            }
         });
     });
 
@@ -184,6 +186,10 @@ function deleteCategory(categoryId) {
             loadCategories();
             loadStaticPages();
 
+        }).error(function () {
+
+            alert("You do not have permission to delete categories!")
+
         });
     }
 }
@@ -255,6 +261,10 @@ function addPageToSideBar(pageId) {
 
         loadSideBarItems();
         loadStaticPages();
+    }).success(function (data, status) {
+
+        alert("You do not have permission to edit sidebar items!");
+
     });
 }
 
@@ -270,6 +280,10 @@ function deletePageFromSideBar(pageId) {
 
             loadSideBarItems();
             loadStaticPages();
+
+        }).success(function (data, status) {
+
+            alert("You do not have permission to edit sidebar items!");
 
         });
     }
@@ -389,6 +403,8 @@ function quickChangeBlogPostStatus(postId) {
 
     }).success(function () {
         populateUnpublishedBlogPosts();
+    }).error(function () {
+        alert("You do not have permission to approve or publish posts!");
     });
 
 }
@@ -404,7 +420,10 @@ function deleteStaticPage(pageId) {
         }).success(function () {
             loadStaticPages();
             loadSideBarItems();
+        }).error(function () {
+            alert("You do not have permission to delete pages!");
         });
+        ;
     }
 }
 
@@ -448,6 +467,9 @@ function deleteTag(tag) {
 
         }).success(function () {
             loadAdminTags();
+        }).error(function () {
+            alert("You do not have permission to delete tags!");
         });
+
     }
 }

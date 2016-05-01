@@ -33,9 +33,22 @@ $(document).ready(function () {
 
         event.preventDefault();
 
-        $('#staticpage-status').val('PUBLISHED');
+
 
         createStaticPage();
+
+        $('#staticpage-status').val('PUBLISHED');
+
+        if ($('#staticpage-status').val()) {
+
+            createStaticPage();
+
+        } else {
+
+            $('#staticpage-status').val('DRAFT');
+            createStaticPage();
+
+        }
 
     });
 
@@ -45,7 +58,6 @@ $(document).ready(function () {
 });
 
 function createStaticPage() {
-
     var pageId = $('#tiny-staticpage-id').val();
     var url;
     var putOrPost;
@@ -67,8 +79,8 @@ function createStaticPage() {
             endDate: $('#end-date').val(),
             title: $('#staticpage-title').val(),
             pageBody: tinyMCE.activeEditor.getContent(),
-            status: $('#staticpage-status').val()
-
+            status: $('#staticpage-status').val(),
+            categoryIdFK: $('#categories').val()
         }),
         headers: {
             'Accept': 'application/json',
@@ -81,24 +93,24 @@ function createStaticPage() {
         $('#tiny-staticpage-id').val(data.pageId);
 
 
-        var category = $('#categories').val();
-        if (category !== "none") {
-            alert($('#tiny-staticpage-id').val());
-            $.ajax({
-                type: 'POST',
-                url: '/CMS/category/' + $('#tiny-staticpage-id').val(),
-                data: JSON.stringify({
-                    categoryId: category
-
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                'dataType': 'json'
-            });
-        }
-        window.location = '/CMS/pagelink/' + data.titleNumber;
+//        var category = $('#categories').val();
+//        if (category !== "none") {
+//            alert($('#tiny-staticpage-id').val());
+//            $.ajax({
+//                type: 'POST',
+//                url: '/CMS/category/' + $('#tiny-staticpage-id').val(),
+//                data: JSON.stringify({
+//                    categoryId: category
+//
+//                }),
+//                headers: {
+//                    'Accept': 'application/json',
+//                    'Content-Type': 'application/json'
+//                },
+//                'dataType': 'json'
+//            });
+//        }
+        //  window.location = '/CMS/pagelink/' + data.titleNumber;
 
     });
 }
@@ -166,16 +178,19 @@ function populateEditStaticPageData() {
         $('#end-date').val(staticPage.endDate);
         $('#tiny-staticpage-id').val(staticPage.pageId);
         $('select[name="staticpage-status"]').find('option:contains("' + staticPage.status + '")').attr("selected", true);
-        $.ajax({
-            type: 'GET',
-            url: '/CMS/category/' + staticPage.categoryIdFK
 
-        }).success(function (category, status) {
+        if (staticPage.categoryIdFK) {
 
-            $('select[name="categories"]').find('option:contains("' + category.categoryName + '")').attr("selected", true);
+            $.ajax({
+                type: 'GET',
+                url: '/CMS/category/' + staticPage.categoryIdFK
 
-        });
+            }).success(function (category, status) {
 
+                $('select[name="categories"]').find('option:contains("' + category.categoryName + '")').attr("selected", true);
+
+            });
+        }
     });
 
 

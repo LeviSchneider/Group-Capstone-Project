@@ -19,7 +19,7 @@
         <ul class="nav" id="admin-sidebar-list">
 
             <!-- recomment this to lock down the sidebar -->
-            <li>
+            <!--  <li>
                 <a href="/CMS/admin">Admin</a>
             </li>
             <li>
@@ -28,12 +28,12 @@
             <li>
                 <a href="/CMS/pageTinyMCE">Create Article</a>
             </li>
-            
+             -->
             <!-- uncomment this to lock down the sidebar -->
-            <!--
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
+           
+            <sec:authorize access="hasRole('ROLE_EDITOR')">
                 <li>
-                    <a href="/CMS/admin">Admin</a>
+                    <a href="/CMS/admin">Tools</a>
                 </li>
             </sec:authorize>
 
@@ -60,7 +60,7 @@
                 </li>
 
             </sec:authorize>
-            -->
+            
         </ul>
 
 

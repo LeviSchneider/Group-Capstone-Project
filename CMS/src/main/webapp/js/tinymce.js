@@ -6,7 +6,7 @@
 var validationError = "";
 
 $(document).ready(function () {
-    
+
 
 
     if ($('#post-to-edit-id').val().length !== 0) {
@@ -35,7 +35,16 @@ $(document).ready(function () {
 
         $('#post-status').val('PUBLISHED');
 
-        createPost();
+        if ($('#post-status').val()) {
+
+            createPost();
+
+        } else {
+
+            $('#post-status').val('DRAFT');
+            createPost();
+
+        } 
 
         window.location = '/CMS/blog';
     });

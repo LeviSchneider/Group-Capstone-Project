@@ -24,29 +24,34 @@
         <button onclick="addCategoryButton()" class="btn btn-primary">Submit</button>
     </form><br/><br/><br/>
 
-    <div id="categoryCollapsible" data-collapse="accordion persist">
-        <h3>Categories</h3>
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
 
-        <table id="categoryTable" class="table table-hover">
-            <tr>
-                <th width="30%">Category Name</th>
-                <th width="10%"></th>
-            </tr>
-            <tbody id="contentRows"></tbody>
-        </table>
-    </div>
+        <div id="categoryCollapsible" data-collapse="accordion persist">
+            <h3>Categories</h3>
 
-    <div id="tagCollapsible" data-collapse="accordion persist">
-        <h3>HashTags</h3>
+            <table id="categoryTable" class="table table-hover">
+                <tr>
+                    <th width="30%">Category Name</th>
+                    <th width="10%"></th>
+                </tr>
+                <tbody id="contentRows"></tbody>
+            </table>
+        </div>
+    </sec:authorize>
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
 
-        <table id="categoryTable" class="table table-hover">
-            <tr>
-                <th width="30%">Tag Name</th>
-                <th width="10%"></th>
-            </tr>
-            <tbody id="tag-display"></tbody>
-        </table>
-    </div>
+        <div id="tagCollapsible" data-collapse="accordion persist">
+            <h3>HashTags</h3>
+
+            <table id="categoryTable" class="table table-hover">
+                <tr>
+                    <th width="30%">Tag Name</th>
+                    <th width="10%"></th>
+                </tr>
+                <tbody id="tag-display"></tbody>
+            </table>
+        </div>
+    </sec:authorize>
 
     <div id="blogPostsCollapsible" data-collapse="accordion persist">
 

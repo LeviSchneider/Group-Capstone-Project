@@ -7,6 +7,7 @@ package com.tsg.cms;
 
 import com.tsg.cms.dao.CategoryDbDao;
 import com.tsg.cms.dao.StaticPageDbDao;
+import com.tsg.cms.dao.Status;
 import com.tsg.cms.dao.TagDbDao;
 import com.tsg.cms.dto.CategoryContainer;
 import com.tsg.cms.dto.SideBarLink;
@@ -55,6 +56,13 @@ public class StaticPageController {
     @ResponseBody
     public StaticPage createStaticPage(@RequestBody StaticPage staticPage) {
 
+        if (staticPage.getCategoryIdFK() == -1) {
+            staticPage.setCategoryIdFK(null);
+        }
+        if (staticPage.getStatus() == null) {
+            staticPage.setStatus(Status.DRAFT);
+        }
+
         staticPage.setUserIdFK(999);
         return staticPageDao.addStaticPage(staticPage);
 
@@ -71,6 +79,12 @@ public class StaticPageController {
     @ResponseBody
     public StaticPage updateStaticPage(@PathVariable("id") int id, @RequestBody StaticPage staticPage) {
 
+        if (staticPage.getCategoryIdFK() == -1) {
+            staticPage.setCategoryIdFK(null);
+        }
+        if (staticPage.getStatus() == null) {
+            staticPage.setStatus(Status.DRAFT);
+        }
         staticPage.setPageId(id);
         staticPageDao.updateStaticPage(staticPage);
         return staticPage;
@@ -140,6 +154,5 @@ public class StaticPageController {
         return staticPageDao.getNavBarPages();
 
     }
-    
-    
+
 }

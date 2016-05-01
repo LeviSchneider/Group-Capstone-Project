@@ -29,11 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
     private static final String SQL_INSERT_STATICPAGE
-            = "insert into staticPages (timeCreated, timeEdited, startDate, endDate, title, pageBody, userIdFK, titleNumber, status, sideBarPosition) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            = "insert into staticPages (timeCreated, timeEdited, startDate, endDate, title, pageBody, userIdFK, categoryIdFK, titleNumber, status, sideBarPosition) value(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_DELETE_STATICPAGE
             = "delete from staticPages where pageId = ?";
     private static final String SQL_UPDATE_STATICPAGE
-            = "update staticPages set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, pageBody = ?, userIdFK = ?, titleNumber = ?, status = ?, sideBarPosition = ? where pageId = ?";
+            = "update staticPages set timeCreated = ?, timeEdited = ?, startDate = ?, endDate = ?, title = ?, pageBody = ?, userIdFK = ?, categoryIdFK = ?, titleNumber = ?, status = ?, sideBarPosition = ? where pageId = ?";
     private static final String SQL_SELECT_ALL_STATICPAGES
             = "select * from staticPages ORDER by pageId DESC";
     private static final String SQL_SELECT_STATICPAGE_BY_ID
@@ -51,6 +51,7 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     private static final String SQL_SELECT_HOMEPAGE_LINK
             = "SELECT titleNumber FROM `staticPages` WHERE `title` = 'Home' OR `title` = 'home'";
 
+    
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -75,6 +76,7 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
                             staticPage.getTitle(),
                             staticPage.getPageBody(),
                             staticPage.getUserIdFK(),
+                            staticPage.getCategoryIdFK(),
                             staticPage.getTitleNumber(),
                             staticPage.getStatus().toString(),
                             staticPage.getSideBarPosition()
@@ -99,7 +101,7 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         } else {
             updatedPage.setTitleNumber(oldPage.getTitleNumber());
         }
-        updatedPage.setCategoryIdFK(oldPage.getCategoryIdFK());
+        //updatedPage.setCategoryIdFK(oldPage.getCategoryIdFK());
         updatedPage.setSideBarPosition(oldPage.getSideBarPosition());
         updatedPage.setUserIdFK(oldPage.getUserIdFK());
 
@@ -111,6 +113,7 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
                             updatedPage.getTitle(),
                             updatedPage.getPageBody(),
                             updatedPage.getUserIdFK(),
+                            updatedPage.getCategoryIdFK(),
                             updatedPage.getTitleNumber(),
                             updatedPage.getStatus().toString(),
                             updatedPage.getSideBarPosition(),
