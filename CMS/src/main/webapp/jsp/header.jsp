@@ -9,14 +9,14 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <button style="color: white;" type="button" class="navbar-toggle collapsed" data-toggle="offcanvasright">
+            <button id='toggle-right' style="color: white;" type="button" class="navbar-toggle collapsed">
                 <span class="sr-only">Toggle right sidebar</span>
-                <span>#</span>
+                <span>RIGHT</span>
             </button>
 
-            <button style="color: white;" type="button" class="navbar-toggle collapsed" data-toggle="offcanvas">
+            <button id='toggle-left' style="color: white;" type="button" class="navbar-toggle collapsed">
                 <span class="sr-only">Toggle left sidebar</span>
-                <span>#</span>
+                <span>LEFT</span>
             </button>
 
             <a class="navbar-brand" id="click-me" href="#">CHEESE MASTER SCHOOL</a>
