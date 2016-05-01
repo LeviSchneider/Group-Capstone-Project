@@ -12,8 +12,9 @@
         <a href="/CMS/articles">Articles</a>
     </div>
 </div>
+
 <h4>Blog Page</h4>
-<div class="nav grid span8" id="custom-sidebar-list"></div>
+<div class="nav grid droppable span8" id="custom-sidebar-list"></div>
 <h4>Admin</h4>
 <div class="nav grid span8" id="admin-sidebar-list">
     <sec:authorize access="hasRole('ROLE_EDITOR')">

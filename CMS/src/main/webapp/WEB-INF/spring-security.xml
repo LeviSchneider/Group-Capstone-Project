@@ -32,7 +32,7 @@
         
         <!-- MOST strict to LEAST strict -->
 <!-- Once we uncomment this we will have to login to access admin/editor functions -->
-
+<!--
         <intercept-url pattern="/blogPost/{id}" method="DELETE" access="ROLE_ADMIN" />
         <intercept-url pattern="/category/{id}" method="DELETE" access="ROLE_ADMIN" />  
         <intercept-url pattern="/staticPage/{id}" method="DELETE" access="ROLE_ADMIN" />        
@@ -57,7 +57,7 @@
         <intercept-url pattern="/blogPost/{id}" method="PUT" access="ROLE_EDITOR" />       
         <intercept-url pattern="/category/{id}" method="PUT" access="ROLE_EDITOR" />       
         <intercept-url pattern="/staticPage/{id}" method="PUT" access="ROLE_EDITOR" />       
-                                                
+      -->                                          
  <!-- none of these are explicitly locked down or left, since they are public. 
 
 /blogPost/{id}                                  PUBLIC	GET

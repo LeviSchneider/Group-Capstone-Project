@@ -16,6 +16,7 @@
         <title>Palo Alto CMS</title>
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
+        <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/cheese.png">
     </head>
     <body>
         <div class="container">
