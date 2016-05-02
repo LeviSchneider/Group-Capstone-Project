@@ -17,17 +17,24 @@
         loadTags();
         loadSideBarItems();
 
-        $('[data-toggle=offcanvas]').click(function () {
-            $('.row-offcanvas').toggleClass('active');
+        $('#toggle-left').click(function () {
+            if (!$('.row-offcanvas-left').hasClass('active')) {
+                $('.row-offcanvas-left').addClass('active');
+                $('.row-offcanvas-right').removeClass('active');
+                $('#toggle-left').addClass('active');
+            } else {
+                $('.row-offcanvas-left').removeClass('active');
+            }
         });
-        $('[data-toggle=offcanvas]').click(function () {
-            $('.row-offcanvas-left').toggleClass('active');
+        $('#toggle-right').click(function () {
+            if (!$('.row-offcanvas-right').hasClass('active')) {
+                $('.row-offcanvas-right').addClass('active');
+                $('.row-offcanvas-left').removeClass('active');
+                $('#toggle-right').addClass('active');
+            } else {
+                $('.row-offcanvas-right').removeClass('active');
+            }
         });
-
-        $('[data-toggle=offcanvasright]').click(function () {
-            $('.row-offcanvas-right').toggleClass('active');
-        });
-
 
         $('#click-me').click(function () {
 

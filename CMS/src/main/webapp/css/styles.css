@@ -36,6 +36,8 @@ footer {
     -moz-box-shadow: 0px 0px 10px #888;
     box-shadow: 0px 0px 10px #888;
 }
+
+
 .tile {
     height: 10px;
 }
@@ -43,22 +45,39 @@ footer {
     margin-top: 1em;
 
 }
+
+
+/*
 .panel-body {
     white-space: normal;
     word-wrap: break-word;
 }
 
+this breaks the sidebars; check sidebar functionality before reinstating
+
+*/ 
+
 /*
  * Off Canvas
  * --------------------------------------------------
  */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
+
     .row-offcanvas {
         position: relative;
-        -webkit-transition: all .25s ease-out;
-        -o-transition: all .25s ease-out;
-        -moz-transition: all .25s ease-out;
-        transition: all .25s ease-out;
+        -webkit-transition: all .35s ease-in-out;
+        -o-transition: all .35s ease-in-out;
+        -ms-transition: all .35s ease-in-out;
+        -moz-transition: all .35s ease-in-out;
+        transition: all .35s ease-in-out;
+    }
+
+    .row-offcanvas-right {
+        right: 0;
+    }
+
+    .row-offcanvas-left {
+        left: 0;
     }
 
     .row-offcanvas-left
