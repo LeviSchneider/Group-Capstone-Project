@@ -12,7 +12,7 @@
     </div>
 </div>
 
-<h4>Blog Page</h4>
+<h4>Static Page</h4>
 <div class="nav grid droppable span8" id="custom-sidebar-list"></div>
 <h4>Admin</h4>
 <div class="nav grid span8" id="admin-sidebar-list">
