@@ -7,52 +7,50 @@ var validationError = "";
 
 $(document).ready(function () {
 
-
-
     if ($('#post-to-edit-id').val().length !== 0) {
-
         populateEditPostData();
-
     }
 
     $('#tiny-save').click(function (event) {
-
         if (formIsValid()) {
             event.preventDefault();
             $('#tiny-save').effect("highlight");
             createPost();
+            displaySaveConfirmation(true);
         } else {
-            alert(validationError);
+            //alert(validationError);
+            displaySaveConfirmation(false, validationError);
             validationError = "";
         }
-
-
     });
 
     $('#tiny-publish').click(function (event) {
-
         event.preventDefault();
-
         $('#post-status').val('PUBLISHED');
-
         if ($('#post-status').val()) {
-
             createPost();
-
         } else {
-
             $('#post-status').val('DRAFT');
             createPost();
-
-        } 
-
+        }
         window.location = '/CMS/blog';
     });
-
     //autosaves every 1 minute
     //setInterval(createPost, 60000);
-
 });
+
+function displaySaveConfirmation(saveStatus, errorMessage) {
+    $('#last-saved-field').removeClass("text-success");
+    $('#last-saved-field').removeClass("text-danger");
+    if (saveStatus === true) {
+        date = new Date();
+        $('#last-saved-field').addClass("text-success");
+        $('#last-saved-field').text("Successfully saved at " + date.toLocaleTimeString() + ".");
+    } else {
+        $('#last-saved-field').addClass("text-danger");
+        $('#last-saved-field').text("We couldn't save your text. " + errorMessage);
+    }
+}
 
 function createPost() {
 
@@ -66,6 +64,8 @@ function createPost() {
         putOrPost = 'PUT';
         url = '/CMS/blogPost/' + postId;
     }
+
+    
 
     $.ajax({
         type: putOrPost,
