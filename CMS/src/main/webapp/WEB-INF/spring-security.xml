@@ -33,6 +33,9 @@
         <!-- MOST strict to LEAST strict -->
 <!-- Once we uncomment this we will have to login to access admin/editor functions -->
 <!--
+
+        <intercept-url pattern="/users" method="GET" access="ROLE_ADMIN" />
+        <intercept-url pattern="/userRoles/{userId}" method="GET" access="ROLE_ADMIN" />
         <intercept-url pattern="/blogPost/{id}" method="DELETE" access="ROLE_ADMIN" />
         <intercept-url pattern="/category/{id}" method="DELETE" access="ROLE_ADMIN" />  
         <intercept-url pattern="/staticPage/{id}" method="DELETE" access="ROLE_ADMIN" />        
