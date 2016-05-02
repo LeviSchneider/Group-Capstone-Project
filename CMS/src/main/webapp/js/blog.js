@@ -22,6 +22,7 @@ $(document).ready(function () {
 
 function populateBlogPosts(limit) {
 
+    var author = "The Big Cheese";
 
     var blogPanel = $('#blog-post-display');
     $.ajax({
@@ -44,11 +45,12 @@ function populateBlogPosts(limit) {
                             .addClass("panel panel-default")
                             .append($('<div>')
                                     .addClass('panel-heading')
-                                    .append(blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')'
-                                            + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
-                                            + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'))
+                                    .append('<h3 class="blog-post-title">' + blogPostContainer.blogPost.title + '</h3>'
+                                            + '<p class="blog-post-meta">' + blogPostContainer.blogPost.timeCreated + ' by ' + author + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs pull-right">'
+                                            + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>' + '</p>'
+                                            ))
                             .append($('<div>')
-                                    .addClass('panel-body')        
+                                    .addClass('panel-body')
                                     .append(blogPostContainer.blogPost.postBody + readMoreLink))
                             .append($('<div>')
                                     .addClass('panel-footer')
