@@ -173,43 +173,4 @@
 
         });
     }
-
-    var sideBarPositionList = [];
-    var sideBarUrlList = [];
-
-
-
-    $(function () {
-        $(".droppable").sortable({
-            tolerance: 'pointer',
-            revert: 'invalid',
-            placeholder: 'span2 well placeholder tile',
-            forceHelperSize: true,
-            update: function (event, ui) {
-                Dropped();
-            }
-        });
-    });
-
-    function Dropped(event, ui) {
-        sideBarPositionList = [];
-        sideBarUrlList = [];
-        var counter = 1;
-        $(".droppable").children().each(function () {
-            //var p = $(this).position();
-            sideBarUrlList[sideBarUrlList.length] = $(this).find('input').val();
-        });
-        alert(sideBarUrlList);
-        for (var i = 0; i < sideBarUrlList.length; i++)
-        {
-            alert(counter + ' ' + sideBarUrlList[i]);
-            $.ajax({
-                type: 'PUT',
-                url: '/CMS/staticPage/' + counter + '/' + sideBarUrlList[i]
-            });
-            counter++;
-        }
-        alert('Now it should have saved');
-        loadSideBarItems();
-    }
 </script>

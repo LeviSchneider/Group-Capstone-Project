@@ -33,6 +33,7 @@ function populateUsers() {
 
             $.ajax({
                 //this is not working because the data is parsed before the ajax call is done
+          
                 type: 'GET',
                 url: 'userRoles/' + user.userId
 
@@ -42,7 +43,6 @@ function populateUsers() {
 
 
                     roleText += role + "&nbsp;&nbsp;&nbsp;&nbsp;";
-
                 });
             });
 

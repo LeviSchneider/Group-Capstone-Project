@@ -23,11 +23,48 @@
 </script>
 
 <form>
-    <input type="hidden" id="post-to-edit-id" value="${editBlogPostId}"/>
-    Start Date: <input type="date" id="start-date" /> End Date: <input type="date" id="end-date"/>
-    <br/><input type="text" id="post-title" placeholder="A title is required..."/>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Categories:</label>
+                    <div class="col-md-8">
+                        <input type="hidden" id="post-to-edit-id" value="${editBlogPostId}"/>
+                        <input id="add-category" type="text" placeholder="Add a NEW category...">
+                        <button onclick="addCategoryButton()" class="btn btn-xs">Add</button>
+                        <br>
+                        <br>
+                        <select id="categories" name="categories">
+                            <option value="-1">Choose Category</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Start Date:</label>
+                    <div class="col-md-8">
+                        <input type="date" id="start-date"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">End Date:</label>
+                    <div class="col-md-8">
+                        <input type="date" id="end-date"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Title:</label>
+                    <div class="col-md-8">
+                        <input type="text" id="post-title" placeholder="A title is required..."/>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
     <textarea id="htmlOutput"></textarea>
-    <select id="post-status" name="post-status">
+    <hr>
+    <select id="post-status" name="staticpage-status">
         <option value="DRAFT">DRAFT</option>
         <option value="READY_FOR_APPROVAL">READY_FOR_APPROVAL</option>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -41,5 +78,3 @@
     <button id="tiny-publish" type="button">Publish</button>
     <span id="last-saved-field" class="pull-right"></span>
 </form>
-
-
