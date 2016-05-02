@@ -1,5 +1,5 @@
 <input type="hidden" id="sidebar-count">
-<h4>User</h4>
+
 <div class="nav grid span8" id="default-sidebar-list">
     <div class="well-sm span2">
         <a href="/CMS/home">Home</a>
@@ -8,13 +8,12 @@
         <a href="/CMS/blog">Blog</a>
     </div>
     <div class="well-sm span4">
-        <a href="/CMS/articles">Articles</a>
+        <a href="/CMS/articles">All Articles</a>
     </div>
 </div>
 
-<h4>Blog Page</h4>
 <div class="nav grid droppable span8" id="custom-sidebar-list"></div>
-<h4>Admin</h4>
+
 <div class="nav grid span8" id="admin-sidebar-list">
     <sec:authorize access="hasRole('ROLE_EDITOR')">
         <div class="well-sm span2">

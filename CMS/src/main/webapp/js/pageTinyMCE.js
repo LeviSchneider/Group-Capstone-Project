@@ -16,35 +16,26 @@ $(document).ready(function () {
     }
 
     $('#tiny-save').click(function (event) {
-
         if (formIsValid()) {
             event.preventDefault();
             $('#tiny-save').effect("highlight");
             createStaticPage();
+            displaySaveConfirmation(true);
         } else {
             $('#tiny-save').attr('data-content', validationError);
+            displaySaveConfirmation(false, validationError);
             validationError = "";
         }
-
-
     });
 
     $('#tiny-publish').click(function (event) {
-
         event.preventDefault();
-
-
         $('#staticpage-status').val('PUBLISHED');
-
         if ($('#staticpage-status').val()) {
-
             createStaticPage();
-
         } else {
-
             $('#staticpage-status').val('DRAFT');
             createStaticPage();
-
         }
         window.location = '/CMS/articles';
     });
@@ -53,6 +44,19 @@ $(document).ready(function () {
     //setInterval(createStaticPage, 60000);
 
 });
+
+function displaySaveConfirmation(saveStatus, errorMessage) {
+    $('#last-saved-field').removeClass("text-success");
+    $('#last-saved-field').removeClass("text-danger");
+    if (saveStatus === true) {
+        date = new Date();
+        $('#last-saved-field').addClass("text-success");
+        $('#last-saved-field').text("Successfully saved at " + date.toLocaleTimeString() + ".");
+    } else {
+        $('#last-saved-field').addClass("text-danger");
+        $('#last-saved-field').text("We couldn't save your text. " + errorMessage);
+    }
+}
 
 function createStaticPage() {
     var pageId = $('#tiny-staticpage-id').val();

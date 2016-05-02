@@ -16,6 +16,7 @@
         <title>Palo Alto CMS</title>
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css">
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/cheese.png">
     </head>
     <body>
@@ -47,12 +48,12 @@
             </div>
         </div>
 
-<!--
-    <div class="container">
-      <div class="row row-offcanvas row-offcanvas-left">
-          <div class="row-offcanvas row-offcanvas-right">
-             <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarLeft" role="navigation">
--->
+        <!--
+            <div class="container">
+              <div class="row row-offcanvas row-offcanvas-left">
+                  <div class="row-offcanvas row-offcanvas-right">
+                     <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarLeft" role="navigation">
+        -->
 
         <script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
