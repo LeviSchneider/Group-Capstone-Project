@@ -16,7 +16,7 @@
 
 
 
-<!--    <sec:authorize access="hasRole('ROLE_ADMIN')">
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
 
         <div id="usersCollapsible" data-collapse="accordion persist">
             <h3>Users</h3>
@@ -30,7 +30,7 @@
             </table>
 
         </div>
-    </sec:authorize>-->
+    </sec:authorize>
 
     <div id="addCategoryCollapsible" data-collapse="accordion persist">
         <h3>Add Category</h3>
