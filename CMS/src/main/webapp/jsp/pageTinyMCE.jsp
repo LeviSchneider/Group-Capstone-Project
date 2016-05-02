@@ -23,63 +23,65 @@
 </script>
 
 
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Categories:</label>
+                            <div class="col-md-8">
+                                <input type="hidden" id="staticpage-to-edit-id" value="${editStaticPageId}"/>
+                                <input id="add-category" type="text" placeholder="Add a NEW category...">
+                                <button onclick="addCategoryButton()" class="btn btn-xs">Add</button>
+                                <br>
+                                <br>
+                                <select id="categories" name="categories">
+                                    <option value="-1">Choose Category</option>
+                                </select>
+                            </div>
+                        </div>
 
-<form>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-md-2 control-label">Categories:</label>
-                    <div class="col-md-8">
-                        <input type="hidden" id="staticpage-to-edit-id" value="${editStaticPageId}"/>
-                        <input id="add-category" type="text" placeholder="Add a NEW category...">
-                        <button onclick="addCategoryButton()" class="btn btn-xs">Add</button>
-                        <br>
-                        <br>
-                        <select id="categories" name="categories">
-                            <option value="-1">Choose Category</option>
-                        </select>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Start Date:</label>
+                            <div class="col-md-8">
+                                <input type="date" id="start-date"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">End Date:</label>
+                            <div class="col-md-8">
+                                <input type="date" id="end-date"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Title:</label>
+                            <div class="col-md-8">
+                                <input type="text" id="staticpage-title" placeholder="A title is required..."/>
+                            </div>
+                        </div>
+                        <hr>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="col-md-2 control-label">Start Date:</label>
-                    <div class="col-md-8">
-                        <input type="date" id="start-date"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 control-label">End Date:</label>
-                    <div class="col-md-8">
-                        <input type="date" id="end-date"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 control-label">Title:</label>
-                    <div class="col-md-8">
-                        <input type="text" id="staticpage-title" placeholder="A title is required..."/>
-                    </div>
-                </div>
-                <hr>
             </div>
-        </div>
+            <textarea id="htmlOutput"></textarea>
+            <hr>
+            <select id="staticpage-status" name="staticpage-status">
+                <option value="DRAFT">DRAFT</option>
+                <option value="READY_FOR_APPROVAL">READY_FOR_APPROVAL</option>
+
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <option value="APPROVED">APPROVED</option>
+                    <option value="UNPUBLISHED">UNPUBLISHED</option>
+                    <option value="PUBLISHED">PUBLISHED</option>
+                </sec:authorize>
+            </select>
+            <button id="tiny-save" type="button">Save</button>
+            <input type="hidden" id="tiny-staticpage-id"/>
+            <button id="tiny-publish" type="button">Publish</button>
+            <span id="last-saved-field" class="pull-right"></span>
+        </form>
     </div>
-    <textarea id="htmlOutput"></textarea>
-    <hr>
-    <select id="staticpage-status" name="staticpage-status">
-        <option value="DRAFT">DRAFT</option>
-        <option value="READY_FOR_APPROVAL">READY_FOR_APPROVAL</option>
-
-        <sec:authorize access="hasRole('ROLE_ADMIN')">
-            <option value="APPROVED">APPROVED</option>
-            <option value="UNPUBLISHED">UNPUBLISHED</option>
-            <option value="PUBLISHED">PUBLISHED</option>
-        </sec:authorize>
-    </select>
-    <button id="tiny-save" type="button">Save</button>
-    <input type="hidden" id="tiny-staticpage-id"/>
-    <button id="tiny-publish" type="button">Publish</button>
-    <span id="last-saved-field" class="pull-right"></span>
-</form>
-
+</div>
 
