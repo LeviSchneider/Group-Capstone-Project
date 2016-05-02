@@ -32,16 +32,17 @@
         
         <!-- MOST strict to LEAST strict -->
 <!-- Once we uncomment this we will have to login to access admin/editor functions -->
-
 <!--
         <intercept-url pattern="/blogPost/{id}" method="DELETE" access="ROLE_ADMIN" />
         <intercept-url pattern="/category/{id}" method="DELETE" access="ROLE_ADMIN" />  
         <intercept-url pattern="/staticPage/{id}" method="DELETE" access="ROLE_ADMIN" />        
         <intercept-url pattern="/tag/{tagName}" method="DELETE" access="ROLE_ADMIN" />        
-        <intercept-url pattern="/blogPostsAdmin" method="GET" access="ROLE_ADMIN" />        
-        <intercept-url pattern="/blogPostsAdminUnpublished" method="GET" access="ROLE_ADMIN" />     
-        <intercept-url pattern="/admin/**" method="GET" access="ROLE_ADMIN" />  
-        <intercept-url pattern="/adminQuickChangeBlogPostStatus/{id}/{status}" method="POST" access="ROLE_ADMIN" />          
+        <intercept-url pattern="/blogPostsAdmin" method="GET" access="ROLE_EDITOR" />        
+        <intercept-url pattern="/blogPostsAdminUnpublished" method="GET" access="ROLE_EDITOR" />   
+        <intercept-url pattern="/staticPagesAdminUnpublished" method="GET" access="ROLE_EDITOR" />
+        <intercept-url pattern="/admin/**" method="GET" access="ROLE_EDITOR" />  
+        <intercept-url pattern="/adminQuickChangeBlogPostStatus/**" method="PUT" access="ROLE_ADMIN" /> 
+        <intercept-url pattern="/adminQuickChangeStaticPageStatus/**" method="PUT" access="ROLE_ADMIN" />                 
         <intercept-url pattern="staticPage/{id}/{position}" method="PUT" access="ROLE_ADMIN" /> 
         <intercept-url pattern="tag/{oldTagName}" method="PUT" access="ROLE_ADMIN" /> 
         <intercept-url pattern="/blogPostAdmin/{id}" method="GET" access="ROLE_EDITOR" /> 
@@ -51,14 +52,12 @@
         <intercept-url pattern="/pageTinyMCE/{id}" method="GET" access="ROLE_EDITOR" /> 
         <intercept-url pattern="/blogPost" method="POST" access="ROLE_EDITOR" /> 
         <intercept-url pattern="/category" method="POST" access="ROLE_EDITOR" /> 
-        <intercept-url pattern="/category/{postId}" method="POST" access="ROLE_EDITOR" /> 
         <intercept-url pattern="/staticPage" method="POST" access="ROLE_EDITOR" /> 
         <intercept-url pattern="/tag/{postId}" method="POST" access="ROLE_EDITOR" /> 
         <intercept-url pattern="/blogPost/{id}" method="PUT" access="ROLE_EDITOR" />       
         <intercept-url pattern="/category/{id}" method="PUT" access="ROLE_EDITOR" />       
         <intercept-url pattern="/staticPage/{id}" method="PUT" access="ROLE_EDITOR" />       
-     -->
-                                                  
+      -->                                          
  <!-- none of these are explicitly locked down or left, since they are public. 
 
 /blogPost/{id}                                  PUBLIC	GET

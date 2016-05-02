@@ -35,7 +35,11 @@ public interface StaticPageDbDao {
 
     public List<SideBarLink> getNavBarPages();
     
-    public void updatePageNavBarPosition(int pageId, int position);
+    public void updatePageNavBarPosition(int position, String titleNumber);
 
     public String getHomePageLink();
+
+    public List<StaticPage> getAllStaticPagesAdminUnpublished();
+
+    public void adminQuickChangeStaticPageStatus(int id, String status);
 }

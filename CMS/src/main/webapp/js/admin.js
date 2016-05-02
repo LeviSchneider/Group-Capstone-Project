@@ -11,6 +11,7 @@ $(document).ready(function () {
     loadStaticPages();
     populateBlogPosts();
     populateUnpublishedBlogPosts();
+    populateUnpublishedStaticPages();
 });
 
 
@@ -58,6 +59,7 @@ function loadStaticPages(data, status) {
                 addOrRemoveSideBarButton = '<a onclick="addPageToSideBar(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
                         + '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button></a>';
             }
+
             staticPagePanel
                     .append($('<tr>')
                             .append($('<td>')
@@ -92,15 +94,21 @@ function loadStaticPages(data, status) {
 
                                             )
                                     ));
-            $.ajax({
-                type: 'GET',
-                url: '/CMS/category/' + staticPage.categoryIdFK
 
-            }).success(function (category, status) {
+            if (staticPage.categoryIdFK) {
 
-                $('#category' + staticPage.pageId).text(category.categoryName);
+                $.ajax({
+                    type: 'GET',
+                    url: '/CMS/category/' + staticPage.categoryIdFK
 
-            });
+                }).success(function (category, status) {
+
+
+                    $('#category' + staticPage.pageId).text(category.categoryName);
+
+                });
+
+            }
         });
     });
 
@@ -180,6 +188,10 @@ function deleteCategory(categoryId) {
             loadCategories();
             loadStaticPages();
 
+        }).error(function () {
+
+            alert("You do not have permission to delete categories!")
+
         });
     }
 }
@@ -237,7 +249,7 @@ function loadSideBarItems() {
                 row += '<div class="well span2 tile>';
                 row += '<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>';
                 row += '</div>';
-            } else if(count === sideBarLink.length){
+            } else if (count === sideBarLink.length) {
                 row += '<div class="well span4 tile">';
                 row += '<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>';
                 row += '</div>';
@@ -261,6 +273,10 @@ function addPageToSideBar(pageId) {
 
         loadSideBarItems();
         loadStaticPages();
+    }).success(function (data, status) {
+
+        alert("You do not have permission to edit sidebar items!");
+
     });
 }
 
@@ -276,6 +292,10 @@ function deletePageFromSideBar(pageId) {
 
             loadSideBarItems();
             loadStaticPages();
+
+        }).success(function (data, status) {
+
+            alert("You do not have permission to edit sidebar items!");
 
         });
     }
@@ -345,17 +365,20 @@ function populateUnpublishedBlogPosts(data, status) {
 
 
             blogPanel
-                    .append($('<div>')
-                            .addClass("panel panel-default")
-                            .append($('<div>')
-                                    .addClass('panel-heading')
-                                    .append('<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
-                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'
-                                            + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
-                                            + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'
-                                            + blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')')
-                                    .append(statusDropDownFields).attr({onchange: 'quickChangeBlogPostStatus("' + blogPostContainer.blogPost.postId + '")'}
-                            )));
+                    .append($('<tr>')
+                            .append($('<td>')
+
+                                    .append($('<div>')
+                                            .addClass("panel panel-default")
+                                            .append($('<div>')
+                                                    .addClass('panel-heading')
+                                                    .append('<a href="/CMS/tinymce/' + blogPostContainer.blogPost.postId + '"><button type="button" class="btn btn-default btn-xs">'
+                                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'
+                                                            + '<a href="/CMS/link/' + blogPostContainer.blogPost.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
+                                                            + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'
+                                                            + blogPostContainer.blogPost.title + ' by: Mayor McCheese (' + blogPostContainer.blogPost.timeCreated + ')')
+                                                    .append(statusDropDownFields).attr({onchange: 'quickChangeBlogPostStatus("' + blogPostContainer.blogPost.postId + '")'}
+                                            )))));
         });
     });
 }
@@ -369,9 +392,73 @@ function quickChangeBlogPostStatus(postId) {
 
     }).success(function () {
         populateUnpublishedBlogPosts();
+    }).error(function () {
+        alert("You do not have permission to approve or publish posts!");
     });
 
 }
+
+function populateUnpublishedStaticPages(data, status) {
+    var staticPagePanel = $('#unpublished-static-page-display');
+    $('#unpublished-static-page-display').empty();
+    $.ajax({
+        type: 'GET',
+        url: 'staticPagesAdminUnpublished'
+
+    }).success(function (data, status) {
+
+        $.each(data, function (index, staticPage) {
+
+            //var tagList = blogPostContainer.tagContainer.tagList;
+            //var categoryList = blogPostContainer.categoryContainer.categoryList;
+
+            var statusDropDownFields = $('<select/>');
+
+            statusDropDownFields.attr({id: "page-status" + staticPage.pageId,
+                name: "page-status" + staticPage.pageId});
+            var options = ["DRAFT", "READY_FOR_APPROVAL", "APPROVED", "UNPUBLISHED", "PUBLISHED"];
+            for (var i in options) {
+                statusDropDownFields.append($('<option/>').html(options[i]));
+                if (options[i] === staticPage.status) {
+                    statusDropDownFields.val(options[i]);
+
+                }
+            }
+
+
+            staticPagePanel
+                    .append($('<div>')
+                            .addClass("panel panel-default")
+                            .append($('<div>')
+                                    .addClass('panel-heading')
+                                    .append('<a href="/CMS/pageTinyMCE/' + staticPage.pageId + '"><button type="button" class="btn btn-default btn-xs">'
+                                            + '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></a>'
+                                            + '<a href="/CMS/pagelink/' + staticPage.titleNumber + '"><button type="button" class="btn btn-default btn-xs">'
+                                            + '<span class="glyphicon glyphicon-link" aria-hidden="true"></span></button></a>'
+                                            + staticPage.title + ' by: Mayor McCheese ')
+                                    .append(statusDropDownFields).attr({onchange: 'quickChangeStaticPageStatus("' + staticPage.pageId + '")'})));
+                            
+                            
+                
+        });
+    });
+}
+
+function quickChangeStaticPageStatus(pageId) {
+
+
+    $.ajax({
+        type: 'PUT',
+        url: 'adminQuickChangeStaticPageStatuss/' + pageId + '/' + $('#page-status' + pageId).val()
+
+    }).success(function () {
+        populateUnpublishedStaticPages();
+    }).error(function () {
+        alert("You do not have permission to approve or publish pages!");
+    });
+
+}
+
 
 function deleteStaticPage(pageId) {
 
@@ -384,7 +471,10 @@ function deleteStaticPage(pageId) {
         }).success(function () {
             loadStaticPages();
             loadSideBarItems();
+        }).error(function () {
+            alert("You do not have permission to delete pages!");
         });
+        ;
     }
 }
 
@@ -428,6 +518,9 @@ function deleteTag(tag) {
 
         }).success(function () {
             loadAdminTags();
+        }).error(function () {
+            alert("You do not have permission to delete tags!");
         });
+
     }
 }

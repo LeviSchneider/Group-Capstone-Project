@@ -98,7 +98,7 @@
     }
 
     function populatedTagPosts(data) {
-        
+
         clearPopulatedPosts();
         var blogPanel = $('#blog-post-display');
         $.ajax({
@@ -137,7 +137,6 @@
             });
         });
     }
-    ;
 
     function loadSideBarItems() {
 
@@ -148,23 +147,62 @@
         $.ajax({
             type: 'GET',
             url: '/CMS/sideBarLinks'
-
         }).success(function (data, status) {
             $('#custom-sidebar-list').val(data.length);
             $.each(data, function (index, sideBar) {
 
                 if (counter !== sideBar.length) {
                     row += "<div class='well-sm span2'>";
-                    row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
-                    row += "</div>";
+                    row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "<input id='sideBarPosition" + sideBar.sideBarLinkUrl + "' type='hidden' value='" + sideBar.sideBarLinkUrl + "'/></div>";
                 } else if (counter === sideBar.length) {
                     row += "<div class='well-sm span4'>";
-                    row += "<a href='/CMS/\"" + sideBar.sideBarLinkUrl + "\"'>" + sideBar.sideBarLinkName + "</a>";
-                    row += "</div>";
+                    row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
+                    row += "<input id='sideBarPosition" + sideBar.sideBarLinkUrl + "' type='hidden' value='" + sideBar.sideBarLinkUrl + "'/></div>";
                 }
                 counter++;
             });
             sideBar.append(row);
+
         });
+    }
+
+    var sideBarPositionList = [];
+    var sideBarUrlList = [];
+
+
+
+    $(function () {
+        $(".droppable").sortable({
+            tolerance: 'pointer',
+            revert: 'invalid',
+            placeholder: 'span2 well placeholder tile',
+            forceHelperSize: true,
+            update: function (event, ui) {
+                Dropped();
+            }
+        });
+    });
+
+    function Dropped(event, ui) {
+        sideBarPositionList = [];
+        sideBarUrlList = [];
+        var counter = 1;
+        $(".droppable").children().each(function () {
+            //var p = $(this).position();
+            sideBarUrlList[sideBarUrlList.length] = $(this).find('input').val();
+        });
+        alert(sideBarUrlList);
+        for (var i = 0; i < sideBarUrlList.length; i++)
+        {
+            alert(counter + ' ' + sideBarUrlList[i]);
+            $.ajax({
+                type: 'PUT',
+                url: '/CMS/staticPage/' + counter + '/' + sideBarUrlList[i]
+            });
+            counter++;
+        }
+        alert('Now it should have saved');
+        loadSideBarItems();
     }
 </script>
