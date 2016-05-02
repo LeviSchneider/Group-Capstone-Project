@@ -144,7 +144,6 @@
             });
         });
     }
-    ;
 
     function loadSideBarItems() {
 
@@ -155,7 +154,6 @@
         $.ajax({
             type: 'GET',
             url: '/CMS/sideBarLinks'
-
         }).success(function (data, status) {
             $('#custom-sidebar-list').val(data.length);
             $.each(data, function (index, sideBar) {
@@ -163,43 +161,21 @@
                 if (counter !== sideBar.length) {
                     row += "<div class='well-sm span2'>";
                     row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
-                    row += "<input id='sideBarPosition" + sideBar.sideBarLinkUrl + "' type='hidden' value='" + sideBar.sideBarLinkPosition + "'/></div>";
+                    row += "<input id='sideBarPosition" + sideBar.sideBarLinkUrl + "' type='hidden' value='" + sideBar.sideBarLinkUrl + "'/></div>";
                 } else if (counter === sideBar.length) {
                     row += "<div class='well-sm span4'>";
                     row += "<a href='/CMS/pagelink/" + sideBar.sideBarLinkUrl + "'>" + sideBar.sideBarLinkName + "</a>";
-                    row += "</div>";
+                    row += "<input id='sideBarPosition" + sideBar.sideBarLinkUrl + "' type='hidden' value='" + sideBar.sideBarLinkUrl + "'/></div>";
                 }
                 counter++;
             });
             sideBar.append(row);
+
         });
     }
-    /*
-     function loadSideBarItems() {
-     
-     $('#custom-sidebar-list').empty();
-     var sideBar = $('#custom-sidebar-list');
-     
-     $.ajax({
-     type: 'GET',
-     url: '/CMS/sideBarLinks'
-     
-     }).success(function (data, status) {
-     $('#custom-sidebar-list').val(data.length);
-     $.each(data, function (index, sideBarLink) {
-     
-     //nextNavBarId++;
-     sideBar.append($('<li>')
-     .append('<a href="/CMS/' + sideBarLink.sideBarLinkUrl + '">' + sideBarLink.sideBarLinkName + '</a>')
-     );
-     });
-     
-     });
-     
-     }*/
 
-var sideBarPositionList = [];
-var sideBarUrlList = [];
+    var sideBarPositionList = [];
+    var sideBarUrlList = [];
 
 
 
@@ -218,14 +194,22 @@ var sideBarUrlList = [];
     function Dropped(event, ui) {
         sideBarPositionList = [];
         sideBarUrlList = [];
+        var counter = 1;
         $(".droppable").children().each(function () {
             //var p = $(this).position();
-            sideBarPositionList[sideBarPositionList.length] = $(this).find('input').val();
-            sideBarUrlList[sideBarUrlList.length] = $(this).find('a').html();
+            sideBarUrlList[sideBarUrlList.length] = $(this).find('input').val();
         });
-       
-      // ajax post to /sideBarLinks/{positionList}/{sideBarUrlList}
-       
-        refresh();
+        alert(sideBarUrlList);
+        for (var i = 0; i < sideBarUrlList.length; i++)
+        {
+            alert(counter + ' ' + sideBarUrlList[i]);
+            $.ajax({
+                type: 'PUT',
+                url: '/CMS/staticPage/' + counter + '/' + sideBarUrlList[i]
+            });
+            counter++;
+        }
+        alert('Now it should have saved');
+        loadSideBarItems();
     }
 </script>

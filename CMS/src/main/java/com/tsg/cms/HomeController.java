@@ -39,9 +39,7 @@ public class HomeController {
 
         String homePage = staticPageDao.getHomePageLink();
         if (homePage == null) {
-
             session.setAttribute("page", "blog");
-
             session.setAttribute("js_page", "blog.js");
             return "home";
 

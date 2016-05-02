@@ -19,7 +19,7 @@
                     <label for="username">Username
                     </label>
                 </th>
-
+                password is password
                 <td><input id="username_or_email"
                            name="j_username"
                            type="text" />

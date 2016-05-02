@@ -10,6 +10,7 @@ import com.tsg.cms.dao.StaticPageDbDao;
 import com.tsg.cms.dao.Status;
 import com.tsg.cms.dto.SideBarLink;
 import com.tsg.cms.dto.StaticPage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -101,6 +102,16 @@ public class StaticPageController {
 
     }
 
+    @RequestMapping(value = "/staticPageOrder/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public List<StaticPage> updatePageOrder(@PathVariable("id") int id, @RequestBody StaticPage staticPage) {
+        staticPage.setSideBarPosition(id);
+        staticPageDao.updateStaticPage(staticPage);
+
+        return staticPageDao.getAllStaticPages();
+    }
+
     @RequestMapping(value = "/pageTinyMCE", method = RequestMethod.GET)
     public String showEditor(Map<String, Object> model, HttpSession session) {
 
@@ -133,24 +144,22 @@ public class StaticPageController {
         return "home";
     }
 
-    @RequestMapping(value = "/staticPage/{id}/{position}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/staticPage/{sideBarPosition}/{titleNumber}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
-    public void updatePageSideBarPosition(@PathVariable("id") int id, @PathVariable("position") int position, Map<String, Object> model, HttpSession session) {
+    public void updatePageSideBarPosition(@PathVariable("sideBarPosition") int sideBarPosition, @PathVariable("titleNumber") String titleNumber) {
 
         //can use position 0 to remove staticPage from sideBar
-        staticPageDao.updatePageNavBarPosition(id, position);
+        staticPageDao.updatePageNavBarPosition(sideBarPosition, titleNumber);
 
     }
 
     @RequestMapping(value = {"/sideBarLinks"}, method = RequestMethod.GET)
     @ResponseBody
     public List<SideBarLink> getSideBarLinks() {
-
+        List<SideBarLink> newList = staticPageDao.getNavBarPages();
         return staticPageDao.getNavBarPages();
-
     }
 
-    
     @RequestMapping(value = "/staticPagesAdminUnpublished", method = RequestMethod.GET)
     @ResponseBody
     public List<StaticPage> getAllStaticPagesAdminUnpublished() {
@@ -158,7 +167,7 @@ public class StaticPageController {
         return staticPageDao.getAllStaticPagesAdminUnpublished();
 
     }
-    
+
     @RequestMapping(value = "/adminQuickChangeStaticPageStatus/{id}/{status}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -166,5 +175,5 @@ public class StaticPageController {
 
         staticPageDao.adminQuickChangeStaticPageStatus(id, status);
 
-    }   
+    }
 }

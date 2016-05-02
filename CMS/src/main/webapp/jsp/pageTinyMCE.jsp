@@ -19,7 +19,6 @@
         contextmenu: "link image inserttable | cell row column deletetable",
         inline: false
     });
-
 </script>
 
 

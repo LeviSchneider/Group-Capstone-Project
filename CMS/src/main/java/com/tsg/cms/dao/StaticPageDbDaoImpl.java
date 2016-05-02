@@ -45,9 +45,9 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     private static final String SQL_SELECT_TITLENUMBERS
             = "SELECT titleNumber FROM staticPages where titleNumber rlike ?";
     private static final String SQL_SELECT_STATICPAGES_BY_SIDEBAR_POSITION
-            = "select title, titleNumber, sideBarPosition from staticPages where sideBarPosition > 0";
+            = "select title, titleNumber, sideBarPosition from staticPages where sideBarPosition > 0 order by sideBarPosition asc";
     private static final String SQL_UPDATE_STATICPAGE_SIDEBAR_POSITION
-            = "update staticPages set sideBarPosition = ? where pageId = ?";
+            = "update staticPages set sideBarPosition = ? where titleNumber = ?";
     private static final String SQL_SELECT_HOMEPAGE_LINK
             = "SELECT titleNumber FROM `staticPages` WHERE `title` = 'Home' OR `title` = 'home'";
     private static final String SQL_QUICK_PUBLISH_STATICPAGE
@@ -284,9 +284,9 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     }
 
     @Override
-    public void updatePageNavBarPosition(int pageId, int position) {
+    public void updatePageNavBarPosition(int position, String titleNumber) {
 
-        jdbcTemplate.update(SQL_UPDATE_STATICPAGE_SIDEBAR_POSITION, position, pageId);
+        jdbcTemplate.update(SQL_UPDATE_STATICPAGE_SIDEBAR_POSITION, position, titleNumber);
     }
 
 }

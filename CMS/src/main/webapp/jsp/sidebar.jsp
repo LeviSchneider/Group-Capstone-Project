@@ -1,7 +1,6 @@
 <input type="hidden" id="sidebar-count">
 <h4>User</h4>
 <div class="nav grid span8" id="default-sidebar-list">
-
     <div class="well-sm span2">
         <a href="/CMS/home">Home</a>
     </div>
