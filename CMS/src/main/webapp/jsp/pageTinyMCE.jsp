@@ -32,7 +32,8 @@
                     <div class="col-md-8">
                         <input type="hidden" id="staticpage-to-edit-id" value="${editStaticPageId}"/>
                         <input id="add-category" type="text" placeholder="Add a NEW category...">
-                        <button onclick="addCategoryButton()" class="btn btn-default">Add</button>
+                        <button onclick="addCategoryButton()" class="btn btn-xs">Add</button>
+                        <br>
                         <br>
                         <select id="categories" name="categories">
                             <option value="-1">Choose Category</option>
