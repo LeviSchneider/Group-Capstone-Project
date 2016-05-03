@@ -26,8 +26,6 @@ $(document).ready(function () {
 
     $('#tiny-publish').click(function (event) {
         event.preventDefault();
-        $('#post-status').val('PUBLISHED');
-        
         if ($('#post-status').val()) {
 
             if (formIsValid()) {
@@ -51,6 +49,7 @@ $(document).ready(function () {
                 validationError = "";
             }
         }
+        $('#post-status').val('PUBLISHED');
     });
     //autosaves every 1 minute
     //setInterval(createPost, 60000);

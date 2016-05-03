@@ -30,10 +30,7 @@ $(document).ready(function () {
 
     $('#tiny-publish').click(function (event) {
         event.preventDefault();
-        $('#staticpage-status').val('PUBLISHED');
-
         if ($('#staticpage-status').val()) {
-
             if (formIsValid()) {
                 createStaticPage();
                 window.location = '/CMS/articles';
@@ -55,6 +52,7 @@ $(document).ready(function () {
                 validationError = "";
             }
         }
+        $('#staticpage-status').val('PUBLISHED');
     });
 
     //autosaves every 1 minute

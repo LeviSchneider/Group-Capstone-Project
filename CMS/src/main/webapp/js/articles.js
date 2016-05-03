@@ -27,12 +27,7 @@ function loadStaticPages(data, status) {
                                                     .attr({
                                                         'href': '/CMS/pagelink/' + staticPage.titleNumber
                                                     }).text(staticPage.title))
-
-
-
                                             ))
-
-
                             .append($('<td>')
                                     .append($('<div>')
                                             .addClass("panel panel-default")
@@ -42,7 +37,7 @@ function loadStaticPages(data, status) {
 
                                             )
                                     ));
-                            
+
             if (staticPage.categoryIdFK) {
 
                 $.ajax({
