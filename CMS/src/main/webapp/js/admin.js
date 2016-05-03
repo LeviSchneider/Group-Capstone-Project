@@ -33,14 +33,14 @@ function populateUsers() {
 
             $.ajax({
                 //this is not working because the data is parsed before the ajax call is done
-          
+                
+                async: false,
                 type: 'GET',
                 url: 'userRoles/' + user.userId
 
             }).success(function (data, status) {
 
                 $.each(data, function (index, role) {
-
 
                     roleText += role + "&nbsp;&nbsp;&nbsp;&nbsp;";
                 });
