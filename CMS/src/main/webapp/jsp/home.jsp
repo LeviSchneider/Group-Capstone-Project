@@ -38,6 +38,9 @@
                         <div class="well sidebar-nav" >
                             <%@include file="tagCloudSidebar.jsp"%>
                         </div>
+                        <div class="well sidebar-nav" >
+                            <%@include file="categorySidebar.jsp"%>
+                        </div>
                     </div>
                 </div>
             </div>

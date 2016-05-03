@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,6 +100,20 @@ public class StaticPageController {
         List<StaticPage> staticPages = staticPageDao.getAllStaticPages();
 
         return staticPages;
+
+    }
+
+    @RequestMapping(value = "/staticPages/{categoryId}", method = RequestMethod.GET)
+    public String getAllStaticPagesByCategory(@PathVariable("categoryId") int categoryId, Map<String, Object> model, HttpSession session) {
+
+        List<StaticPage> staticPages = staticPageDao.getAllStaticPagesByCategory(categoryId);
+
+        model.put("staticPages", staticPages);
+        model.put("category", categoryDao.getCategoryById(categoryId));
+        session.setAttribute("page", "articlesByCategory");
+        session.setAttribute("js_page", "articlesByCategory.js");
+
+        return "home";
 
     }
 
