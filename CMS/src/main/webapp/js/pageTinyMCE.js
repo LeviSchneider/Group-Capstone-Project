@@ -31,13 +31,30 @@ $(document).ready(function () {
     $('#tiny-publish').click(function (event) {
         event.preventDefault();
         $('#staticpage-status').val('PUBLISHED');
+
         if ($('#staticpage-status').val()) {
-            createStaticPage();
+
+            if (formIsValid()) {
+                createStaticPage();
+                window.location = '/CMS/articles';
+
+            } else {
+                //alert(validationError);
+                displaySaveConfirmation(false, validationError);
+                validationError = "";
+            }
         } else {
             $('#staticpage-status').val('DRAFT');
-            createStaticPage();
+            if (formIsValid()) {
+                createStaticPage();
+                window.location = '/CMS/articles';
+
+            } else {
+                //alert(validationError);
+                displaySaveConfirmation(false, validationError);
+                validationError = "";
+            }
         }
-        window.location = '/CMS/articles';
     });
 
     //autosaves every 1 minute
