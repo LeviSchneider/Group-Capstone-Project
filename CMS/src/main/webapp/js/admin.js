@@ -260,7 +260,7 @@ function deleteCategory(categoryId) {
 
         }).error(function () {
 
-            alert("You do not have permission to delete categories!")
+            alert("You do not have permission to delete categories!");
 
         });
     }

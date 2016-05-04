@@ -78,7 +78,7 @@
         });
     }
 
-    function loadCategories() {
+    function loadCategoriesSideBar() {
         var categoryContent = $('#categories');
         var categoryString = "";
         $.ajax({
