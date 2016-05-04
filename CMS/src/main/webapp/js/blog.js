@@ -57,18 +57,12 @@ function populateBlogPosts(limit) {
                                     .attr({'id': 'post' + blogPostContainer.blogPost.postId})
                                     ));
             $.each(tagList, function (index, tag) {
-
                 $('#post' + blogPostContainer.blogPost.postId)
-                        .append($('<span>')
-                                .addClass('panel-body-blogtags')
+                        //.append($('<div>')).addClass('btn-group')
+                        .append($('<button>')
+                                .addClass('btn btn-primary btn-xs btn-xs-margin')
                                 .append(tag + " "));
             });
-//            $.each(categoryList, function (index, category) {
-//                $('#post' + blogPostContainer.blogPost.postId)
-//                        .append($('<span>')
-//                                .addClass('panel-body-blogcategories')
-//                                .append("(In category: " + category.categoryName + ")"));
-//            });
         });
     });
 

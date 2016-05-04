@@ -24,64 +24,69 @@
 
 
 <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="text-center">New static page</h3>
+    </div>
     <div class="panel-body">
-        <form>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Categories:</label>
-                            <div class="col-md-8">
-                                <input type="hidden" id="staticpage-to-edit-id" value="${editStaticPageId}"/>
-                                <input id="add-category" type="text" placeholder="Add a NEW category...">
-                                <button onclick="addCategoryButton()" class="btn btn-xs">Add</button>
-                                <br>
-                                <br>
-                                <select id="categories" name="categories">
-                                    <option value="-1">Choose Category</option>
-                                </select>
-                            </div>
-                        </div>
+        <div class="container-fluid">
+            <form class="form-horizontal">
+                <input type="hidden" id="staticpage-to-edit-id" value="${editBlogPostId}"/>
 
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Start Date:</label>
-                            <div class="col-md-8">
-                                <input type="date" id="start-date"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">End Date:</label>
-                            <div class="col-md-8">
-                                <input type="date" id="end-date"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Title:</label>
-                            <div class="col-md-8">
-                                <input type="text" id="staticpage-title" placeholder="A title is required..."/>
-                            </div>
-                        </div>
-                        <hr>
+                <div class="form-group">
+                    <label class="control-label">Categories:</label>
+                    <div class="input-group">
+                        <input class="form-control" id="add-category" type="text" placeholder="Add a NEW category...">
+                        <span class="input-group-btn">
+                            <button type="button" onclick="addCategoryButton()" class="btn btn-default">Add</button>
+                        </span>
                     </div>
                 </div>
-            </div>
-            <textarea id="htmlOutput"></textarea>
-            <hr>
-            <select id="staticpage-status" name="staticpage-status">
-                <option value="DRAFT">DRAFT</option>
-                <option value="READY_FOR_APPROVAL">READY_FOR_APPROVAL</option>
+                <div class="form-group">
+                    <select class="form-control" id="categories" name="categories">
+                        <option value="-1">Choose Category</option>
+                    </select>
+                </div>
 
-                <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <option value="APPROVED">APPROVED</option>
-                    <option value="UNPUBLISHED">UNPUBLISHED</option>
-                    <option value="PUBLISHED">PUBLISHED</option>
-                </sec:authorize>
-            </select>
-            <button id="tiny-save" type="button">Save</button>
-            <input type="hidden" id="tiny-staticpage-id"/>
-            <button id="tiny-publish" type="button">Publish</button>
-            <span id="last-saved-field" class="pull-right"></span>
-        </form>
+                <div class="form-group">
+                    <label class="control-label">Start Date:</label>
+                    <input class="form-control" type="date" id="start-date"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">End Date:</label>
+                    <input class="form-control" type="date" id="end-date"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Title:</label>
+                    <input class="form-control" type="text" id="staticpage-title" placeholder="Title"/>
+                </div>
+
+                <div class="form-group">
+                    <textarea id="htmlOutput" class="form-control"></textarea>
+                </div>
+
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="staticpage-status" class="control-label">Status</label>
+                        <select class="form-control" id="staticpage-status" name="staticpage-status">
+                            <option value="DRAFT">DRAFT</option>
+                            <option value="READY_FOR_APPROVAL">READY_FOR_APPROVAL</option>
+                            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <option value="APPROVED">APPROVED</option>
+                                <option value="UNPUBLISHED">UNPUBLISHED</option>
+                                <option value="PUBLISHED">PUBLISHED</option>
+                            </sec:authorize>
+                        </select>
+                        <button class="btn btn-default" id="tiny-save" type="button">Save</button>
+                        <input type="hidden" id="tiny-staticpage-id"/>
+                        <button class="btn btn-success" id="tiny-publish" type="button">Publish</button>
+                    </div>
+                </div>
+            </form>
+            <br/>
+            <span id="last-saved-field" class="text-center"></span>
+        </div>
     </div>
 </div>
 

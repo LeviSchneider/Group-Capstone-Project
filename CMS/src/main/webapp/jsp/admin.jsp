@@ -45,22 +45,20 @@
 
                 <div id="addCategoryCollapsible" data-collapse="accordion persist">
                     <h3>Add Category</h3>
-
-                    <form class="navbar-form navbar-left">
-                        <div class="form-group">
+                    <form>
+                        <div class="input-group">
                             <input id="add-category" type="text" class="form-control" placeholder="Add Category Name">
+                            <span class="input-group-btn">
+                                <button onclick="addCategoryButton()" class="btn btn-primary">Submit</button>
+                            </span>
                         </div>
-                        <button onclick="addCategoryButton()" class="btn btn-primary">Submit</button>
                     </form>
-
                 </div>
 
 
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
-
                     <div id="categoryCollapsible" data-collapse="accordion persist">
                         <h3>Categories</h3>
-
                         <table id="categoryTable" class="table table-hover">
                             <tr>
                                 <th width="30%">Category Name</th>
@@ -163,44 +161,44 @@
 
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <script>
-                            var sideBarPositionList = [];
-                            var sideBarUrlList = [];
+                                    var sideBarPositionList = [];
+                                    var sideBarUrlList = [];
 
 
 
-                            $(function () {
-                                $(".droppable").sortable({
-                                    tolerance: 'pointer',
-                                    revert: 'invalid',
-                                    placeholder: 'span2 well placeholder tile',
-                                    forceHelperSize: true,
-                                    update: function (event, ui) {
-                                        Dropped();
-                                    }
-                                });
-                            });
-
-                            function Dropped(event, ui) {
-                                sideBarPositionList = [];
-                                sideBarUrlList = [];
-                                var counter = 1;
-                                $(".droppable").children().each(function () {
-                                    //var p = $(this).position();
-                                    sideBarUrlList[sideBarUrlList.length] = $(this).find('input').val();
-                                });
-                                alert(sideBarUrlList);
-                                for (var i = 0; i < sideBarUrlList.length; i++)
-                                {
-                                    alert(counter + ' ' + sideBarUrlList[i]);
-                                    $.ajax({
-                                        type: 'PUT',
-                                        url: '/CMS/staticPage/' + counter + '/' + sideBarUrlList[i]
+                                    $(function () {
+                                        $(".droppable").sortable({
+                                            tolerance: 'pointer',
+                                            revert: 'invalid',
+                                            placeholder: 'span2 well placeholder tile',
+                                            forceHelperSize: true,
+                                            update: function (event, ui) {
+                                                Dropped();
+                                            }
+                                        });
                                     });
-                                    counter++;
-                                }
-                                alert('Now it should have saved');
-                                loadSideBarItems();
-                            }
+
+                                    function Dropped(event, ui) {
+                                        sideBarPositionList = [];
+                                        sideBarUrlList = [];
+                                        var counter = 1;
+                                        $(".droppable").children().each(function () {
+                                            //var p = $(this).position();
+                                            sideBarUrlList[sideBarUrlList.length] = $(this).find('input').val();
+                                        });
+                                        alert(sideBarUrlList);
+                                        for (var i = 0; i < sideBarUrlList.length; i++)
+                                        {
+                                            alert(counter + ' ' + sideBarUrlList[i]);
+                                            $.ajax({
+                                                type: 'PUT',
+                                                url: '/CMS/staticPage/' + counter + '/' + sideBarUrlList[i]
+                                            });
+                                            counter++;
+                                        }
+                                        alert('Now it should have saved');
+                                        loadSideBarItems();
+                                    }
             </script>
         </sec:authorize>
     </body>
