@@ -16,7 +16,7 @@
     $(document).ready(function () {
         loadTags();
         loadSideBarItems();
-
+        loadCategories();
         $('#toggle-left').click(function () {
             if (!$('.row-offcanvas-left').hasClass('active')) {
                 $('.row-offcanvas-left').addClass('active');
@@ -35,7 +35,6 @@
                 $('.row-offcanvas-right').removeClass('active');
             }
         });
-
         $('#click-me').click(function () {
 
             [].forEach.call($("*"), function (a) {
@@ -43,7 +42,6 @@
             });
         });
     });
-
     function loadTags() {
         var tagCloud = $('#tagcloud');
         var tagString = "";
@@ -80,6 +78,27 @@
         });
     }
 
+    function loadCategories() {
+        var categoryContent = $('#categories');
+        var categoryString = "";
+        $.ajax({
+            type: 'GET',
+            url: '${pageContext.request.contextPath}/categories'
+        }).success(function (data, status) {
+            $.each(data, function (index, category) {
+
+                categoryContent.append($('<span>')
+                        .append($('<a>')
+                                .attr({
+                                    'href': '/CMS/staticPages/' + category.categoryId + '/'
+                                })
+                                .html(category.categoryName))
+                        .append($('<br/>')
+                        ));
+
+            });
+        });
+    }
 
     function initMenu() {
         $('#menu ul').hide();
@@ -115,7 +134,6 @@
             $.each(data, function (index, blogPostContainer) {
 
                 var tagList = blogPostContainer.tagContainer.tagList;
-
                 blogPanel
                         .append($('<div>')
                                 .addClass("panel panel-default")
@@ -170,7 +188,6 @@
                 counter++;
             });
             sideBar.append(row);
-
         });
     }
 </script>

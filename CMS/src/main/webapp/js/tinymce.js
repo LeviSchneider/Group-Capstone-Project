@@ -26,14 +26,30 @@ $(document).ready(function () {
 
     $('#tiny-publish').click(function (event) {
         event.preventDefault();
-        $('#post-status').val('PUBLISHED');
         if ($('#post-status').val()) {
-            createPost();
+
+            if (formIsValid()) {
+                createPost();
+                window.location = '/CMS/blog';
+
+            } else {
+                //alert(validationError);
+                displaySaveConfirmation(false, validationError);
+                validationError = "";
+            }
         } else {
             $('#post-status').val('DRAFT');
-            createPost();
+            if (formIsValid()) {
+                createPost();
+                window.location = '/CMS/blog';
+
+            } else {
+                //alert(validationError);
+                displaySaveConfirmation(false, validationError);
+                validationError = "";
+            }
         }
-        window.location = '/CMS/blog';
+        $('#post-status').val('PUBLISHED');
     });
     //autosaves every 1 minute
     //setInterval(createPost, 60000);
@@ -65,7 +81,7 @@ function createPost() {
         url = '/CMS/blogPost/' + postId;
     }
 
-    
+
 
     $.ajax({
         type: putOrPost,

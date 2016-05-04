@@ -42,4 +42,6 @@ public interface StaticPageDbDao {
     public List<StaticPage> getAllStaticPagesAdminUnpublished();
 
     public void adminQuickChangeStaticPageStatus(int id, String status);
+
+    public List<StaticPage> getAllStaticPagesByCategory(int categoryId);
 }

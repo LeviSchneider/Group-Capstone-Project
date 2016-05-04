@@ -54,7 +54,9 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
             = "update staticPages set status = ? where pageId = ?";
     private static final String SQL_SELECT_STATICPAGE_BY_ID_ADMIN_UNPUBLISHED
             = "select * from staticPages WHERE `status` != 'PUBLISHED' ORDER BY pageId DESC";
-    
+    private static final String SQL_SELECT_STATICPAGES_BY_CATEGORY
+            = "select * from staticPages WHERE categoryIdFK = ?";
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -204,6 +206,13 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
     public void adminQuickChangeStaticPageStatus(int id, String status) {
 
         jdbcTemplate.update(SQL_QUICK_PUBLISH_STATICPAGE, status, id);
+
+    }
+
+    @Override
+    public List<StaticPage> getAllStaticPagesByCategory(int categoryId) {
+
+        return jdbcTemplate.query(SQL_SELECT_STATICPAGES_BY_CATEGORY, new StaticPageMapper(), categoryId);
 
     }
 
