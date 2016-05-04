@@ -16,7 +16,7 @@
     $(document).ready(function () {
         loadTags();
         loadSideBarItems();
-        loadCategories();
+        loadCategoriesSideBar();
         $('#toggle-left').click(function () {
             if (!$('.row-offcanvas-left').hasClass('active')) {
                 $('.row-offcanvas-left').addClass('active');
@@ -57,15 +57,15 @@
                     for (var key in tagMap) {
                         newKey = key.replace("#", "");
                         if (tagMap[key] <= 2) {
-                            tagString += "<a style='font-size:75%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
+                            tagString += "<a style='font-size:75%' href='/CMS/taggedPostsDisplay/" + newKey + "'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         } else if (tagMap[key] <= 7) {
-                            tagString += "<a style='font-size:121%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
+                            tagString += "<a style='font-size:121%' href='/CMS/taggedPostsDisplay/" + newKey + "'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         } else {
-                            tagString += "<a style='font-size:196%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
+                            tagString += "<a style='font-size:196%' href='/CMS/taggedPostsDisplay/" + newKey + "'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         }
@@ -78,7 +78,7 @@
         });
     }
 
-    function loadCategories() {
+    function loadCategoriesSideBar() {
         var categoryContent = $('#categories');
         var categoryString = "";
         $.ajax({
@@ -94,7 +94,7 @@
                                 })
                                 .html(category.categoryName))
                         .append($('<br/>')
-                        ));
+                                ));
 
             });
         });
@@ -191,3 +191,43 @@
         });
     }
 </script>
+
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+    <script>
+        var sideBarPositionList = [];
+        var sideBarUrlList = [];
+
+
+
+        $(function () {
+            $(".droppable").sortable({
+                tolerance: 'pointer',
+                revert: 'invalid',
+                placeholder: 'span2 well placeholder tile',
+                forceHelperSize: true,
+                update: function (event, ui) {
+                    Dropped();
+                }
+            });
+        });
+
+        function Dropped(event, ui) {
+            sideBarPositionList = [];
+            sideBarUrlList = [];
+            var counter = 1;
+            $(".droppable").children().each(function () {
+                //var p = $(this).position();
+                sideBarUrlList[sideBarUrlList.length] = $(this).find('input').val();
+            });
+            for (var i = 0; i < sideBarUrlList.length; i++)
+            {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/CMS/staticPage/' + counter + '/' + sideBarUrlList[i]
+                });
+                counter++;
+            }
+            loadSideBarItems();
+        }
+    </script>
+</sec:authorize>

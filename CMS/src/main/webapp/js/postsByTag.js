@@ -5,29 +5,23 @@
  */
 
 
-var limit = 0;
-var amount = 10;
 $(document).ready(function () {
 
-    populateBlogPosts(limit);
-    $(window).scroll(function () {
-        if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-            limit = limit + amount;
-            populateBlogPosts(limit);
-        }
-    });
+    populateTagBlogPosts();
+
 
 });
 
 
-function populateBlogPosts(limit) {
+function populateTagBlogPosts() {
 
+    var data = $('#tag-to-populate').val();
     var author = "The Big Cheese";
 
     var blogPanel = $('#blog-post-display');
     $.ajax({
         type: 'GET',
-        url: 'blogPosts/' + limit
+        url: '/CMS/taggedPosts/' + data
 
     }).success(function (data, status) {
 
@@ -60,10 +54,10 @@ function populateBlogPosts(limit) {
                 $('#post' + blogPostContainer.blogPost.postId)
                         //.append($('<div>')).addClass('btn-group')
                         .append($('<a>').attr({'href': '/CMS/taggedPostsDisplay/' + tag})
-                                .append($('<button>')
-                                        .addClass('btn btn-primary btn-xs btn-xs-margin')
-                                        .append(tag + " ")));
-                    });
+                        .append($('<button>')
+                                .addClass('btn btn-primary btn-xs btn-xs-margin')
+                                .append(tag + " ")));
+            });
         });
     });
 

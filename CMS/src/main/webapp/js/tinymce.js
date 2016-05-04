@@ -24,10 +24,11 @@ $(document).ready(function () {
         }
     });
 
+    //TODO: get admin to publish
+
     $('#tiny-publish').click(function (event) {
         event.preventDefault();
         if ($('#post-status').val()) {
-
             if (formIsValid()) {
                 createPost();
                 window.location = '/CMS/blog';

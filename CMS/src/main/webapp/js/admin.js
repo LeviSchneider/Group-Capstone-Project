@@ -205,7 +205,6 @@ function loadCategories(data, status) {
                                         'onclick': 'showEditCategoryField($(\'#edit-category-span' + category.categoryId + '\'))'
                                     })
                                     .html('<button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>'))
-
                             .append($('<a>')
                                     .attr({
                                         'onclick': 'deleteCategory(' + category.categoryId + ')'
@@ -260,7 +259,7 @@ function deleteCategory(categoryId) {
 
         }).error(function () {
 
-            alert("You do not have permission to delete categories!")
+            alert("You do not have permission to delete categories!");
 
         });
     }
