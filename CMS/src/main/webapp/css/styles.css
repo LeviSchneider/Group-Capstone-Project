@@ -36,8 +36,18 @@ footer {
     text-align: center;
 }
 
+.navbar-header {
+    float: left;
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+
 .btn-xs-margin {
     margin-right: 1px;
+
 }
 
 /*
