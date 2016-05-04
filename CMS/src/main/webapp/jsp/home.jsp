@@ -25,7 +25,7 @@
                 <div class="row-offcanvas row-offcanvas-right">
                     <!-- it looks strange but these rows need to wrap each other -->
                     <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarLeft" role="navigation">
-                        <div class="well sidebar-nav">
+                        <div class="well sidebar-nav"  data-spy="affix" >
                             <!-- all content needs to go in the included jsp; don't modify this -->
                             <%@include file="sidebar.jsp"%>
                         </div>
@@ -36,21 +36,23 @@
                         <%@include file="footer.jsp"%>
                     </div>
                     <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebarRight" role="navigation">
-                        <div class="well sidebar-nav" >
-                            <%@include file="tagCloudSidebar.jsp"%>
-                        </div>
-                        <div class="well sidebar-nav" >
-                            <%@include file="categorySidebar.jsp"%>
+                        <div id="right-sidebars"  data-spy="affix" >
+                            <div class="well sidebar-nav">
+                                <%@include file="tagCloudSidebar.jsp"%>
+                            </div>
+                            <div class="well sidebar-nav">
+                                <%@include file="categorySidebar.jsp"%>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-                        <!--
-            <div class="row">
-                <div class='col-xs-12'>
-                    <%@include file="footer.jsp"%>
-                </div>
-            </div> -->
+            <!--
+<div class="row">
+    <div class='col-xs-12'>
+            <%@include file="footer.jsp"%>
+        </div>
+    </div> -->
         </div>
 
         <!--
