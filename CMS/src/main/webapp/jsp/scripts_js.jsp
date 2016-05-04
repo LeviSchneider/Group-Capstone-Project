@@ -94,7 +94,7 @@
                                 })
                                 .html(category.categoryName))
                         .append($('<br/>')
-                        ));
+                                ));
 
             });
         });
@@ -191,3 +191,43 @@
         });
     }
 </script>
+
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+    <script>
+        var sideBarPositionList = [];
+        var sideBarUrlList = [];
+
+
+
+        $(function () {
+            $(".droppable").sortable({
+                tolerance: 'pointer',
+                revert: 'invalid',
+                placeholder: 'span2 well placeholder tile',
+                forceHelperSize: true,
+                update: function (event, ui) {
+                    Dropped();
+                }
+            });
+        });
+
+        function Dropped(event, ui) {
+            sideBarPositionList = [];
+            sideBarUrlList = [];
+            var counter = 1;
+            $(".droppable").children().each(function () {
+                //var p = $(this).position();
+                sideBarUrlList[sideBarUrlList.length] = $(this).find('input').val();
+            });
+            for (var i = 0; i < sideBarUrlList.length; i++)
+            {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/CMS/staticPage/' + counter + '/' + sideBarUrlList[i]
+                });
+                counter++;
+            }
+            loadSideBarItems();
+        }
+    </script>
+</sec:authorize>
