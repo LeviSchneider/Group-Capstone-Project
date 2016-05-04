@@ -210,7 +210,23 @@ public class BlogPostDbDaoImpl implements BlogPostDbDao {
         }
         Date date = new Date();
         updatedPost.setTimeEdited(date);
+        if (updatedPost.getStartDate() == null) {
 
+            updatedPost.setStartDate(new Date());
+
+        }
+        if (updatedPost.getEndDate() == null) {
+
+            Date endDate = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                endDate = format.parse("9999-12-12 00:00:00");
+            } catch (ParseException ex) {
+                Logger.getLogger(BlogPostDbDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            updatedPost.setEndDate(endDate);
+
+        }
         jdbcTemplate.update(SQL_UPDATE_BLOGPOST,
                             updatedPost.getTimeCreated(),
                             updatedPost.getTimeEdited(),
