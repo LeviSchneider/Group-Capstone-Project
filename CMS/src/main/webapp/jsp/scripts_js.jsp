@@ -57,15 +57,15 @@
                     for (var key in tagMap) {
                         newKey = key.replace("#", "");
                         if (tagMap[key] <= 2) {
-                            tagString += "<a style='font-size:75%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
+                            tagString += "<a style='font-size:75%' href='/CMS/taggedPostsDisplay/" + newKey + "'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         } else if (tagMap[key] <= 7) {
-                            tagString += "<a style='font-size:121%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
+                            tagString += "<a style='font-size:121%' href='/CMS/taggedPostsDisplay/" + newKey + "'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         } else {
-                            tagString += "<a style='font-size:196%' onclick='populatedTagPosts(\"" + newKey + "\")'>";
+                            tagString += "<a style='font-size:196%' href='/CMS/taggedPostsDisplay/" + newKey + "'>";
                             tagString += " " + key;
                             tagString += "</a>";
                         }
