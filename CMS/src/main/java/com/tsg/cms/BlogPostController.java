@@ -117,6 +117,16 @@ public class BlogPostController {
 
     }
 
+    @RequestMapping(value = "/taggedPostsDisplay/{tag}", method = RequestMethod.GET)
+    public String getPostsByTagDisplay(@PathVariable("tag") String tag, Map<String, Object> model, HttpSession session) {
+
+        model.put("tag", tag);
+        session.setAttribute("page", "postsByTag");
+        session.setAttribute("js_page", "postsByTag.js");
+        return "home";
+
+    }
+
     @RequestMapping(value = "/blogPostsAdminUnpublished", method = RequestMethod.GET)
     @ResponseBody
     public List<BlogPostContainer> getAllBlogPostsAdminUnpublished() {
@@ -124,7 +134,7 @@ public class BlogPostController {
         return blogPostDao.getAllBlogPostsAdminUnpublished();
 
     }
-    
+
     @RequestMapping(value = "/adminQuickChangeBlogPostStatus/{id}/{status}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -132,5 +142,5 @@ public class BlogPostController {
 
         blogPostDao.adminQuickChangeBlogPostStatus(id, status);
 
-    }   
+    }
 }
