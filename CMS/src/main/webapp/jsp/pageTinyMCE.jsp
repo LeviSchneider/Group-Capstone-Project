@@ -30,7 +30,7 @@
     <div class="panel-body">
         <div class="container-fluid">
             <form class="form-horizontal">
-                <input type="hidden" id="staticpage-to-edit-id" value="${editBlogPostId}"/>
+                <input type="hidden" id="staticpage-to-edit-id" value="${editStaticPageId}"/>
 
                 <div class="form-group">
                     <label class="control-label">Categories:</label>
