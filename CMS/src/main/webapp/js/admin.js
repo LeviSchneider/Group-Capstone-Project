@@ -123,10 +123,10 @@ function loadStaticPages(data, status) {
 
             var addOrRemoveSideBarButton = '';
             if (staticPage.sideBarPosition > 0) {
-                addOrRemoveSideBarButton = '<a onclick="deletePageFromSideBar(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
+                addOrRemoveSideBarButton = '<a onclick="deletePageFromSideBar(\'' + staticPage.titleNumber + '\')"><button type="button" class="btn btn-default btn-xs">'
                         + '<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button></a>';
             } else {
-                addOrRemoveSideBarButton = '<a onclick="addPageToSideBar(' + staticPage.pageId + ')"><button type="button" class="btn btn-default btn-xs">'
+                addOrRemoveSideBarButton = '<a onclick="addPageToSideBar(\'' + staticPage.titleNumber + '\')"><button type="button" class="btn btn-default btn-xs">'
                         + '<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></button></a>';
             }
 
@@ -330,39 +330,39 @@ function loadSideBarItems() {
     });
 }
 
-function addPageToSideBar(pageId) {
+function addPageToSideBar(titleNumber) {
 
     var numberOfLinks = $('#custom-sidebar-list').val();
     numberOfLinks++;
     $.ajax({
         type: 'PUT',
-        url: '/CMS/staticPage/' + pageId + '/' + numberOfLinks + '/'
+        url: '/CMS/staticPage/' + numberOfLinks + '/' + titleNumber + '/'
 
     }).success(function (data, status) {
 
         loadSideBarItems();
         loadStaticPages();
-    }).success(function (data, status) {
+    }).error(function (data, status) {
 
         alert("You do not have permission to edit sidebar items!");
 
     });
 }
 
-function deletePageFromSideBar(pageId) {
+function deletePageFromSideBar(titleNumber) {
 
     var answer = confirm("Do you really want to remove this page from the side bar?");
     if (answer === true) {
         $.ajax({
             type: 'PUT',
-            url: '/CMS/staticPage/' + pageId + '/0/'
+            url: '/CMS/staticPage/0/' + titleNumber
 
         }).success(function (data, status) {
 
             loadSideBarItems();
             loadStaticPages();
 
-        }).success(function (data, status) {
+        }).error(function (data, status) {
 
             alert("You do not have permission to edit sidebar items!");
 
