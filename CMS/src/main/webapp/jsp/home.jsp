@@ -18,6 +18,7 @@
         <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css">
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/cheese.png">
+        <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <div class="container">

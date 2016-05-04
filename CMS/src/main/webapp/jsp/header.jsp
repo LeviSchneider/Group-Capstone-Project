@@ -13,7 +13,7 @@
                 <span><i class="fa fa-bars" aria-hidden="true"></i></span>
             </button>
 
-            <a class="navbar-brand" id="click-me" href="#">CHEESE MASTER SCHOOL</a>
+            <a class="text-center" id="click-me" href="#">CHEESE MASTER SCHOOL</a>
         </div>
 
     </div><!-- /.container -->
