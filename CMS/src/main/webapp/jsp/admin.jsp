@@ -188,17 +188,14 @@
                                     //var p = $(this).position();
                                     sideBarUrlList[sideBarUrlList.length] = $(this).find('input').val();
                                 });
-                                alert(sideBarUrlList);
                                 for (var i = 0; i < sideBarUrlList.length; i++)
                                 {
-                                    alert(counter + ' ' + sideBarUrlList[i]);
                                     $.ajax({
                                         type: 'PUT',
                                         url: '/CMS/staticPage/' + counter + '/' + sideBarUrlList[i]
                                     });
                                     counter++;
                                 }
-                                alert('Now it should have saved');
                                 loadSideBarItems();
                             }
             </script>
