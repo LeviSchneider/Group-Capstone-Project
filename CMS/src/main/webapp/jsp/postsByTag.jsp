@@ -2,7 +2,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">    
-        <h3>BlogPosts</h3>
+        <h3>BlogPosts with tag #${tag}</h3>
     </div>
     <div class="panel-body">
         <input hidden id="tag-to-populate" value="${tag}"/>
