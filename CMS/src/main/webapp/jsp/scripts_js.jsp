@@ -16,7 +16,7 @@
     $(document).ready(function () {
         loadTags();
         loadSideBarItems();
-        loadCategories();
+        loadCategoriesSideBar();
         $('#toggle-left').click(function () {
             if (!$('.row-offcanvas-left').hasClass('active')) {
                 $('.row-offcanvas-left').addClass('active');
