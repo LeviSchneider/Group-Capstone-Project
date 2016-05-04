@@ -36,6 +36,10 @@ footer {
     text-align: center;
 }
 
+.btn-xs-margin {
+    margin-right: 1px;
+}
+
 /*
  *Styling for left navbar grid system.
  *-----------------------------------------
