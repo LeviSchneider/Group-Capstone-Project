@@ -187,7 +187,6 @@ function populateEditStaticPageData() {
         url: '/CMS/staticPage/' + $('#staticpage-to-edit-id').val()
 
     }).success(function (staticPage, status) {
-
         $('#staticpage-title').val(staticPage.title);
         $('#htmlOutput').val(staticPage.pageBody);
         $('#start-date').val(staticPage.startDate);

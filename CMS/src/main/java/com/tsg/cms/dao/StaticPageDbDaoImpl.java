@@ -9,12 +9,15 @@ import com.tsg.cms.dto.SideBarLink;
 import com.tsg.cms.dto.StaticPage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -70,8 +73,24 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         setTitleNumber(staticPage);
         Date date = new Date();
 
-        staticPage.setTimeCreated(date);
         staticPage.setTimeEdited(date);
+        if (staticPage.getStartDate() == null) {
+
+            staticPage.setStartDate(new Date());
+
+        }
+        if (staticPage.getEndDate() == null) {
+
+            Date endDate = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                endDate = format.parse("9999-12-12 00:00:00");
+            } catch (ParseException ex) {
+                Logger.getLogger(BlogPostDbDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            staticPage.setEndDate(endDate);
+
+        }
         staticPage.setSideBarPosition(0);
         jdbcTemplate.update(SQL_INSERT_STATICPAGE,
                             staticPage.getTimeCreated(),
@@ -109,7 +128,23 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
         //updatedPage.setCategoryIdFK(oldPage.getCategoryIdFK());
         updatedPage.setSideBarPosition(oldPage.getSideBarPosition());
         updatedPage.setUserIdFK(oldPage.getUserIdFK());
+        if (updatedPage.getStartDate() == null) {
 
+            updatedPage.setStartDate(new Date());
+
+        }
+        if (updatedPage.getEndDate() == null) {
+
+            Date endDate = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                endDate = format.parse("9999-12-12 00:00:00");
+            } catch (ParseException ex) {
+                Logger.getLogger(BlogPostDbDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            updatedPage.setEndDate(endDate);
+
+        }
         jdbcTemplate.update(SQL_UPDATE_STATICPAGE,
                             updatedPage.getTimeCreated(),
                             updatedPage.getTimeEdited(),
@@ -226,10 +261,10 @@ public class StaticPageDbDaoImpl implements StaticPageDbDao {
 
             StaticPage staticPage = new StaticPage();
             staticPage.setPageId(rs.getInt("pageId"));
-            staticPage.setTimeCreated(rs.getTimestamp("timeCreated"));
-            staticPage.setTimeEdited(rs.getTimestamp("timeEdited"));
-            staticPage.setStartDate(rs.getTimestamp("startDate"));
-            staticPage.setEndDate(rs.getTimestamp("endDate"));
+            staticPage.setTimeCreated(rs.getDate("timeCreated"));
+            staticPage.setTimeEdited(rs.getDate("timeEdited"));
+            staticPage.setStartDate(rs.getDate("startDate"));
+            staticPage.setEndDate(rs.getDate("endDate"));
             staticPage.setTitle(rs.getString("title"));
             staticPage.setPageBody(rs.getString("pageBody"));
             staticPage.setUserIdFK(rs.getInt("userIdFK"));
