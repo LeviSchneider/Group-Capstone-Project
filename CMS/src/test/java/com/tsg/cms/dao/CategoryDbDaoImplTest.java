@@ -63,6 +63,7 @@ public class CategoryDbDaoImplTest {
         blogDao = ctx.getBean("BlogPostDbDao", BlogPostDbDao.class);
 
         JdbcTemplate cleaner = (JdbcTemplate) ctx.getBean("jdbcTemplate");
+        
         cleaner.execute("delete from blogPosts");
         cleaner.execute("delete from categories");
 

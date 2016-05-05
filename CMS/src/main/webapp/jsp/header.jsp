@@ -3,7 +3,8 @@
     <div class="container">
         <div class="navbar-header">
             
-            <a class="center-block" id="click-me" href="#">CHEESE MASTER SCHOOL</a>           
+    <!--        <a class="center-block" id="click-me" href="#">CHEESE MASTER SCHOOL</a>           not vertically aligned -->
+            <a class="navbar-brand" id="click-me" href="#">CHEESE MASTER SCHOOL</a>           
 
             <button id='toggle-right' style="color: white;" type="button" class="navbar-toggle collapsed">
                 <span class="sr-only">Toggle right sidebar</span>

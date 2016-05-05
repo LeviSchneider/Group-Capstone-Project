@@ -36,7 +36,8 @@ footer {
     text-align: center;
 }
 
-.navbar-header {
+.navbar-header
+#logo{
     float: left;
     padding: 5px;
     text-align: center;
