@@ -32,9 +32,9 @@ $(document).ready(function () {
         event.preventDefault();
         if ($('#staticpage-status').val()) {
             if (formIsValid()) {
+                $('#staticpage-status').val('PUBLISHED');
                 createStaticPage();
                 window.location = '/CMS/articles';
-
             } else {
                 //alert(validationError);
                 displaySaveConfirmation(false, validationError);
@@ -52,7 +52,6 @@ $(document).ready(function () {
                 validationError = "";
             }
         }
-        $('#staticpage-status').val('PUBLISHED');
     });
 
     //autosaves every 1 minute

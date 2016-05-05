@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 05, 2016 at 08:30 AM
+-- Generation Time: May 05, 2016 at 08:37 AM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `PaloAlto`
 --
+CREATE DATABASE IF NOT EXISTS `PaloAlto` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `PaloAlto`;
 
 -- --------------------------------------------------------
 
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `authorities`
 --
 
+DROP TABLE IF EXISTS `authorities`;
 CREATE TABLE IF NOT EXISTS `authorities` (
   `username` varchar(20) NOT NULL,
   `authority` varchar(20) NOT NULL
@@ -46,6 +49,7 @@ INSERT INTO `authorities` (`username`, `authority`) VALUES
 -- Table structure for table `blogPosts`
 --
 
+DROP TABLE IF EXISTS `blogPosts`;
 CREATE TABLE IF NOT EXISTS `blogPosts` (
   `postId` int(11) NOT NULL AUTO_INCREMENT,
   `timeCreated` datetime NOT NULL,
@@ -79,6 +83,7 @@ INSERT INTO `blogPosts` (`postId`, `timeCreated`, `timeEdited`, `startDate`, `en
 -- Table structure for table `categories`
 --
 
+DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `categoryId` int(11) NOT NULL AUTO_INCREMENT,
   `categoryName` varchar(50) NOT NULL,
@@ -101,6 +106,7 @@ INSERT INTO `categories` (`categoryId`, `categoryName`) VALUES
 -- Table structure for table `hashTags`
 --
 
+DROP TABLE IF EXISTS `hashTags`;
 CREATE TABLE IF NOT EXISTS `hashTags` (
   `hashTagId` int(11) NOT NULL AUTO_INCREMENT,
   `hashTagName` varchar(50) NOT NULL,
@@ -125,6 +131,7 @@ INSERT INTO `hashTags` (`hashTagId`, `hashTagName`) VALUES
 -- Table structure for table `postHashTagBridge`
 --
 
+DROP TABLE IF EXISTS `postHashTagBridge`;
 CREATE TABLE IF NOT EXISTS `postHashTagBridge` (
   `postIdFK` int(11) DEFAULT NULL,
   `HashTagIdFK` int(11) DEFAULT NULL,
@@ -149,6 +156,7 @@ INSERT INTO `postHashTagBridge` (`postIdFK`, `HashTagIdFK`) VALUES
 -- Table structure for table `staticPages`
 --
 
+DROP TABLE IF EXISTS `staticPages`;
 CREATE TABLE IF NOT EXISTS `staticPages` (
   `pageId` int(11) NOT NULL AUTO_INCREMENT,
   `timeCreated` datetime NOT NULL,
@@ -173,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `staticPages` (
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(25) NOT NULL,
