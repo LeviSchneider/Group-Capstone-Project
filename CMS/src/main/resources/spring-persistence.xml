@@ -14,8 +14,11 @@
                            http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"> 
 
-    <tx:annotation-driven />
     
+    <context:property-placeholder />
+    
+    <tx:annotation-driven />
+    <!--
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -24,7 +27,17 @@
         <property name="password" value="root"/>
         <property name="initialSize" value="5"/>
         <property name="maxTotal" value="10"/>
-    </bean>  
+    </bean> -->
+    
+        <!-- Comment this out for local tomcat deployment -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/PaloAlto"/>
+        <property name="username" value="${OPENSHIFT_MYSQL_DB_USERNAME}"/>
+        <property name="password" value="${OPENSHIFT_MYSQL_DB_PASSWORD}"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxTotal" value="10"/>
+    </bean>
     
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
